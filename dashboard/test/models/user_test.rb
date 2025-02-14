@@ -1509,7 +1509,7 @@ class UserTest < ActiveSupport::TestCase
     assert user.email.present?
     assert user.hashed_email.present?
 
-    user.set_user_type(User::TYPE_STUDENT)
+    user = user.set_user_type(User::TYPE_STUDENT)
     user.save!
     user.reload
 
@@ -1526,7 +1526,7 @@ class UserTest < ActiveSupport::TestCase
     user = create :teacher, school_info_attributes: school_attributes
     assert user.school_info.present?
 
-    user.set_user_type(User::TYPE_STUDENT)
+    user = user.set_user_type(User::TYPE_STUDENT)
     user.save!
     user.reload
 
@@ -1537,7 +1537,7 @@ class UserTest < ActiveSupport::TestCase
     user = create :teacher
     user.update!(full_address: 'fake address')
 
-    user.set_user_type(User::TYPE_STUDENT)
+    user = user.set_user_type(User::TYPE_STUDENT)
     user.save!
     user.reload
 
@@ -1578,7 +1578,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'changing from student to teacher clears terms_of_service_version' do
     user = create :student, terms_of_service_version: 1
-    user.set_user_type(User::TYPE_TEACHER, 'tos@example.com')
+    user = user.set_user_type(User::TYPE_TEACHER, 'tos@example.com')
     user.save!
     user.reload
 
@@ -1603,7 +1603,7 @@ class UserTest < ActiveSupport::TestCase
     user = create :teacher
 
     assert_destroys(StudioPerson) do
-      user.set_user_type(User::TYPE_STUDENT)
+      user = user.set_user_type(User::TYPE_STUDENT)
     end
     assert_nil user.reload.studio_person
   end
@@ -2549,7 +2549,8 @@ class UserTest < ActiveSupport::TestCase
 
   test 'downgrade_to_student sets user_type to student and clears cleartext emails' do
     user = create :teacher
-    assert user.downgrade_to_student
+    user = user.downgrade_to_student
+    assert user
     user.reload
     assert_equal User::TYPE_STUDENT, user.user_type
     assert_empty user.email
@@ -2583,6 +2584,7 @@ class UserTest < ActiveSupport::TestCase
     user = create :student
     original_primary_contact_info = user.primary_contact_info
     user.stubs(:update!).raises(ActiveRecord::RecordInvalid)
+    user.stubs(:update_columns).raises(ActiveRecord::RecordInvalid)
 
     assert_equal 1, user.authentication_options.count
     refute_nil original_primary_contact_info
@@ -2599,7 +2601,8 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal 2, user.authentication_options.count
 
-    assert user.upgrade_to_teacher('example@email.com', email_preference_params)
+    user = user.upgrade_to_teacher('example@email.com', email_preference_params)
+    assert user
     user.reload
     assert_equal User::TYPE_TEACHER, user.user_type
     assert_equal 2, user.authentication_options.count
@@ -2619,7 +2622,8 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 3, user.authentication_options.count
 
     email_preference_params = email_preference_params(email_preference_opt_in: 'yes')
-    assert user.upgrade_to_teacher('example@email.com', email_preference_params)
+    user = user.upgrade_to_teacher('example@email.com', email_preference_params)
+    assert user
     user.reload
     auth_option.reload
     assert_equal User::TYPE_TEACHER, user.user_type
@@ -2637,7 +2641,8 @@ class UserTest < ActiveSupport::TestCase
     parent_email = 'parent@email.com'
     user = User.create(@good_data.merge(parent_email: parent_email))
     assert_equal parent_email, user.parent_email
-    assert user.upgrade_to_teacher('example@email.com', email_preference_params)
+    user = user.upgrade_to_teacher('example@email.com', email_preference_params)
+    assert user
     user.reload
     assert_nil user.parent_email
   end

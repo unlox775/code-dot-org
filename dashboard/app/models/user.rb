@@ -97,6 +97,21 @@ class User < ApplicationRecord
   include PartialRegistration
   include Rails.application.routes.url_helpers
 
+  self.inheritance_column = :user_type
+
+  def self.find_sti_class(type_name)
+    type_name.classify.constantize
+    # super(type_name.classify.constantize)
+  end
+
+  # def sti_class_for(type_name)
+  #   super(type_name.dowcase.camelize)
+  # end
+
+  # def self.sti_name
+  #   name.downcase
+  # end
+
   # Notes:
   #   data_transfer_agreement_source: Indicates the source of the data transfer
   #     agreement.
@@ -479,7 +494,9 @@ class User < ApplicationRecord
     user = User.find_by_email_or_hashed_email(params[:email])
 
     if user
+      user = user.becomes(Teacher) unless user.is_a?(Teacher)
       user.update!(params.merge(user_type: TYPE_TEACHER))
+      user.reload
     else
       # initialize new users with name and school
       if params[:ops_first_name] || params[:ops_last_name]
@@ -494,7 +511,7 @@ class User < ApplicationRecord
       ValidatesEmailFormatOf.validate_email_format(params[:email]).tap do |result|
         raise ArgumentError, "'#{params[:email]}' #{result.first}" unless result.nil?
       end
-      user = User.invite!(attributes: params)
+      user = Teacher.invite!(attributes: params).becomes(Teacher)
       user.update!(invited_by: invited_by_user)
     end
 
@@ -1112,38 +1129,79 @@ class User < ApplicationRecord
 
   def downgrade_to_student
     return true if student? # No-op if user is already a student
-    update(user_type: TYPE_STUDENT)
+
+    # Force the DB update for user_type only, no validations
+    # TODO: I think maybe this should be wrapped in a transaction block
+    update_column(:user_type, TYPE_STUDENT)
+
+    student = becomes(Student)
+    # Set email to nil (passing Student validations)
+    student.update!(email: nil)
+    student.save!
+
+    student
   end
+
+  # def downgrade_to_student
+  #   return true if student? # No-op if user is already a student
+
+  #   # Force the DB update for user_type only, no validations
+  #   update_column(:user_type, TYPE_STUDENT)
+
+  #   # becomes(Student)
+
+  #   # Set email to nil (passing Student validations)
+  #   update!(email: nil)
+  #   reload
+
+  #   self
+  # end
 
   def upgrade_to_teacher(email, email_preference = nil)
     return true if teacher? # No-op if user is already a teacher
     return false if email.blank?
 
-    # Remove family name, in case it was set on the student account.
-    # Must do this before updating user_type, to prevent validation failure.
-    self.family_name = nil
-
     hashed_email = User.hash_email(email)
-    self.user_type = TYPE_TEACHER
-    # teachers do not need another adult to have access to their account.
-    self.parent_email = nil
 
     new_attributes = email_preference.nil? ? {} : email_preference
+    # new_attributes[:user_type] = TYPE_TEACHER
+    # Remove family name, in case it was set on the student account.
+    # Must do this before updating user_type, to prevent validation failure.
+    new_attributes[:family_name] = nil
+    # teachers do not need another adult to have access to their account.
+    new_attributes[:parent_email] = nil
+
     if Policies::Lti.lti? self
-      self.lti_roster_sync_enabled = true
+      new_attributes[:lti_roster_sync_enabled] = true
     end
 
+    new_attributes[:email] = email
+
+    # teacher = becomes(Teacher)
+
+    # transaction do
+    #   if migrated?
+    #     teacher.update_primary_contact_info!(new_email: email, new_hashed_email: hashed_email)
+    #   end
+
+    #   teacher.update!(new_attributes)
+    #   teacher.save!
+
+    #   teacher
+    # end
     transaction do
       if migrated?
         update_primary_contact_info!(new_email: email, new_hashed_email: hashed_email)
-      else
-        new_attributes[:email] = email
       end
-      update!(new_attributes)
+      # Force the DB update for user_type only, no validations
+      update_column(:user_type, TYPE_TEACHER)
 
+      update!(new_attributes)
+      reload
       self
     end
   rescue
+    # becomes(Student)
     false # Relevant errors are set on the user model, so we rescue and return false here.
   end
 
