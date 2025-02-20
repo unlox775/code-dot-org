@@ -366,3 +366,6 @@ gem "json-schema", "~> 4.3"
 gem "csv"
 
 gem "async", "~> 1.32"
+
+# Automatically include all rails engines
+Dir[File.join(Bundler.root.to_s, 'engines/*/')].each {|f| gemspec path: f}
