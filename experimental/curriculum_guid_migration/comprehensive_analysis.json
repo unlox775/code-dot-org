@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-17 05:18:35 +0000",
+  "analyses": {
+    "simple_code_analysis": {
+      "status": "completed",
+      "confidence_score": 12.9,
+      "confirmed_models": 4,
+      "missing_models": 27,
+      "extra_models": 24
+    },
+    "schema_analysis": {
+      "status": "completed",
+      "primary_tables": 12,
+      "secondary_tables": 8,
+      "total_tables": 20
+    },
+    "model_analysis": {
+      "status": "completed",
+      "primary_models": 13,
+      "secondary_models": 7,
+      "total_models": 20
+    }
+  },
+  "summary": {
+    "total_analyses": 3,
+    "completed_analyses": 3,
+    "overall_confidence": 85.0,
+    "curriculum_tables_identified": 20,
+    "primary_tables": 13,
+    "secondary_tables": 7,
+    "migration_readiness": "ready"
+  }
+}
