@@ -1,101 +1,51 @@
-# Curriculum GUID Migration Testing Framework
+# Curriculum GUID Migration - Experiments
 
-This directory contains comprehensive testing and verification tools for the curriculum GUID migration process.
+**Purpose**: Testing and validation for migrating curriculum data from ID-based to GUID-based tables  
+**Master Plan**: See [/workspace/docs/specs/20251016_183436_curriculum_guid_migration_plan.md](../../docs/specs/20251016_183436_curriculum_guid_migration_plan.md)
 
-## Structure
+## 🎯 **Migration Phases**
 
-```
-experimental/curriculum_guid_migration/
-├── README.md                           # This file
-├── phase1_database_schema/            # Phase 1 testing
-│   ├── README.md
-│   ├── verify_curriculum_tables.rb    # Verify table identification
-│   ├── test_migration_execution.rb    # Test migration execution
-│   └── validate_data_integrity.rb     # Validate data integrity
-├── phase2_application_code/           # Phase 2 testing
-│   ├── README.md
-│   ├── test_guid_support.rb          # Test GuidSupport module
-│   ├── test_dual_key_lookups.rb      # Test dual-key functionality
-│   └── test_model_updates.rb         # Test model updates
-├── phase3_seeding_replacement/        # Phase 3 testing
-│   ├── README.md
-│   ├── test_export_service.rb        # Test export functionality
-│   ├── test_import_service.rb        # Test import functionality
-│   └── test_s3_integration.rb        # Test S3 integration
-├── phase4_level_builder/              # Phase 4 testing
-│   ├── README.md
-│   ├── test_guid_generation.rb       # Test GUID generation
-│   └── test_level_file_updates.rb    # Test level file updates
-├── test_data/                         # Test data and fixtures
-│   ├── sample_curriculum_data.rb     # Sample curriculum data
-│   ├── create_test_users.rb          # Create test users
-│   └── restore_test_data.rb          # Restore test data
-└── utils/                             # Utility scripts
-    ├── database_helpers.rb           # Database helper methods
-    ├── verification_helpers.rb       # Verification helper methods
-    └── reporting_helpers.rb          # Reporting helper methods
-```
+### **Phase 1: Add GUID Columns** (`phase1_add_guid_columns/`)
+- **What**: Create GUID columns on all curriculum tables and populate them
+- **Impact**: Shippable - doesn't affect existing functionality
+- **Goal**: GUIDs exist but aren't referenced yet
 
-## Testing Philosophy
+### **Phase 2: Test Dual System** (`phase2_test_dual_system/`)
+- **What**: Add foreign key references to GUIDs, test both old and new systems
+- **Impact**: Both ID and GUID systems work simultaneously
+- **Goal**: Validate that both seeding approaches work identically
 
-Each phase and step must have:
-1. **Concrete Verification**: Tangible proof that the code works
-2. **Data Validation**: Verify data integrity at each step
-3. **Rollback Testing**: Ensure we can rollback if needed
-4. **Performance Testing**: Ensure no performance degradation
-5. **Integration Testing**: Test with real data and scenarios
+### **Phase 3: Cutover to GUIDs** (`phase3_cutover_to_guids/`)
+- **What**: Switch seeding process to use GUIDs instead of IDs
+- **Impact**: New seeding process takes over
+- **Goal**: GUID-based seeding becomes primary method
 
-## Prerequisites
+### **Phase 4: Cleanup Old IDs** (`phase4_cleanup_old_ids/`)
+- **What**: Remove old ID columns and seeding code
+- **Impact**: Final cleanup, GUID-only system
+- **Goal**: Complete migration to GUID-based system
 
-Before running any tests, ensure:
-- Ruby 3.3.7+ is installed
-- Rails environment is set up
-- Database is accessible
-- Required gems are installed
+## 📊 **Curriculum Tables**
 
-## Quick Start
+### **Tables to Migrate (19 total)**
+- **Core Content**: `scripts`, `stages`, `levels`, `lesson_groups`, `lesson_activities`, `activity_sections`, `courses`, `course_offerings`
+- **Organization**: `unit_groups`, `script_levels`, `levels_script_levels`
+- **Resources**: `course_scripts`, `unit_groups_resources`, `unit_groups_student_resources`, `scripts_resources`, `scripts_student_resources`, `lessons_resources`, `stages_standards`, `lessons_vocabularies`
 
-1. **Setup Test Environment**:
-   ```bash
-   cd /workspace/experimental/curriculum_guid_migration
-   ruby test_data/create_test_users.rb
-   ```
+### **Tables to Keep ID-Based (4 total)**
+- **User Progress**: `user_levels`, `user_scripts`, `activities`, `user_level_interactions`
+- **Reason**: These are transactional data, not curriculum content
 
-2. **Run Phase 1 Tests**:
-   ```bash
-   cd phase1_database_schema
-   ruby verify_curriculum_tables.rb
-   ruby test_migration_execution.rb
-   ```
+## 🧪 **Testing Structure**
 
-3. **Run Phase 2 Tests**:
-   ```bash
-   cd phase2_application_code
-   ruby test_guid_support.rb
-   ruby test_dual_key_lookups.rb
-   ```
+Each phase contains tests with consistent naming:
+- **Script**: `test_name.rb`
+- **Output**: `test_name-output.json`
+- **Analysis**: `test_name-output-AI_analysis.md`
 
-## Test Data Requirements
+## 📁 **Current Files**
 
-Some tests require existing data. Use the test data scripts to:
-- Create sample curriculum data
-- Create test users and students
-- Set up realistic test scenarios
-- Restore clean state between tests
-
-## Reporting
-
-Each test generates detailed reports showing:
-- What was tested
-- What passed/failed
-- Performance metrics
-- Data integrity verification
-- Rollback capabilities
-
-## Safety
-
-All tests are designed to be:
-- **Non-destructive**: Tests don't modify production data
-- **Reversible**: Can be rolled back if needed
-- **Isolated**: Tests don't interfere with each other
-- **Documented**: Clear logs of what was tested
+- `curriculum_tables_list.md` - Definitive list of curriculum tables
+- `non_curriculum_tables.md` - Tables excluded from migration
+- `curriculum_relationships_diagram.md` - Visual relationship diagram
+- `run_all_analyses.rb` - Master analysis script
