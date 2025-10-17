@@ -1,6 +1,7 @@
 # Migration: Add GUID foreign key columns to dependent tables
-# This migration adds GUID-based foreign key columns to all tables
-# that reference curriculum tables, enabling dual-key support
+# This migration adds GUID-based foreign key columns to CURRICULUM CONTENT tables only
+# EXCLUDES user progress tables (user_levels, user_scripts, activities)
+# User progress tables should remain ID-based for performance
 
 class AddGuidForeignKeysToDependentTables < ActiveRecord::Migration[7.0]
   def up
@@ -27,10 +28,9 @@ class AddGuidForeignKeysToDependentTables < ActiveRecord::Migration[7.0]
   def add_guid_foreign_keys
     puts "Adding GUID foreign key columns..."
     
-    # User progress tracking tables
-    add_column :user_levels, :level_guid, :string, limit: 36
-    add_column :user_levels, :script_guid, :string, limit: 36
-    add_column :user_scripts, :script_guid, :string, limit: 36
+    # NOTE: User progress tracking tables (user_levels, user_scripts) are EXCLUDED
+    # These are transactional data tables, not curriculum content tables
+    # They should remain ID-based for performance and simplicity
     
     # Script level relationships
     add_column :script_levels, :script_guid, :string, limit: 36

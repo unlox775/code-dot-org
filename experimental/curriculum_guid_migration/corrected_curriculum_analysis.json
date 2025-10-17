@@ -1,0 +1,159 @@
+{
+  "timestamp": "2025-10-17 05:47:48 +0000",
+  "analysis_type": "corrected_curriculum_analysis",
+  "findings": {
+    "curriculum_content_tables": {
+      "core_tables": [
+        {
+          "table": "scripts",
+          "model": "Unit",
+          "purpose": "Complete curriculum courses",
+          "example": "CS Discoveries"
+        },
+        {
+          "table": "stages",
+          "model": "Lesson",
+          "purpose": "Individual lessons",
+          "example": "Problem Solving"
+        },
+        {
+          "table": "levels",
+          "model": "Level",
+          "purpose": "Coding challenges",
+          "example": "Maze: Move Forward"
+        },
+        {
+          "table": "lesson_groups",
+          "model": "LessonGroup",
+          "purpose": "Chapters that organize lessons",
+          "example": "Unit 1: Problem Solving"
+        },
+        {
+          "table": "lesson_activities",
+          "model": "LessonActivity",
+          "purpose": "Hands-on exercises",
+          "example": "Brainstorming Solutions"
+        },
+        {
+          "table": "activity_sections",
+          "model": "ActivitySection",
+          "purpose": "Steps within activities",
+          "example": "Step 1: Read Code"
+        },
+        {
+          "table": "courses",
+          "model": "Course",
+          "purpose": "Academic course definitions",
+          "example": "AP Computer Science A"
+        },
+        {
+          "table": "course_offerings",
+          "model": "CourseOffering",
+          "purpose": "Specific course instances",
+          "example": "AP CS A - Fall 2024 - Period 3"
+        }
+      ],
+      "organization_tables": [
+        {
+          "table": "unit_groups",
+          "model": "UnitGroup",
+          "purpose": "Curriculum families",
+          "example": "CS Fundamentals"
+        },
+        {
+          "table": "script_levels",
+          "model": "ScriptLevel",
+          "purpose": "Roadmap of levels in scripts",
+          "example": "CS Discoveries level sequence"
+        },
+        {
+          "table": "levels_script_levels",
+          "model": "LevelsScriptLevel",
+          "purpose": "Complex level relationships",
+          "example": "Level dependencies"
+        }
+      ],
+      "resource_tables": [
+        {
+          "table": "course_scripts",
+          "model": "CourseScript",
+          "purpose": "Join table (courses ↔ scripts)",
+          "example": "AP CS A includes CS Principles"
+        },
+        {
+          "table": "unit_groups_resources",
+          "model": "UnitGroupResource",
+          "purpose": "Resources for unit groups",
+          "example": "CS Fundamentals teacher guide"
+        },
+        {
+          "table": "unit_groups_student_resources",
+          "model": "UnitGroupStudentResource",
+          "purpose": "Student resources for unit groups",
+          "example": "CS Fundamentals student reference"
+        },
+        {
+          "table": "scripts_resources",
+          "model": "ScriptResource",
+          "purpose": "Resources for scripts",
+          "example": "CS Discoveries teacher guide"
+        },
+        {
+          "table": "scripts_student_resources",
+          "model": "ScriptStudentResource",
+          "purpose": "Student resources for scripts",
+          "example": "CS Discoveries student reference"
+        },
+        {
+          "table": "lessons_resources",
+          "model": "LessonResource",
+          "purpose": "Resources for lessons",
+          "example": "Problem Solving worksheet"
+        },
+        {
+          "table": "stages_standards",
+          "model": "StageStandard",
+          "purpose": "Standards alignment",
+          "example": "CSTA 1A-AP-14 alignment"
+        },
+        {
+          "table": "lessons_vocabularies",
+          "model": "LessonVocabulary",
+          "purpose": "Vocabulary for lessons",
+          "example": "Problem Solving terms"
+        }
+      ],
+      "total_count": 19
+    },
+    "excluded_tables": {
+      "excluded_tables": [
+        {
+          "table": "user_levels",
+          "model": "UserLevel",
+          "purpose": "Student progress on coding challenges",
+          "reason": "Contains user_id - transactional data"
+        },
+        {
+          "table": "user_scripts",
+          "model": "UserScript",
+          "purpose": "Student progress on curriculum courses",
+          "reason": "Contains user_id - transactional data"
+        },
+        {
+          "table": "activities",
+          "model": "Activity",
+          "purpose": "Student interactions and attempts",
+          "reason": "Contains user_id - transactional data"
+        },
+        {
+          "table": "user_level_interactions",
+          "model": "UserLevelInteraction",
+          "purpose": "Additional student interactions",
+          "reason": "Contains user_id - transactional data"
+        }
+      ],
+      "total_count": 4,
+      "reason": "These tables contain user_id and are transactional data, not curriculum content"
+    }
+  }
+}

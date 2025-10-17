@@ -1,6 +1,7 @@
 # Migration: Add GUID columns to curriculum tables
-# This migration adds GUID columns to all curriculum-related tables
-# and generates GUIDs for existing data
+# This migration adds GUID columns to CURRICULUM CONTENT tables only
+# EXCLUDES user progress tables (user_levels, user_scripts, activities)
+# User progress tables should remain ID-based for performance
 
 class AddGuidColumnsToCurriculumTables < ActiveRecord::Migration[7.0]
   def up
