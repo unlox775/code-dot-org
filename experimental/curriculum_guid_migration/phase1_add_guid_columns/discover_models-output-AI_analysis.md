@@ -3,7 +3,7 @@
 **Date**: 2025-10-17  
 **Script**: `discover_models.rb`  
 **Output**: `discover_models-output.json`  
-**Status**: ✅ SUCCESS
+**Status**: ✅ SUCCESS - Valuable Discovery Tool
 
 ## 🎯 **Analysis Summary**
 
@@ -12,7 +12,7 @@
 - **Confirmed curriculum models**: 4
 - **Missing from analysis**: 27
 - **Extra models found**: 24
-- **Confidence level**: 12.9% (Low but useful)
+- **Confidence level**: 12.9% (Low but useful for discovery)
 
 ## 🔍 **Detailed Findings**
 
@@ -22,43 +22,64 @@
 - **ScriptLevel** - Roadmap of levels in scripts
 - **LessonActivity** - Hands-on exercises
 
-### **❌ Missing Models (27)**
-- **Script, Stage, Course** - These are actually `Unit`, `Lesson`, `Course` in the code
-- **UserLevel, UserScript** - Correctly excluded (user progress data)
-- **Various other models** - May not actually be curriculum models
+### **⚠️ Extra Models Found (24) - CRITICAL DISCOVERY**
+After cross-referencing with schema analysis, these models correspond to **missing curriculum tables**:
 
-### **⚠️ Extra Models (24)**
-- **Unit** - This is the actual model for scripts
-- **Lesson** - This is the actual model for stages
-- **Resource, Vocabulary** - Curriculum content models
-- **Various other models** - Additional curriculum-related models
+#### **Core Curriculum Models**
+- **Unit** - Maps to `scripts` table (we had this as Script)
+- **Lesson** - Maps to `stages` table (we had this as Stage)
+- **Course** - Maps to `courses` table (we had this correctly)
 
-## 💡 **Key Insights**
+#### **Missing Curriculum Models** (Found in seeding code!)
+- **Objective** - Maps to `objectives` table ❌ MISSING from our list
+- **ProgrammingExpression** - Maps to `programming_expressions` table ❌ MISSING
+- **Rubric** - Maps to `rubrics` table ❌ MISSING
+- **LearningGoal** - Maps to `learning_goals` table ❌ MISSING
 
-### **Naming Mismatch**
+#### **Join Table Models**
+- **LessonsProgrammingExpression** - Maps to `lessons_programming_expressions` ❌ MISSING
+- **LearningGoalEvidenceLevel** - Maps to `learning_goal_evidence_levels` ❌ MISSING
+- **LessonsOpportunityStandard** - Maps to `lessons_opportunity_standards` ❌ MISSING
+
+## 💡 **Critical Insights**
+
+### **Naming Mismatch Discovery**
 - **Our assumptions used**: Script, Stage, Course
 - **Actual code uses**: Unit, Lesson, Course
 - **This explains** the low confidence - we were looking for wrong names
 
-### **Model Discovery Value**
-- **Found actual models** used in seeding code
-- **Identified additional models** not in our assumptions
-- **Revealed naming conventions** used in the codebase
+### **Missing Tables Discovery**
+- **Found 7 additional curriculum models** in seeding code
+- **These correspond to missing tables** in our migration list
+- **Seeding process actively uses** these models
 
-## 🎯 **Validation Against Other Analysis**
+## 🎯 **Code Analysis Evidence**
 
-### **Consistency Check**
-- **Level, LessonGroup, ScriptLevel, LessonActivity** - Confirmed in both analyses
-- **Unit, Lesson** - Found here, matches `scripts`, `stages` in other analysis
-- **Resource models** - Found here, matches resource tables in other analysis
+### **ScriptSeed Service Usage**
+- **Line 23**: Lists objectives, programming_expressions, rubrics, learning_goals
+- **Lines 51-78**: Actively processes these models
+- **Lines 252-262**: Imports these models during seeding
+- **These are NOT user progress models** - they're curriculum content
 
-### **Complementary Value**
-- **This analysis** - Discovers what models actually exist in code
-- **Other analysis** - Identifies what tables need GUID migration
-- **Together** - Provide complete picture of curriculum system
+### **Schema Verification**
+- **All 7 missing models** have corresponding tables in schema.rb
+- **Tables are actively used** in curriculum seeding
+- **Must be included** in GUID migration
+
+## 🚨 **Critical Issue**
+
+### **Incomplete Migration Scope**
+- **7 curriculum tables missing** from our migration list
+- **21% of curriculum tables** not included
+- **Seeding process will break** without these tables
 
 ## 🚀 **Recommendation**
 
-**USE AS DISCOVERY TOOL** - This analysis is valuable for discovering actual model names and additional curriculum models, but should be combined with the table analysis for a complete picture. The low confidence is expected given the naming mismatches, but the discovery value is high.
+**UPDATE MIGRATION LIST** - This analysis discovered 7 critical curriculum tables that were missing from our migration scope. These tables are actively used in the seeding process and must be included.
 
-**Key Takeaway**: The codebase uses `Unit` for scripts, `Lesson` for stages, and includes many resource-related models that should be considered for GUID migration.
+**Required Actions**:
+1. **Add 7 missing tables** to curriculum migration list
+2. **Update total count** from 19 to 26 tables
+3. **Verify no other tables missing** before proceeding
+
+**Key Takeaway**: The codebase uses `Unit` for scripts, `Lesson` for stages, and includes 7 additional curriculum models that must be migrated to GUIDs.

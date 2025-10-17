@@ -3,7 +3,7 @@
 **Date**: 2025-10-17  
 **Script**: `analyze_curriculum_tables.rb`  
 **Output**: `analyze_curriculum_tables-output.json`  
-**Status**: ✅ SUCCESS
+**Status**: ❌ INCOMPLETE - Missing Tables Found
 
 ## 🎯 **Analysis Summary**
 
@@ -11,56 +11,71 @@
 - **Curriculum content tables identified**: 19
 - **User progress tables excluded**: 4
 - **Total tables analyzed**: 23
-- **Confidence level**: 95% (Very High)
+- **Confidence level**: 70% (Reduced due to missing tables)
 
-### **Table Breakdown**
-- **Core curriculum content**: 8 tables (scripts, stages, levels, etc.)
-- **Curriculum organization**: 3 tables (unit_groups, script_levels, etc.)
-- **Curriculum resources**: 8 tables (various resource and standards tables)
+### **❌ CRITICAL ISSUE: Missing Tables Found**
 
-## ✅ **Strengths**
+After analyzing the actual database schema (`/workspace/dashboard/db/schema.rb`) and seeding code (`/workspace/dashboard/lib/services/script_seed.rb`), I found **5 additional curriculum tables** that should be included:
 
-### **Clear Separation**
-- **Correctly identified** curriculum content vs user progress tables
-- **Properly excluded** tables with `user_id` (user_levels, user_scripts, activities)
-- **Focused scope** on content that needs synchronization
+#### **Missing Curriculum Tables**
+1. **`course_versions`** - Course version definitions (referenced in schema and seeding)
+2. **`objectives`** - Lesson objectives (actively used in script_seed.rb)
+3. **`programming_expressions`** - Programming language expressions (actively used in script_seed.rb)
+4. **`rubrics`** - Assessment rubrics (actively used in script_seed.rb)
+5. **`learning_goals`** - Learning goals for rubrics (actively used in script_seed.rb)
 
-### **Comprehensive Coverage**
-- **All major curriculum tables** identified
-- **Clear categorization** by purpose (content, organization, resources)
-- **Real-world examples** provided for each table
+#### **Additional Join Tables**
+6. **`lessons_programming_expressions`** - Join table for lessons and programming expressions
+7. **`learning_goal_evidence_levels`** - Evidence levels for learning goals
+8. **`lessons_opportunity_standards`** - Opportunity standards for lessons
 
-### **High Confidence**
-- **95% confidence** indicates strong analysis
-- **Clear reasoning** for inclusions and exclusions
-- **Ready for migration** based on this analysis
+## 🔍 **Code Analysis Evidence**
 
-## 🎯 **Migration Readiness**
+### **Schema Verification**
+- **All 19 listed tables exist** in `/workspace/dashboard/db/schema.rb` ✅
+- **5 additional curriculum tables found** in schema ❌
+- **4 user tables correctly excluded** ✅
 
-### **Phase 1 Ready**
-- **19 curriculum tables** identified for GUID migration
-- **4 user tables** correctly excluded
-- **Clear migration scope** defined
+### **Seeding Code Analysis**
+- **ScriptSeed service actively uses** objectives, programming_expressions, rubrics, learning_goals
+- **These tables are imported/exported** in the seeding process
+- **They are part of curriculum content** not user progress
 
-### **Next Steps**
-- **Proceed with Phase 1** - Add GUID columns to 19 curriculum tables
-- **Keep user tables ID-based** - No changes needed
-- **Focus on content synchronization** - Not individual student tracking
+## 📊 **Corrected Table Count**
 
-## 📊 **Validation**
+### **Current Analysis**: 19 curriculum tables
+### **Actual Required**: 24 curriculum tables (19 + 5 missing)
+### **Missing**: 5 tables (21% of curriculum tables!)
 
-### **Table Count Verification**
-- **Expected curriculum tables**: ~20
-- **Found curriculum tables**: 19
-- **Expected user tables**: ~4
-- **Found user tables**: 4
-- **Match**: ✅ Perfect
+## 🚨 **Critical Issues**
 
-### **Table Purpose Verification**
-- **Content tables**: Define what students learn ✅
-- **User tables**: Track how students learn ✅
-- **Separation**: Clear and logical ✅
+### **Incomplete Migration Scope**
+- **21% of curriculum tables missing** from migration plan
+- **Seeding process will break** if these tables aren't migrated
+- **Data synchronization will be incomplete**
+
+### **Code Evidence**
+- **`script_seed.rb` line 23**: Lists objectives, programming_expressions, rubrics, learning_goals
+- **`script_seed.rb` lines 51-78**: Actively processes these tables
+- **`script_seed.rb` lines 252-262**: Imports these tables during seeding
+
+## 🎯 **Required Actions**
+
+### **Update Curriculum Tables List**
+- **Add 5 missing tables** to curriculum migration list
+- **Update total count** from 19 to 24 tables
+- **Re-run analysis** with complete table list
+
+### **Verify All Tables**
+- **Check schema.rb** for any other curriculum-related tables
+- **Check script_seed.rb** for any other referenced models
+- **Ensure complete coverage** of curriculum content
 
 ## 🚀 **Recommendation**
 
-**PROCEED WITH PHASE 1** - This analysis provides a solid foundation for the GUID migration. The table identification is accurate, the scope is appropriate, and the confidence level is high enough to move forward with adding GUID columns to the 19 curriculum content tables.
+**DO NOT PROCEED** - This analysis is incomplete and would result in a broken migration. The missing 5 tables are actively used in the seeding process and must be included in the GUID migration.
+
+**Next Steps**:
+1. **Update curriculum_tables_list.md** with all 24 tables
+2. **Re-run analysis** with complete table list
+3. **Verify no other tables missing** before proceeding

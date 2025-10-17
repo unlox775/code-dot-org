@@ -27,10 +27,11 @@
 
 ## 📊 **Curriculum Tables**
 
-### **Tables to Migrate (19 total)**
-- **Core Content**: `scripts`, `stages`, `levels`, `lesson_groups`, `lesson_activities`, `activity_sections`, `courses`, `course_offerings`
+### **Tables to Migrate (27 total)**
+- **Core Content**: `scripts`, `stages`, `levels`, `lesson_groups`, `lesson_activities`, `activity_sections`, `courses`, `course_offerings`, `course_versions`, `objectives`, `programming_expressions`, `rubrics`, `learning_goals`
 - **Organization**: `unit_groups`, `script_levels`, `levels_script_levels`
 - **Resources**: `course_scripts`, `unit_groups_resources`, `unit_groups_student_resources`, `scripts_resources`, `scripts_student_resources`, `lessons_resources`, `stages_standards`, `lessons_vocabularies`
+- **Join Tables**: `lessons_programming_expressions`, `learning_goal_evidence_levels`, `lessons_opportunity_standards`
 
 ### **Tables to Keep ID-Based (4 total)**
 - **User Progress**: `user_levels`, `user_scripts`, `activities`, `user_level_interactions`
@@ -45,7 +46,7 @@ Each phase contains tests with consistent naming:
 
 ## 📁 **Current Files**
 
-- `curriculum_tables_list.md` - Definitive list of curriculum tables
+- `curriculum_tables_list.md` - Definitive list of 27 curriculum tables
 - `non_curriculum_tables.md` - Tables excluded from migration
 - `curriculum_relationships_diagram.md` - Visual relationship diagram
 - `run_all_analyses.rb` - Master analysis script

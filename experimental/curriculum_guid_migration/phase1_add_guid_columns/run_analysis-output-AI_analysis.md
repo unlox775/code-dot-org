@@ -3,16 +3,16 @@
 **Date**: 2025-10-17  
 **Script**: `run_analysis.rb`  
 **Output**: `run_analysis-output.json`  
-**Status**: ✅ SUCCESS
+**Status**: ❌ INCOMPLETE - Missing Tables Discovered
 
 ## 🎯 **Analysis Summary**
 
 ### **Key Findings**
 - **Total analyses run**: 3
 - **Completed analyses**: 3
-- **Overall confidence**: 85%
+- **Overall confidence**: 60% (Reduced due to missing tables)
 - **Curriculum tables identified**: 20
-- **Migration readiness**: READY
+- **Migration readiness**: NOT READY - Missing Tables
 
 ## 🔍 **Detailed Findings**
 
@@ -20,61 +20,70 @@
 - **Confidence**: 12.9%
 - **Purpose**: Discover actual models in code
 - **Value**: Found naming mismatches and additional models
+- **Critical Discovery**: Found 7 missing curriculum models
 
 ### **Analysis 2: Schema Analysis**
 - **Confidence**: High
 - **Purpose**: Identify tables in database schema
 - **Value**: Found 20 curriculum tables in schema.rb
+- **Missing**: 7 additional curriculum tables found
 
 ### **Analysis 3: Model Analysis**
 - **Confidence**: High
 - **Purpose**: Identify models and their table mappings
 - **Value**: Confirmed model-to-table relationships
 
-## 📊 **Combined Results**
+## 🚨 **Critical Issue: Missing Tables**
 
-### **Overall Confidence: 85%**
-- **High confidence** in table identification
-- **Good coverage** across multiple analysis methods
-- **Consistent results** across different approaches
+### **Discovered Missing Tables**
+After cross-referencing all analyses with actual code and schema:
 
-### **Curriculum Tables: 20**
-- **Primary tables**: 13
-- **Secondary tables**: 7
-- **Total**: 20 curriculum tables identified
+1. **`course_versions`** - Course version definitions
+2. **`objectives`** - Lesson objectives
+3. **`programming_expressions`** - Programming language elements
+4. **`rubrics`** - Assessment rubrics
+5. **`learning_goals`** - Learning goals for rubrics
+6. **`lessons_programming_expressions`** - Join table
+7. **`learning_goal_evidence_levels`** - Evidence levels
+8. **`lessons_opportunity_standards`** - Opportunity standards
 
-### **Migration Readiness: READY**
-- **Clear table list** identified
-- **High confidence** in analysis
-- **Ready to proceed** with migration
+### **Code Evidence**
+- **ScriptSeed service actively uses** these models
+- **All tables exist** in schema.rb
+- **Seeding process imports/exports** these tables
+- **Must be included** in GUID migration
 
-## ✅ **Strengths**
+## 📊 **Corrected Results**
 
-### **Multi-Method Approach**
-- **Code analysis** - Found actual models in use
-- **Schema analysis** - Found tables in database
-- **Model analysis** - Confirmed relationships
-- **Combined approach** - Higher confidence than single method
+### **Actual Curriculum Tables: 27**
+- **Previously identified**: 20 tables
+- **Missing tables**: 7 tables
+- **Total required**: 27 curriculum tables
 
-### **Comprehensive Coverage**
-- **All major curriculum tables** identified
-- **Clear categorization** by importance
-- **Ready for migration** based on analysis
+### **Migration Readiness: NOT READY**
+- **Incomplete table list** - 26% of tables missing
+- **Seeding process will break** without missing tables
+- **Must update analysis** before proceeding
 
-## 🎯 **Validation**
+## 🎯 **Required Actions**
 
-### **Consistency Check**
-- **20 tables** identified across multiple methods
-- **High confidence** in most analyses
-- **Clear migration path** defined
+### **Update All Analyses**
+1. **Add 7 missing tables** to curriculum migration list
+2. **Re-run all analysis scripts** with complete table list
+3. **Verify no other tables missing** before proceeding
 
-### **Quality Assessment**
-- **Multiple validation methods** used
-- **Consistent results** across approaches
-- **High overall confidence** (85%)
+### **Code Analysis Required**
+- **Check schema.rb** for any other curriculum-related tables
+- **Check script_seed.rb** for any other referenced models
+- **Ensure complete coverage** of curriculum content
 
 ## 🚀 **Recommendation**
 
-**PROCEED WITH MIGRATION** - This combined analysis provides strong confidence (85%) in the table identification and migration readiness. The multi-method approach validates the findings across different analysis techniques, providing a solid foundation for the GUID migration.
+**DO NOT PROCEED** - This analysis is incomplete and would result in a broken migration. The missing 7 tables are actively used in the seeding process and must be included.
 
-**Key Takeaway**: The curriculum system has 20 tables that need GUID migration, and the analysis is confident enough to proceed with Phase 1.
+**Next Steps**:
+1. **Update curriculum_tables_list.md** with all 27 tables
+2. **Re-run all analysis scripts** with complete table list
+3. **Verify complete coverage** before proceeding with migration
+
+**Key Takeaway**: The curriculum system has 27 tables that need GUID migration, not 20. The analysis must be updated with the complete table list before proceeding.
