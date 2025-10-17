@@ -1,7 +1,7 @@
 # Curriculum GUID Migration - Experiments
 
 **Purpose**: Testing and validation for migrating curriculum data from ID-based to GUID-based tables  
-**Master Plan**: See [/workspace/docs/specs/20251016_183436_curriculum_guid_migration_plan.md](../../docs/specs/20251016_183436_curriculum_guid_migration_plan.md)
+**Master Plan**: See [/workspace/docs/specs/](../../docs/specs/) (Phase 1-4 documents)
 
 ## 🎯 **Migration Phases**
 
