@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-10-17 15:20:12 +0000",
+  "timestamp": "2025-10-18 06:17:40 +0000",
   "analysis_type": "corrected_curriculum_analysis",
   "findings": {
     "curriculum_content_tables": {
@@ -51,6 +51,36 @@
           "model": "CourseOffering",
           "purpose": "Specific course instances",
           "example": "AP CS A - Fall 2024 - Period 3"
+        },
+        {
+          "table": "course_versions",
+          "model": "CourseVersion",
+          "purpose": "Course version definitions",
+          "example": "AP CS A 2024 version"
+        },
+        {
+          "table": "objectives",
+          "model": "Objective",
+          "purpose": "Lesson objectives",
+          "example": "Students will understand loops"
+        },
+        {
+          "table": "programming_expressions",
+          "model": "ProgrammingExpression",
+          "purpose": "Programming language elements",
+          "example": "for loop, if statement, variable"
+        },
+        {
+          "table": "rubrics",
+          "model": "Rubric",
+          "purpose": "Assessment rubrics",
+          "example": "Code quality rubric for Maze levels"
+        },
+        {
+          "table": "learning_goals",
+          "model": "LearningGoal",
+          "purpose": "Learning goals for rubrics",
+          "example": "Student demonstrates proper loop usage"
         }
       ],
       "organization_tables": [
@@ -123,7 +153,27 @@
           "example": "Problem Solving terms"
         }
       ],
-      "total_count": 19
+      "join_tables": [
+        {
+          "table": "lessons_programming_expressions",
+          "model": "LessonsProgrammingExpression",
+          "purpose": "Join table for lessons and programming expressions",
+          "example": "Lesson 1 uses for loops and variables"
+        },
+        {
+          "table": "learning_goal_evidence_levels",
+          "model": "LearningGoalEvidenceLevel",
+          "purpose": "Evidence levels for learning goals",
+          "example": "Novice, Developing, Proficient, Advanced"
+        },
+        {
+          "table": "lessons_opportunity_standards",
+          "model": "LessonsOpportunityStandard",
+          "purpose": "Opportunity standards for lessons",
+          "example": "CSTA 1A-AP-14 opportunity standard"
+        }
+      ],
+      "total_count": 27
     },
     "excluded_tables": {
       "excluded_tables": [

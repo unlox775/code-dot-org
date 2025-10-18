@@ -49,7 +49,12 @@ class CorrectedCurriculumAnalyzer
       { table: 'lesson_activities', model: 'LessonActivity', purpose: 'Hands-on exercises', example: 'Brainstorming Solutions' },
       { table: 'activity_sections', model: 'ActivitySection', purpose: 'Steps within activities', example: 'Step 1: Read Code' },
       { table: 'courses', model: 'Course', purpose: 'Academic course definitions', example: 'AP Computer Science A' },
-      { table: 'course_offerings', model: 'CourseOffering', purpose: 'Specific course instances', example: 'AP CS A - Fall 2024 - Period 3' }
+      { table: 'course_offerings', model: 'CourseOffering', purpose: 'Specific course instances', example: 'AP CS A - Fall 2024 - Period 3' },
+      { table: 'course_versions', model: 'CourseVersion', purpose: 'Course version definitions', example: 'AP CS A 2024 version' },
+      { table: 'objectives', model: 'Objective', purpose: 'Lesson objectives', example: 'Students will understand loops' },
+      { table: 'programming_expressions', model: 'ProgrammingExpression', purpose: 'Programming language elements', example: 'for loop, if statement, variable' },
+      { table: 'rubrics', model: 'Rubric', purpose: 'Assessment rubrics', example: 'Code quality rubric for Maze levels' },
+      { table: 'learning_goals', model: 'LearningGoal', purpose: 'Learning goals for rubrics', example: 'Student demonstrates proper loop usage' }
     ]
     
     # Curriculum organization tables (NO user_id)
@@ -71,21 +76,30 @@ class CorrectedCurriculumAnalyzer
       { table: 'lessons_vocabularies', model: 'LessonVocabulary', purpose: 'Vocabulary for lessons', example: 'Problem Solving terms' }
     ]
     
-    all_curriculum_tables = core_tables + organization_tables + resource_tables
+    # Curriculum join tables (NO user_id)
+    join_tables = [
+      { table: 'lessons_programming_expressions', model: 'LessonsProgrammingExpression', purpose: 'Join table for lessons and programming expressions', example: 'Lesson 1 uses for loops and variables' },
+      { table: 'learning_goal_evidence_levels', model: 'LearningGoalEvidenceLevel', purpose: 'Evidence levels for learning goals', example: 'Novice, Developing, Proficient, Advanced' },
+      { table: 'lessons_opportunity_standards', model: 'LessonsOpportunityStandard', purpose: 'Opportunity standards for lessons', example: 'CSTA 1A-AP-14 opportunity standard' }
+    ]
+    
+    all_curriculum_tables = core_tables + organization_tables + resource_tables + join_tables
     
     puts "   Core curriculum content tables: #{core_tables.length}"
     puts "   Curriculum organization tables: #{organization_tables.length}"
     puts "   Curriculum resource tables: #{resource_tables.length}"
+    puts "   Curriculum join tables: #{join_tables.length}"
     puts "   TOTAL curriculum tables: #{all_curriculum_tables.length}"
     
     @results[:findings][:curriculum_content_tables] = {
       core_tables: core_tables,
       organization_tables: organization_tables,
       resource_tables: resource_tables,
+      join_tables: join_tables,
       total_count: all_curriculum_tables.length
     }
     
-    puts "\n   ✅ CURRICULUM CONTENT TABLES (19 total):"
+    puts "\n   ✅ CURRICULUM CONTENT TABLES (27 total):"
     all_curriculum_tables.each_with_index do |table, index|
       puts "   #{index + 1}. #{table[:table]} (#{table[:model]}) - #{table[:purpose]}"
     end

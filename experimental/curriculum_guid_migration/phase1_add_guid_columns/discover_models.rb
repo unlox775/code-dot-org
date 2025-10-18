@@ -46,7 +46,7 @@ class SimpleCodeAnalyzer
     puts "📋 Method 1: Analyzing ScriptSeed Service"
     puts "-" * 40
     
-    script_seed_file = '../../dashboard/lib/services/script_seed.rb'
+    script_seed_file = '/workspace/dashboard/lib/services/script_seed.rb'
     
     unless File.exist?(script_seed_file)
       puts "   ❌ ScriptSeed file not found: #{script_seed_file}"
@@ -83,7 +83,7 @@ class SimpleCodeAnalyzer
     puts "\n🏗️  Method 2: Analyzing Model Files"
     puts "-" * 40
     
-    model_files = Dir.glob('../dashboard/app/models/**/*.rb')
+    model_files = Dir.glob('/workspace/dashboard/app/models/**/*.rb')
     curriculum_models = []
     
     model_files.each do |file|
@@ -94,7 +94,7 @@ class SimpleCodeAnalyzer
       
       # Look for curriculum-related associations
       if content.match?(/(belongs_to|has_many|has_one).*script|level|lesson|course|stage|unit/i)
-        model_name = File.basename(file, '.rb').classify
+        model_name = File.basename(file, '.rb').split('_').map(&:capitalize).join
         curriculum_models << model_name
       end
     end
@@ -111,7 +111,7 @@ class SimpleCodeAnalyzer
     puts "\n🌱 Method 3: Analyzing Seeding Tasks"
     puts "-" * 40
     
-    seeding_files = Dir.glob('../../dashboard/lib/tasks/**/*seed*.rb')
+    seeding_files = Dir.glob('/workspace/dashboard/lib/tasks/**/*seed*.rb')
     models_from_tasks = []
     
     seeding_files.each do |file|
