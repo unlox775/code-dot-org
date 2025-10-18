@@ -1,7 +1,7 @@
-# Phase 1: Add GUID Columns to Curriculum Tables
+# Phase 1: Establish Dual ID/GUID System
 
 **Phase**: 1 of 4  
-**Goal**: Add GUID columns to all curriculum tables and populate them  
+**Goal**: Make the system speak both IDs and GUIDs - complete dual system  
 **Impact**: Non-breaking - GUIDs added alongside existing IDs  
 **Status**: Ready to implement
 
@@ -9,15 +9,16 @@
 
 ### **What We're Doing**
 - Add `guid` column to all 27 curriculum content tables
-- Populate existing records with UUIDs
-- Add unique indexes on GUID columns
+- Add `_guid` foreign key columns to all referencing tables
+- Populate all GUIDs and GUID foreign keys
+- Ensure GUIDs are stored in level files and data locations
 - Keep existing ID-based system intact
 
 ### **Why This Phase**
+- **Complete dual system** - both ID and GUID available everywhere
 - **Non-breaking change** - existing code continues to work
-- **Prepares for migration** - GUIDs ready for future use
 - **Safe to ship** - no impact on current functionality
-- **Enables dual system** - both ID and GUID available
+- **Enables coexistence** - both systems work in parallel
 
 ## 📊 **Tables to Update (27 total)**
 
@@ -39,34 +40,54 @@
 
 ## 🔧 **Implementation Steps**
 
-### **Step 1: Create Migration Files**
-- Generate migration to add `guid` columns
+### **Step 1: Add GUID Columns to Primary Tables**
+- Add `guid` column to all 27 curriculum content tables
+- Populate existing records with UUIDs
 - Add unique indexes on GUID columns
-- Include data population logic
 
-### **Step 2: Test Migration**
-- Run migration on development database
-- Verify GUIDs are populated correctly
-- Ensure no data loss or corruption
+### **Step 2: Add GUID Foreign Key Columns**
+- Add `_guid` foreign key columns to all referencing tables
+- Include curriculum tables that reference each other
+- Include user progress tables that reference curriculum
+- Add indexes on GUID foreign key columns
 
-### **Step 3: Validate Results**
-- Check all 27 tables have GUID columns
-- Verify GUIDs are unique and populated
-- Confirm existing functionality still works
+### **Step 3: Populate GUID Foreign Keys**
+- Map existing ID relationships to GUID relationships
+- Ensure all foreign key references have both ID and GUID
+- Validate data consistency between ID and GUID systems
+
+### **Step 4: Update Data Storage**
+- Ensure GUIDs are stored in level files
+- Update seeding process to include GUIDs
+- Ensure GUIDs propagate to all environments
+
+### **Step 5: Create Validation Script**
+- Build script to verify ID/GUID consistency
+- Check that every ID reference has corresponding GUID reference
+- Validate that ID and GUID point to same entity
 
 ## ✅ **Success Criteria**
 
 ### **Database Changes**
 - All 27 curriculum tables have `guid` columns
-- All existing records have populated GUIDs
+- All referencing tables have `_guid` foreign key columns
+- All existing records have populated GUIDs and GUID foreign keys
 - Unique indexes created on GUID columns
+- Indexes created on GUID foreign key columns
 - No data loss or corruption
+
+### **Data Consistency**
+- Every ID reference has corresponding GUID reference
+- ID and GUID always point to same entity
+- Validation script passes with zero inconsistencies
+- GUIDs propagate to all environments
 
 ### **Functionality Verification**
 - Existing code continues to work unchanged
 - No performance degradation
 - All tests pass
 - Migration runs successfully
+- GUIDs stored in level files and data locations
 
 ## 🚀 **Next Phase**
-After Phase 1 completion, proceed to **Phase 2: Test Dual System** where we add foreign key references to GUIDs and test both systems simultaneously.
+After Phase 1 completion, proceed to **Phase 2: Build New Seeding System** where we create the export/import processes and validate that old and new seeding produce identical results.

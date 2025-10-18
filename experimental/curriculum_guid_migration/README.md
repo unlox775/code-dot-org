@@ -5,15 +5,15 @@
 
 ## 🎯 **Migration Phases**
 
-### **Phase 1: Add GUID Columns** (`phase1_add_guid_columns/`)
-- **What**: Create GUID columns on all curriculum tables and populate them
-- **Impact**: Shippable - doesn't affect existing functionality
-- **Goal**: GUIDs exist but aren't referenced yet
+### **Phase 1: Establish Dual ID/GUID System** (`phase1_add_guid_columns/`)
+- **What**: Add GUID columns to all curriculum tables AND all referencing tables
+- **Impact**: Complete dual system - both ID and GUID everywhere
+- **Goal**: System speaks both IDs and GUIDs, GUIDs stored in level files
 
-### **Phase 2: Test Dual System** (`phase2_test_dual_system/`)
-- **What**: Add foreign key references to GUIDs, test both old and new systems
-- **Impact**: Both ID and GUID systems work simultaneously
-- **Goal**: Validate that both seeding approaches work identically
+### **Phase 2: Build New Seeding System** (`phase2_test_dual_system/`)
+- **What**: Create export/import processes and validate old/new seeding produce identical results
+- **Impact**: New processes alongside existing, curriculum becomes modular
+- **Goal**: Export curriculum to external format, validate zero differences between approaches
 
 ### **Phase 3: Cutover to GUIDs** (`phase3_cutover_to_guids/`)
 - **What**: Switch seeding process to use GUIDs instead of IDs

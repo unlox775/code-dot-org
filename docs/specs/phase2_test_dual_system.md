@@ -1,72 +1,84 @@
-# Phase 2: Test Dual System
+# Phase 2: Build New Seeding System
 
 **Phase**: 2 of 4  
-**Goal**: Add foreign key references to GUIDs and test both ID and GUID systems simultaneously  
-**Impact**: Non-breaking - both systems coexist  
+**Goal**: Create export/import processes and validate old/new seeding produce identical results  
+**Impact**: Non-breaking - new processes alongside existing  
 **Status**: Ready after Phase 1 completion
 
 ## 🎯 **Phase 2 Overview**
 
 ### **What We're Doing**
-- Add `_guid` foreign key columns to dependent tables
-- Populate GUID foreign keys from existing ID relationships
-- Add indexes on GUID foreign key columns
-- Test both ID and GUID systems work simultaneously
+- Build export process to extract curriculum data with GUIDs
+- Create import process to load curriculum data from external format
+- Develop validation to ensure old/new seeding produce identical results
+- Test dry-run synchronization between environments
+- Design modular curriculum system architecture
 
 ### **Why This Phase**
-- **Dual system testing** - ensures both approaches work
-- **Non-breaking change** - existing code continues to work
-- **Validates migration** - proves GUID system is functional
-- **Prepares for cutover** - both systems ready for switch
+- **Validates dual system** - proves GUID system works correctly
+- **Enables data synchronization** - curriculum can be shared across environments
+- **Prepares for cutover** - new seeding system ready
+- **Creates modular system** - curriculum separated from application code
 
-## 📊 **Tables to Update**
+## 📊 **Export/Import Targets**
 
-### **Foreign Key Updates**
-- Add `script_guid` to tables referencing `scripts`
-- Add `stage_guid` to tables referencing `stages`
-- Add `level_guid` to tables referencing `levels`
-- Add `course_guid` to tables referencing `courses`
-- Add `lesson_group_guid` to tables referencing `lesson_groups`
-- Add `objective_guid` to tables referencing `objectives`
-- Add `rubric_guid` to tables referencing `rubrics`
-- Add `learning_goal_guid` to tables referencing `learning_goals`
+### **Curriculum Data Export**
+- All 27 curriculum content tables with GUIDs
+- All foreign key relationships using GUIDs
+- Level files with embedded GUIDs
+- Complete curriculum state as external format
 
-### **Dependent Tables**
-- All tables that reference curriculum content tables
-- Join tables between curriculum tables
-- Resource tables linked to curriculum content
+### **Target Format: SQL Dump Files**
+- SQL files without ID columns (GUID-only)
+- `REPLACE INTO` statements for idempotent imports
+- Modular structure for selective curriculum loading
+- Version-controlled curriculum definitions
 
 ## 🔧 **Implementation Steps**
 
-### **Step 1: Add GUID Foreign Key Columns**
-- Create migration to add `_guid` columns
-- Add indexes on GUID foreign key columns
-- Include data population logic
+### **Step 1: Build Export Process**
+- Create script to export all curriculum data with GUIDs
+- Generate SQL dump files without ID columns
+- Include all foreign key relationships using GUIDs
+- Store exported data in experiments folder
 
-### **Step 2: Populate GUID Foreign Keys**
-- Map existing ID relationships to GUID relationships
-- Ensure data consistency between ID and GUID systems
-- Validate all relationships are correctly mapped
+### **Step 2: Build Import Process**
+- Create script to import curriculum data from SQL files
+- Use `REPLACE INTO` for idempotent imports
+- Handle GUID-based foreign key relationships
+- Support selective curriculum loading
 
-### **Step 3: Test Dual System**
-- Verify both ID and GUID systems work
-- Test data consistency between systems
-- Ensure no performance issues
-- Validate all functionality works
+### **Step 3: Create Validation System**
+- Build script to compare old vs new seeding results
+- Verify zero differences between approaches
+- Test dry-run synchronization between environments
+- Validate GUID consistency across systems
+
+### **Step 4: Test End-to-End Process**
+- Run old seeding process
+- Immediately run new seeding process
+- Verify identical results
+- Test cross-environment synchronization
 
 ## ✅ **Success Criteria**
 
-### **Database Changes**
-- All dependent tables have GUID foreign key columns
-- All GUID foreign keys are populated correctly
-- Indexes created on GUID foreign key columns
-- Data consistency maintained between systems
+### **Export/Import System**
+- Curriculum data exports successfully with GUIDs
+- SQL dump files generated without ID columns
+- Import process loads data correctly
+- Modular curriculum loading works
 
-### **Functionality Verification**
-- Both ID and GUID systems work simultaneously
-- No data inconsistencies between systems
-- All tests pass
-- Performance remains acceptable
+### **Validation Results**
+- Old and new seeding produce identical results
+- Zero differences between seeding approaches
+- Cross-environment synchronization works
+- GUID consistency maintained across systems
+
+### **System Architecture**
+- Curriculum separated from application code
+- External curriculum format established
+- Version-controlled curriculum definitions
+- Ready for production cutover
 
 ## 🚀 **Next Phase**
-After Phase 2 completion, proceed to **Phase 3: Cutover to GUIDs** where we switch the seeding process to use GUIDs instead of IDs.
+After Phase 2 completion, proceed to **Phase 3: Cutover to GUIDs** where we switch the seeding process to use GUIDs instead of IDs and make the new system primary.
