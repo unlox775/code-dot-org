@@ -28,6 +28,7 @@ require 'cdo/shared_constants'
 class Lesson < ApplicationRecord
   include LevelsHelper
   include SharedConstants
+  include GuidSupport
   include Rails.application.routes.url_helpers
   include SerializedProperties
 

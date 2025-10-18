@@ -18,6 +18,7 @@
 
 class LessonGroup < ApplicationRecord
   include SerializedProperties
+  include GuidSupport
 
   belongs_to :script, class_name: 'Unit', optional: true
   def script

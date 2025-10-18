@@ -21,6 +21,7 @@
 
 class CourseVersion < ApplicationRecord
   include Rails.application.routes.url_helpers
+  include GuidSupport
 
   belongs_to :course_offering, optional: true
   has_many :resources

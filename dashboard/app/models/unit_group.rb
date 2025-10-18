@@ -27,7 +27,8 @@ class UnitGroup < ApplicationRecord
   include Curriculum::SharedCourseConstants
   include Curriculum::CourseTypes
   include Curriculum::AssignableCourse
-  include Rails.application.routes.url_helpers
+  include Rails
+  include GuidSupport.application.routes.url_helpers
 
   # Some Courses will have an associated Plc::Course, most will not
   has_one :plc_course, class_name: 'Plc::Course', foreign_key: 'course_id'

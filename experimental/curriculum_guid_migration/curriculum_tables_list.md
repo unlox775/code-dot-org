@@ -1,10 +1,10 @@
 # Curriculum Tables for GUID Migration
 
 **Purpose**: Definitive list of tables to migrate from ID-based to GUID-based  
-**Total Tables**: 24 curriculum content tables  
+**Total Tables**: 27 curriculum content tables  
 **Excluded**: 4 user progress tables (keep ID-based)
 
-## 🎯 **Core Curriculum Content (8 tables)**
+## 🎯 **Core Curriculum Content (13 tables)**
 
 ### **1. `scripts` (Unit) - Complete Curriculum Courses**
 - **What it is**: A full curriculum program like "CS Discoveries"

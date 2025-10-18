@@ -26,6 +26,7 @@
 # @attr [Array<Hash>] tips - An array of instructional tips to display
 class ActivitySection < ApplicationRecord
   include SerializedProperties
+  include GuidSupport
 
   belongs_to :lesson_activity, optional: true
   has_one :script, through: :lesson_activity

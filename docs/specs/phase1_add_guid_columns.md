@@ -5,6 +5,10 @@
 **Impact**: Non-breaking - GUIDs added alongside existing IDs  
 **Status**: Ready to implement
 
+> **📋 Master Plan**: See [Curriculum GUID Migration Plan](../../experimental/curriculum_guid_migration/README.md) for complete project overview and table relationships.
+
+> **🧪 Phase Tests**: See [Phase 1 Tests](../../experimental/curriculum_guid_migration/phase1_add_guid_columns/) for validation scripts and analysis results.
+
 ## 🎯 **Phase 1 Overview**
 
 ### **What We're Doing**
@@ -88,6 +92,48 @@
 - All tests pass
 - Migration runs successfully
 - GUIDs stored in level files and data locations
+
+## 🔧 **Implementation Details**
+
+### **Migration Files Created**
+- `20251016183436_add_guid_columns_to_curriculum_tables.rb` - Adds `guid` columns to all 27 curriculum tables
+- `20251017160000_add_guid_foreign_keys_to_curriculum_tables.rb` - Adds `_guid` foreign key columns to curriculum tables
+- `20251017160001_create_guid_validation_script.rb` - Creates validation script for ID/GUID consistency
+
+### **Model Files Modified (27 total)**
+All curriculum model files updated with `include GuidSupport`:
+
+**Core Curriculum Content (13 models)**:
+- `Unit` (scripts), `Lesson` (stages), `Level` (levels), `LessonGroup` (lesson_groups)
+- `LessonActivity` (lesson_activities), `ActivitySection` (activity_sections)
+- `CourseVersion` (course_versions), `CourseOffering` (course_offerings)
+- `Objective` (objectives), `ProgrammingExpression` (programming_expressions)
+- `Rubric` (rubrics), `LearningGoal` (learning_goals)
+
+**Curriculum Organization (3 models)**:
+- `UnitGroup` (unit_groups), `ScriptLevel` (script_levels), `LevelsScriptLevel` (levels_script_levels)
+
+**Curriculum Resources (8 models)**:
+- `UnitGroupUnit` (course_scripts), `UnitGroupsResource` (unit_groups_resources)
+- `UnitGroupsStudentResource` (unit_groups_student_resources), `ScriptsResource` (scripts_resources)
+- `ScriptsStudentResource` (scripts_student_resources), `LessonsResource` (lessons_resources)
+- `LessonsStandard` (stages_standards), `LessonsVocabulary` (lessons_vocabularies)
+
+**Curriculum Join Tables (3 models)**:
+- `LessonsProgrammingExpression` (lessons_programming_expressions)
+- `LearningGoalEvidenceLevel` (learning_goal_evidence_levels)
+- `LessonsOpportunityStandard` (lessons_opportunity_standards)
+
+**GuidSupport Module Provides**:
+- `find_by_guid(guid)` - Find by GUID
+- `find_by_id_or_guid(identifier)` - Find by ID or GUID
+- Automatic GUID generation and validation
+- Dual-key support during migration period
+
+### **Validation Script**
+- `validate_guid_consistency.rb` - Ensures ID and GUID point to same entity
+- Runs after Phase 1 completion
+- Verifies all 27 tables have consistent ID/GUID relationships
 
 ## 🚀 **Next Phase**
 After Phase 1 completion, proceed to **Phase 2: Build New Seeding System** where we create the export/import processes and validate that old and new seeding produce identical results.
