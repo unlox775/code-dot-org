@@ -3,7 +3,7 @@
 **Phase**: 2 of 4  
 **Goal**: Create export/import processes and validate old/new seeding produce identical results  
 **Impact**: Non-breaking - new processes alongside existing  
-**Status**: Ready after Phase 1 completion
+**Status**: ✅ IMPLEMENTED - Ready for Testing
 
 ## 🎯 **Phase 2 Overview**
 
@@ -79,6 +79,39 @@
 - External curriculum format established
 - Version-controlled curriculum definitions
 - Ready for production cutover
+
+## 🔧 **Implementation Details**
+
+### **Migration Files Created**
+- `20251017170000_create_guid_mapping_tables.rb` - Creates 27 mapping tables linking keys to GUIDs
+
+### **Rake Tasks Created**
+- `curriculum:export_guids` - Exports all curriculum data with GUIDs to JSON files
+- `curriculum:import_guids[export_path]` - Imports curriculum data using GUID mapping
+
+### **Mapping Tables (27 total)**
+Each curriculum table has a corresponding mapping table:
+- `script_guid_mappings`, `lesson_guid_mappings`, `level_guid_mappings`, etc.
+- Links existing unique identifiers (keys) to GUIDs
+- Enables consistent GUID assignment across environments
+
+### **Export System**
+- **Location**: `lib/tasks/curriculum_export_guids.rake`
+- **Output**: JSON files in `tmp/curriculum_guid_export/TIMESTAMP/`
+- **Format**: Each table exported with GUIDs and mapping keys
+- **Usage**: `bundle exec rake curriculum:export_guids`
+
+### **Import System**
+- **Location**: `lib/tasks/curriculum_import_guids.rake`
+- **Input**: JSON files from export system
+- **Process**: Uses mapping tables to ensure consistent GUID assignment
+- **Usage**: `bundle exec rake curriculum:import_guids[path_to_export]`
+
+### **Key Benefits**
+- **No file modification** - existing level/script files unchanged
+- **Consistent GUIDs** - same GUID assigned to same content across environments
+- **Modular curriculum** - curriculum data separated from application code
+- **Validation ready** - can compare old vs new seeding results
 
 ## 🚀 **Next Phase**
 After Phase 2 completion, proceed to **Phase 3: Cutover to GUIDs** where we switch the seeding process to use GUIDs instead of IDs and make the new system primary.
