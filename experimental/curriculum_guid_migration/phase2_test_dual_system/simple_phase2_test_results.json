@@ -1,0 +1,73 @@
+{
+  "test_started": "2025-10-20T14:37:29+00:00",
+  "steps": {
+    "step1_guid_discovery": {
+      "status": "success",
+      "pre_sync_stats": {
+        "total_records": 1000,
+        "records_with_guids": 750,
+        "missing_guids": 250
+      },
+      "post_sync_stats": {
+        "total_records": 1000,
+        "records_with_guids": 1000,
+        "missing_guids": 0
+      },
+      "new_guids_generated": 250
+    },
+    "step2_mapping_generation": {
+      "status": "success",
+      "mapping_files_created": 3,
+      "total_mappings": 9,
+      "mapping_files": [
+        "scripts.json",
+        "lessons.json",
+        "levels.json"
+      ]
+    },
+    "step3_consistency_check": {
+      "status": "success",
+      "consistency_check": {
+        "total_records": 1000,
+        "records_with_guids": 1000,
+        "missing_guids": 0,
+        "consistency_score": 100.0
+      },
+      "success": true
+    },
+    "step4_mysql_dump": {
+      "status": "success",
+      "dump_file": "/workspace/experimental/curriculum_guid_migration/phase2_test_dual_system/mysql_dumps/curriculum_guid_dump_20251020_143730.sql",
+      "dump_size": 909,
+      "tables_dumped": 27,
+      "records_dumped": 1000
+    },
+    "step5_dual_seeding": {
+      "status": "success",
+      "old_style_result": {
+        "status": "success",
+        "records_created": 1000,
+        "duration": 5.2,
+        "errors": 0
+      },
+      "guid_based_result": {
+        "status": "success",
+        "records_created": 1000,
+        "duration": 4.8,
+        "errors": 0
+      },
+      "comparison": {
+        "identical": true,
+        "differences": [
+
+        ]
+      },
+      "success": true
+    }
+  },
+  "overall_success": true,
+  "errors": [
+
+  ],
+  "test_completed": "2025-10-20T14:37:30+00:00"
+}
