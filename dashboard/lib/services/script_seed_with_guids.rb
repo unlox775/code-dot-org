@@ -1,337 +1,597 @@
 # frozen_string_literal: true
 
-# Enhanced Script Seed Service with GUID Support
-# This service extends the existing ScriptSeed service to use GUID mappings
-# It ensures consistent GUID assignment across environments during seeding
+# Enhanced ScriptSeed with GUID Support
+# This module extends the existing ScriptSeed to automatically generate GUIDs
+# and create mapping files during the normal seeding process
 
 module Services
   module ScriptSeedWithGuids
-    # Extend the existing ScriptSeed module
-    extend ScriptSeed
-    
-    # Override the import_scripts method to use GUID mappings
-    def self.import_scripts(scripts_data, seed_context)
-      guid_service = Services::GuidMappingService.new
+    extend ActiveSupport::Concern
+
+    # Override the main seeding method to include GUID generation
+    def self.seed_from_hash(data)
+      # Call the original seeding method
+      result = Services::ScriptSeed.seed_from_hash(data)
       
-      scripts_to_import = scripts_data.map do |script_data|
-        script_name = script_data['name']
-        
-        # Get or create GUID for this script
-        script_guid = guid_service.get_or_create_guid('scripts', script_name)
-        
-        # Find existing script by name
-        existing_script = Unit.find_by(name: script_name)
-        
-        if existing_script
-          # Update existing script with GUID
-          existing_script.update!(guid: script_guid) if existing_script.guid.blank?
-          existing_script
-        else
-          # Create new script with GUID
-          script_attrs = script_data.except('seeding_key')
-          script_attrs['guid'] = script_guid
-          Unit.new(script_attrs)
-        end
+      # After seeding, generate GUIDs and mapping files
+      generate_guids_and_mappings(result)
+      
+      result
+    end
+
+    # Override individual import methods to ensure GUIDs are generated
+    def self.import_script(script_data)
+      script = Services::ScriptSeed.import_script(script_data)
+      
+      # Generate GUID if not present
+      if script.guid.blank?
+        script.update_column(:guid, SecureRandom.uuid)
       end
       
-      # Import scripts
-      Unit.import! scripts_to_import, on_duplicate_key_update: get_columns(Unit)
+      # Add to mapping file
+      add_to_mapping('scripts', script.name, script.guid)
       
-      # Return updated scripts
-      Unit.where(name: scripts_data.map { |s| s['name'] })
+      script
     end
-    
-    # Override the import_lessons method to use GUID mappings
-    def self.import_lessons(lessons_data, seed_context)
-      guid_service = Services::GuidMappingService.new
-      
-      lessons_to_import = lessons_data.map do |lesson_data|
-        lesson_key = lesson_data['key']
-        
-        # Get or create GUID for this lesson
-        lesson_guid = guid_service.get_or_create_guid('lessons', lesson_key)
-        
-        # Find lesson group by GUID
-        lesson_group_guid = lesson_data['seeding_key']['lesson_group.guid']
-        lesson_group = seed_context.lesson_groups.find { |lg| lg.guid == lesson_group_guid }
-        raise 'No lesson group found' if lesson_group.nil?
-        
-        # Find existing lesson by key
-        existing_lesson = Lesson.find_by(key: lesson_key)
-        
-        if existing_lesson
-          # Update existing lesson with GUID
-          existing_lesson.update!(guid: lesson_guid) if existing_lesson.guid.blank?
-          existing_lesson
-        else
-          # Create new lesson with GUID
-          lesson_attrs = lesson_data.except('seeding_key')
-          lesson_attrs['guid'] = lesson_guid
-          lesson_attrs['lesson_group_id'] = lesson_group.id
-          Lesson.new(lesson_attrs)
-        end
-      end
-      
-      # Import lessons
-      Lesson.import! lessons_to_import, on_duplicate_key_update: get_columns(Lesson)
-      
-      # Return updated lessons
-      Lesson.where(key: lessons_data.map { |l| l['key'] })
-    end
-    
-    # Override the import_levels method to use GUID mappings
-    def self.import_levels(levels_data, seed_context)
-      guid_service = Services::GuidMappingService.new
-      
-      levels_to_import = levels_data.map do |level_data|
-        level_key = level_data['key']
-        
-        # Get or create GUID for this level
-        level_guid = guid_service.get_or_create_guid('levels', level_key)
-        
-        # Find existing level by key
-        existing_level = Level.find_by(key: level_key)
-        
-        if existing_level
-          # Update existing level with GUID
-          existing_level.update!(guid: level_guid) if existing_level.guid.blank?
-          existing_level
-        else
-          # Create new level with GUID
-          level_attrs = level_data.except('seeding_key')
-          level_attrs['guid'] = level_guid
-          Level.new(level_attrs)
-        end
-      end
-      
-      # Import levels
-      Level.import! levels_to_import, on_duplicate_key_update: get_columns(Level)
-      
-      # Return updated levels
-      Level.where(key: levels_data.map { |l| l['key'] })
-    end
-    
-    # Override the import_lesson_groups method to use GUID mappings
+
     def self.import_lesson_groups(lesson_groups_data, seed_context)
-      guid_service = Services::GuidMappingService.new
+      lesson_groups = Services::ScriptSeed.import_lesson_groups(lesson_groups_data, seed_context)
       
-      lesson_groups_to_import = lesson_groups_data.map do |lg_data|
-        lg_key = lg_data['key']
-        
-        # Get or create GUID for this lesson group
-        lg_guid = guid_service.get_or_create_guid('lesson_groups', lg_key)
-        
-        # Find script by GUID
-        script_guid = lg_data['seeding_key']['script.guid']
-        script = seed_context.script
-        raise 'No script found' if script.nil?
-        
-        # Find existing lesson group by key
-        existing_lg = LessonGroup.find_by(key: lg_key)
-        
-        if existing_lg
-          # Update existing lesson group with GUID
-          existing_lg.update!(guid: lg_guid) if existing_lg.guid.blank?
-          existing_lg
-        else
-          # Create new lesson group with GUID
-          lg_attrs = lg_data.except('seeding_key')
-          lg_attrs['guid'] = lg_guid
-          lg_attrs['script_id'] = script.id
-          LessonGroup.new(lg_attrs)
+      lesson_groups.each do |lg|
+        if lg.guid.blank?
+          lg.update_column(:guid, SecureRandom.uuid)
         end
+        add_to_mapping('lesson_groups', lg.key, lg.guid)
       end
       
-      # Import lesson groups
-      LessonGroup.import! lesson_groups_to_import, on_duplicate_key_update: get_columns(LessonGroup)
-      
-      # Return updated lesson groups
-      LessonGroup.where(key: lesson_groups_data.map { |lg| lg['key'] })
+      lesson_groups
     end
-    
-    # Override the import_lesson_activities method to use GUID mappings
+
+    def self.import_lessons(lessons_data, seed_context)
+      lessons = Services::ScriptSeed.import_lessons(lessons_data, seed_context)
+      
+      lessons.each do |lesson|
+        if lesson.guid.blank?
+          lesson.update_column(:guid, SecureRandom.uuid)
+        end
+        add_to_mapping('lessons', lesson.key, lesson.guid)
+      end
+      
+      lessons
+    end
+
     def self.import_lesson_activities(activities_data, seed_context)
-      guid_service = Services::GuidMappingService.new
+      activities = Services::ScriptSeed.import_lesson_activities(activities_data, seed_context)
       
-      activities_to_import = activities_data.map do |activity_data|
-        activity_key = activity_data['key']
-        
-        # Get or create GUID for this lesson activity
-        activity_guid = guid_service.get_or_create_guid('lesson_activities', activity_key)
-        
-        # Find lesson by GUID
-        lesson_guid = activity_data['seeding_key']['lesson.guid']
-        lesson = seed_context.lessons.find { |l| l.guid == lesson_guid }
-        raise 'No lesson found' if lesson.nil?
-        
-        # Find existing lesson activity by key
-        existing_activity = LessonActivity.find_by(key: activity_key)
-        
-        if existing_activity
-          # Update existing lesson activity with GUID
-          existing_activity.update!(guid: activity_guid) if existing_activity.guid.blank?
-          existing_activity
-        else
-          # Create new lesson activity with GUID
-          activity_attrs = activity_data.except('seeding_key')
-          activity_attrs['guid'] = activity_guid
-          activity_attrs['lesson_id'] = lesson.id
-          LessonActivity.new(activity_attrs)
+      activities.each do |activity|
+        if activity.guid.blank?
+          activity.update_column(:guid, SecureRandom.uuid)
         end
+        add_to_mapping('lesson_activities', activity.key, activity.guid)
       end
       
-      # Import lesson activities
-      LessonActivity.import! activities_to_import, on_duplicate_key_update: get_columns(LessonActivity)
-      
-      # Return updated lesson activities
-      LessonActivity.where(key: activities_data.map { |a| a['key'] })
+      activities
     end
-    
-    # Override the import_activity_sections method to use GUID mappings
+
     def self.import_activity_sections(sections_data, seed_context)
-      guid_service = Services::GuidMappingService.new
+      sections = Services::ScriptSeed.import_activity_sections(sections_data, seed_context)
       
-      sections_to_import = sections_data.map do |section_data|
-        section_key = section_data['key']
-        
-        # Get or create GUID for this activity section
-        section_guid = guid_service.get_or_create_guid('activity_sections', section_key)
-        
-        # Find lesson activity by GUID
-        lesson_activity_guid = section_data['seeding_key']['lesson_activity.guid']
-        lesson_activity = seed_context.lesson_activities.find { |la| la.guid == lesson_activity_guid }
-        raise 'No lesson activity found' if lesson_activity.nil?
-        
-        # Find existing activity section by key
-        existing_section = ActivitySection.find_by(key: section_key)
-        
-        if existing_section
-          # Update existing activity section with GUID
-          existing_section.update!(guid: section_guid) if existing_section.guid.blank?
-          existing_section
-        else
-          # Create new activity section with GUID
-          section_attrs = section_data.except('seeding_key')
-          section_attrs['guid'] = section_guid
-          section_attrs['lesson_activity_id'] = lesson_activity.id
-          ActivitySection.new(section_attrs)
+      sections.each do |section|
+        if section.guid.blank?
+          section.update_column(:guid, SecureRandom.uuid)
         end
+        add_to_mapping('activity_sections', section.key, section.guid)
       end
       
-      # Import activity sections
-      ActivitySection.import! sections_to_import, on_duplicate_key_update: get_columns(ActivitySection)
-      
-      # Return updated activity sections
-      ActivitySection.where(key: sections_data.map { |s| s['key'] })
+      sections
     end
-    
-    # Override the import_script_levels method to use GUID mappings
+
     def self.import_script_levels(script_levels_data, seed_context)
-      guid_service = Services::GuidMappingService.new
+      script_levels = Services::ScriptSeed.import_script_levels(script_levels_data, seed_context)
       
-      script_levels_to_import = script_levels_data.map do |sl_data|
-        # Create composite key for script level
-        script_name = sl_data['seeding_key']['script.name']
-        lesson_key = sl_data['seeding_key']['lesson.key']
-        position = sl_data['position']
-        composite_key = "#{script_name}:#{lesson_key}:#{position}"
-        
-        # Get or create GUID for this script level
-        sl_guid = guid_service.get_or_create_guid('script_levels', composite_key)
-        
-        # Find lesson by GUID
-        lesson_guid = sl_data['seeding_key']['lesson.guid']
-        lesson = seed_context.lessons.find { |l| l.guid == lesson_guid }
-        raise 'No lesson found' if lesson.nil?
-        
-        # Find existing script level by composite key
-        existing_sl = ScriptLevel.find_by(
-          script: seed_context.script,
-          stage: lesson,
-          position: position
-        )
-        
-        if existing_sl
-          # Update existing script level with GUID
-          existing_sl.update!(guid: sl_guid) if existing_sl.guid.blank?
-          existing_sl
-        else
-          # Create new script level with GUID
-          sl_attrs = sl_data.except('seeding_key')
-          sl_attrs['guid'] = sl_guid
-          sl_attrs['script_id'] = seed_context.script.id
-          sl_attrs['stage_id'] = lesson.id
-          ScriptLevel.new(sl_attrs)
+      script_levels.each do |sl|
+        if sl.guid.blank?
+          sl.update_column(:guid, SecureRandom.uuid)
         end
+        
+        # Create composite key for script_levels
+        composite_key = "#{sl.script.name}:#{sl.lesson.key}:#{sl.position}"
+        add_to_mapping('script_levels', composite_key, sl.guid)
       end
       
-      # Import script levels
-      ScriptLevel.import! script_levels_to_import, on_duplicate_key_update: get_columns(ScriptLevel)
-      
-      # Return updated script levels
-      ScriptLevel.where(script: seed_context.script)
+      script_levels
     end
-    
-    # Override the import_levels_script_levels method to use GUID mappings
+
     def self.import_levels_script_levels(levels_script_levels_data, seed_context)
-      guid_service = Services::GuidMappingService.new
+      levels_script_levels = Services::ScriptSeed.import_levels_script_levels(levels_script_levels_data, seed_context)
       
-      levels_script_levels_to_import = levels_script_levels_data.map do |lsl_data|
-        # Create composite key for levels script level
-        level_key = lsl_data['seeding_key']['level.key']
-        script_name = lsl_data['seeding_key']['script_level.script.name']
-        lesson_key = lsl_data['seeding_key']['script_level.lesson.key']
-        position = lsl_data['seeding_key']['script_level.position']
-        composite_key = "#{level_key}:#{script_name}:#{lesson_key}:#{position}"
-        
-        # Get or create GUID for this levels script level
-        lsl_guid = guid_service.get_or_create_guid('levels_script_levels', composite_key)
-        
-        # Find level by GUID
-        level_guid = lsl_data['seeding_key']['level.guid']
-        level = seed_context.levels.find { |l| l.guid == level_guid }
-        raise 'No level found' if level.nil?
-        
-        # Find script level by GUID
-        script_level_guid = lsl_data['seeding_key']['script_level.guid']
-        script_level = seed_context.script_levels.find { |sl| sl.guid == script_level_guid }
-        raise 'No script level found' if script_level.nil?
-        
-        # Find existing levels script level
-        existing_lsl = LevelsScriptLevel.find_by(
-          level: level,
-          script_level: script_level
-        )
-        
-        if existing_lsl
-          # Update existing levels script level with GUID
-          existing_lsl.update!(guid: lsl_guid) if existing_lsl.guid.blank?
-          existing_lsl
-        else
-          # Create new levels script level with GUID
-          lsl_attrs = lsl_data.except('seeding_key')
-          lsl_attrs['guid'] = lsl_guid
-          lsl_attrs['level_id'] = level.id
-          lsl_attrs['script_level_id'] = script_level.id
-          LevelsScriptLevel.new(lsl_attrs)
+      levels_script_levels.each do |lsl|
+        if lsl.guid.blank?
+          lsl.update_column(:guid, SecureRandom.uuid)
         end
+        
+        # Create composite key for levels_script_levels
+        composite_key = "#{lsl.level.key}:#{lsl.script_level.script.name}:#{lsl.script_level.lesson.key}:#{lsl.script_level.position}"
+        add_to_mapping('levels_script_levels', composite_key, lsl.guid)
       end
       
-      # Import levels script levels
-      LevelsScriptLevel.import! levels_script_levels_to_import, on_duplicate_key_update: get_columns(LevelsScriptLevel)
-      
-      # Return updated levels script levels
-      LevelsScriptLevel.joins(:script_level).where(script_levels: { script: seed_context.script })
+      levels_script_levels
     end
-    
-    # Add similar methods for other curriculum entities...
-    # (courses, course_offerings, course_versions, objectives, etc.)
-    
+
+    def self.import_resources(resources_data, seed_context)
+      resources = Services::ScriptSeed.import_resources(resources_data, seed_context)
+      
+      resources.each do |resource|
+        if resource.guid.blank?
+          resource.update_column(:guid, SecureRandom.uuid)
+        end
+        add_to_mapping('resources', resource.key, resource.guid)
+      end
+      
+      resources
+    end
+
+    def self.import_lessons_resources(lessons_resources_data, seed_context)
+      lessons_resources = Services::ScriptSeed.import_lessons_resources(lessons_resources_data, seed_context)
+      
+      lessons_resources.each do |lr|
+        if lr.guid.blank?
+          lr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for lessons_resources
+        composite_key = "#{lr.lesson.key}:#{lr.resource.key}"
+        add_to_mapping('lesson_resources', composite_key, lr.guid)
+      end
+      
+      lessons_resources
+    end
+
+    def self.import_scripts_resources(scripts_resources_data, seed_context)
+      scripts_resources = Services::ScriptSeed.import_scripts_resources(scripts_resources_data, seed_context)
+      
+      scripts_resources.each do |sr|
+        if sr.guid.blank?
+          sr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for scripts_resources
+        composite_key = "#{sr.script.name}:#{sr.resource.key}"
+        add_to_mapping('script_resources', composite_key, sr.guid)
+      end
+      
+      scripts_resources
+    end
+
+    def self.import_scripts_student_resources(scripts_student_resources_data, seed_context)
+      scripts_student_resources = Services::ScriptSeed.import_scripts_student_resources(scripts_student_resources_data, seed_context)
+      
+      scripts_student_resources.each do |ssr|
+        if ssr.guid.blank?
+          ssr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for scripts_student_resources
+        composite_key = "#{ssr.script.name}:#{ssr.resource.key}"
+        add_to_mapping('script_student_resources', composite_key, ssr.guid)
+      end
+      
+      scripts_student_resources
+    end
+
+    def self.import_vocabularies(vocabularies_data, seed_context)
+      vocabularies = Services::ScriptSeed.import_vocabularies(vocabularies_data, seed_context)
+      
+      vocabularies.each do |vocab|
+        if vocab.guid.blank?
+          vocab.update_column(:guid, SecureRandom.uuid)
+        end
+        add_to_mapping('vocabularies', vocab.key, vocab.guid)
+      end
+      
+      vocabularies
+    end
+
+    def self.import_lessons_vocabularies(lessons_vocabularies_data, seed_context)
+      lessons_vocabularies = Services::ScriptSeed.import_lessons_vocabularies(lessons_vocabularies_data, seed_context)
+      
+      lessons_vocabularies.each do |lv|
+        if lv.guid.blank?
+          lv.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for lessons_vocabularies
+        composite_key = "#{lv.lesson.key}:#{lv.vocabulary.key}"
+        add_to_mapping('lesson_vocabularies', composite_key, lv.guid)
+      end
+      
+      lessons_vocabularies
+    end
+
+    def self.import_lessons_programming_expressions(lessons_programming_expressions_data, seed_context)
+      lessons_programming_expressions = Services::ScriptSeed.import_lessons_programming_expressions(lessons_programming_expressions_data, seed_context)
+      
+      lessons_programming_expressions.each do |lpe|
+        if lpe.guid.blank?
+          lpe.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for lessons_programming_expressions
+        composite_key = "#{lpe.lesson.key}:#{lpe.programming_expression.key}"
+        add_to_mapping('lesson_programming_expressions', composite_key, lpe.guid)
+      end
+      
+      lessons_programming_expressions
+    end
+
+    def self.import_objectives(objectives_data, seed_context)
+      objectives = Services::ScriptSeed.import_objectives(objectives_data, seed_context)
+      
+      objectives.each do |objective|
+        if objective.guid.blank?
+          objective.update_column(:guid, SecureRandom.uuid)
+        end
+        add_to_mapping('objectives', objective.key, objective.guid)
+      end
+      
+      objectives
+    end
+
+    def self.import_lessons_standards(lessons_standards_data, seed_context)
+      lessons_standards = Services::ScriptSeed.import_lessons_standards(lessons_standards_data, seed_context)
+      
+      lessons_standards.each do |ls|
+        if ls.guid.blank?
+          ls.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for lessons_standards
+        composite_key = "#{ls.lesson.key}:#{ls.standard.shortcode}"
+        add_to_mapping('lesson_standards', composite_key, ls.guid)
+      end
+      
+      lessons_standards
+    end
+
+    def self.import_lessons_opportunity_standards(lessons_opportunity_standards_data, seed_context)
+      lessons_opportunity_standards = Services::ScriptSeed.import_lessons_opportunity_standards(lessons_opportunity_standards_data, seed_context)
+      
+      lessons_opportunity_standards.each do |los|
+        if los.guid.blank?
+          los.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for lessons_opportunity_standards
+        composite_key = "#{los.lesson.key}:#{los.standard.shortcode}"
+        add_to_mapping('lesson_opportunity_standards', composite_key, los.guid)
+      end
+      
+      lessons_opportunity_standards
+    end
+
+    def self.import_rubrics(rubrics_data, seed_context)
+      rubrics = Services::ScriptSeed.import_rubrics(rubrics_data, seed_context)
+      
+      rubrics.each do |rubric|
+        if rubric.guid.blank?
+          rubric.update_column(:guid, SecureRandom.uuid)
+        end
+        add_to_mapping('rubrics', rubric.key, rubric.guid)
+      end
+      
+      rubrics
+    end
+
+    def self.import_learning_goals(learning_goals_data, seed_context)
+      learning_goals = Services::ScriptSeed.import_learning_goals(learning_goals_data, seed_context)
+      
+      learning_goals.each do |lg|
+        if lg.guid.blank?
+          lg.update_column(:guid, SecureRandom.uuid)
+        end
+        add_to_mapping('learning_goals', lg.key, lg.guid)
+      end
+      
+      learning_goals
+    end
+
+    def self.import_learning_goals_evidence_levels(learning_goal_evidence_levels_data, seed_context)
+      learning_goal_evidence_levels = Services::ScriptSeed.import_learning_goals_evidence_levels(learning_goal_evidence_levels_data, seed_context)
+      
+      learning_goal_evidence_levels.each do |lgel|
+        if lgel.guid.blank?
+          lgel.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        # Create composite key for learning_goal_evidence_levels
+        composite_key = "#{lgel.learning_goal.key}:#{lgel.evidence_level}"
+        add_to_mapping('learning_goal_evidence_levels', composite_key, lgel.guid)
+      end
+      
+      learning_goal_evidence_levels
+    end
+
     private
-    
-    # Helper method to get columns for import
-    def self.get_columns(model_class)
-      model_class.column_names - ['id', 'created_at', 'updated_at']
+
+    # Add a mapping to the appropriate JSON file
+    def self.add_to_mapping(table_name, identifier, guid)
+      mappings_dir = Rails.root.join('config', 'curriculum_guid_mappings')
+      FileUtils.mkdir_p(mappings_dir)
+      
+      mapping_file = mappings_dir.join("#{table_name}.json")
+      
+      # Load existing mappings or create new hash
+      mappings = if File.exist?(mapping_file)
+        JSON.parse(File.read(mapping_file))
+      else
+        {}
+      end
+      
+      # Add or update the mapping
+      mappings[identifier] = guid
+      
+      # Write back to file
+      File.write(mapping_file, JSON.pretty_generate(mappings))
+    end
+
+    # Generate GUIDs and mappings for all curriculum tables
+    def self.generate_guids_and_mappings(seed_context)
+      puts "🔧 Generating GUIDs and mappings for seeded curriculum..."
+      
+      # Process all curriculum tables
+      process_curriculum_table('scripts', Unit.all, :name)
+      process_curriculum_table('lessons', Lesson.all, :key)
+      process_curriculum_table('levels', Level.all, :key)
+      process_curriculum_table('lesson_groups', LessonGroup.all, :key)
+      process_curriculum_table('lesson_activities', LessonActivity.all, :key)
+      process_curriculum_table('activity_sections', ActivitySection.all, :key)
+      process_curriculum_table('courses', Course.all, :key)
+      process_curriculum_table('course_offerings', CourseOffering.all, :key)
+      process_curriculum_table('course_versions', CourseVersion.all, :key)
+      process_curriculum_table('objectives', Objective.all, :key)
+      process_curriculum_table('programming_expressions', ProgrammingExpression.all, :key)
+      process_curriculum_table('rubrics', Rubric.all, :key)
+      process_curriculum_table('learning_goals', LearningGoal.all, :key)
+      process_curriculum_table('unit_groups', UnitGroup.all, :key)
+      
+      # Process join tables with composite keys
+      process_script_levels
+      process_levels_script_levels
+      process_course_scripts
+      process_unit_group_resources
+      process_unit_group_student_resources
+      process_script_resources
+      process_script_student_resources
+      process_lesson_resources
+      process_lesson_standards
+      process_lesson_vocabularies
+      process_lesson_programming_expressions
+      process_learning_goal_evidence_levels
+      process_lesson_opportunity_standards
+      
+      puts "✅ GUID generation and mapping complete!"
+    end
+
+    def self.process_curriculum_table(table_name, records, identifier_method)
+      mappings = {}
+      
+      records.each do |record|
+        identifier = record.send(identifier_method)
+        next if identifier.blank?
+        
+        if record.guid.blank?
+          record.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        mappings[identifier] = record.guid
+      end
+      
+      write_mapping_file(table_name, mappings) if mappings.any?
+    end
+
+    def self.process_script_levels
+      mappings = {}
+      
+      ScriptLevel.includes(:script, :lesson).each do |sl|
+        if sl.guid.blank?
+          sl.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{sl.script.name}:#{sl.lesson.key}:#{sl.position}"
+        mappings[composite_key] = sl.guid
+      end
+      
+      write_mapping_file('script_levels', mappings) if mappings.any?
+    end
+
+    def self.process_levels_script_levels
+      mappings = {}
+      
+      LevelsScriptLevel.includes(:level, :script_level, script_level: [:script, :lesson]).each do |lsl|
+        if lsl.guid.blank?
+          lsl.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{lsl.level.key}:#{lsl.script_level.script.name}:#{lsl.script_level.lesson.key}:#{lsl.script_level.position}"
+        mappings[composite_key] = lsl.guid
+      end
+      
+      write_mapping_file('levels_script_levels', mappings) if mappings.any?
+    end
+
+    def self.process_course_scripts
+      mappings = {}
+      
+      CourseScript.includes(:course, :script).each do |cs|
+        if cs.guid.blank?
+          cs.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{cs.course.key}:#{cs.script.name}"
+        mappings[composite_key] = cs.guid
+      end
+      
+      write_mapping_file('course_scripts', mappings) if mappings.any?
+    end
+
+    def self.process_unit_group_resources
+      mappings = {}
+      
+      UnitGroupsResource.includes(:unit_group, :resource).each do |ugr|
+        if ugr.guid.blank?
+          ugr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{ugr.unit_group.key}:#{ugr.resource.key}"
+        mappings[composite_key] = ugr.guid
+      end
+      
+      write_mapping_file('unit_group_resources', mappings) if mappings.any?
+    end
+
+    def self.process_unit_group_student_resources
+      mappings = {}
+      
+      UnitGroupsStudentResource.includes(:unit_group, :resource).each do |ugsr|
+        if ugsr.guid.blank?
+          ugsr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{ugsr.unit_group.key}:#{ugsr.resource.key}"
+        mappings[composite_key] = ugsr.guid
+      end
+      
+      write_mapping_file('unit_group_student_resources', mappings) if mappings.any?
+    end
+
+    def self.process_script_resources
+      mappings = {}
+      
+      ScriptsResource.includes(:script, :resource).each do |sr|
+        if sr.guid.blank?
+          sr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{sr.script.name}:#{sr.resource.key}"
+        mappings[composite_key] = sr.guid
+      end
+      
+      write_mapping_file('script_resources', mappings) if mappings.any?
+    end
+
+    def self.process_script_student_resources
+      mappings = {}
+      
+      ScriptsStudentResource.includes(:script, :resource).each do |ssr|
+        if ssr.guid.blank?
+          ssr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{ssr.script.name}:#{ssr.resource.key}"
+        mappings[composite_key] = ssr.guid
+      end
+      
+      write_mapping_file('script_student_resources', mappings) if mappings.any?
+    end
+
+    def self.process_lesson_resources
+      mappings = {}
+      
+      LessonsResource.includes(:lesson, :resource).each do |lr|
+        if lr.guid.blank?
+          lr.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{lr.lesson.key}:#{lr.resource.key}"
+        mappings[composite_key] = lr.guid
+      end
+      
+      write_mapping_file('lesson_resources', mappings) if mappings.any?
+    end
+
+    def self.process_lesson_standards
+      mappings = {}
+      
+      LessonsStandard.includes(:lesson, :standard).each do |ls|
+        if ls.guid.blank?
+          ls.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{ls.lesson.key}:#{ls.standard.shortcode}"
+        mappings[composite_key] = ls.guid
+      end
+      
+      write_mapping_file('lesson_standards', mappings) if mappings.any?
+    end
+
+    def self.process_lesson_vocabularies
+      mappings = {}
+      
+      LessonsVocabulary.includes(:lesson, :vocabulary).each do |lv|
+        if lv.guid.blank?
+          lv.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{lv.lesson.key}:#{lv.vocabulary.key}"
+        mappings[composite_key] = lv.guid
+      end
+      
+      write_mapping_file('lesson_vocabularies', mappings) if mappings.any?
+    end
+
+    def self.process_lesson_programming_expressions
+      mappings = {}
+      
+      LessonsProgrammingExpression.includes(:lesson, :programming_expression).each do |lpe|
+        if lpe.guid.blank?
+          lpe.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{lpe.lesson.key}:#{lpe.programming_expression.key}"
+        mappings[composite_key] = lpe.guid
+      end
+      
+      write_mapping_file('lesson_programming_expressions', mappings) if mappings.any?
+    end
+
+    def self.process_learning_goal_evidence_levels
+      mappings = {}
+      
+      LearningGoalEvidenceLevel.includes(:learning_goal).each do |lgel|
+        if lgel.guid.blank?
+          lgel.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{lgel.learning_goal.key}:#{lgel.evidence_level}"
+        mappings[composite_key] = lgel.guid
+      end
+      
+      write_mapping_file('learning_goal_evidence_levels', mappings) if mappings.any?
+    end
+
+    def self.process_lesson_opportunity_standards
+      mappings = {}
+      
+      LessonsOpportunityStandard.includes(:lesson, :standard).each do |los|
+        if los.guid.blank?
+          los.update_column(:guid, SecureRandom.uuid)
+        end
+        
+        composite_key = "#{los.lesson.key}:#{los.standard.shortcode}"
+        mappings[composite_key] = los.guid
+      end
+      
+      write_mapping_file('lesson_opportunity_standards', mappings) if mappings.any?
+    end
+
+    def self.write_mapping_file(table_name, mappings)
+      mappings_dir = Rails.root.join('config', 'curriculum_guid_mappings')
+      FileUtils.mkdir_p(mappings_dir)
+      
+      mapping_file = mappings_dir.join("#{table_name}.json")
+      File.write(mapping_file, JSON.pretty_generate(mappings))
+      
+      puts "  ✅ Created #{table_name}.json with #{mappings.length} mappings"
     end
   end
 end
