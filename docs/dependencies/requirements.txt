@@ -1,0 +1,2 @@
+# Python dependencies for the dependency checker tool
+PyYAML>=6.0

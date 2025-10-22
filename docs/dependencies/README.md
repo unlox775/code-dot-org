@@ -119,12 +119,67 @@ docs/dependencies/
 4. **Upgrade Path Documentation**: Document upgrade requirements and breaking changes
 5. **Usage Pattern Completion**: Finish mapping all dependencies with <5 usage locations to specific files
 
-## Usage Instructions
+## Documentation Standards
 
+### Required Format for Each Dependency
+Every dependency entry must follow this standard format:
+
+```markdown
+- [x] **dependency-name** (version) - Brief description
+  - **Usage**: How the dependency is used in the project
+  - **Files**: Count of files using the dependency
+  - **Key locations**: Specific file paths and line numbers (for <5 files)
+  - **Necessity**: [LOW|MEDIUM|HIGH|CRITICAL] - Justification for necessity
+  - **Compensation if removed**: What would be needed to replace the dependency
+  - **Documentation**: [Official Docs](link) | [GitHub](link)
+  - **Current version**: X.x.x | **Latest stable**: Y.y.y | **Upgrade path**: Notes
+```
+
+### Checkbox Status
+- `[x]` - Analysis completed with all required fields
+- `[ ]` - Analysis pending or incomplete
+
+### Necessity Levels
+- **CRITICAL** - Cannot be removed without breaking the entire application
+- **HIGH** - Significant refactoring required to remove
+- **MEDIUM** - Moderate effort required to replace or remove
+- **LOW** - Easy to replace or remove with minimal impact
+
+## Validation Tools
+
+### Dependency Checker
+We provide automated tools to validate documentation completeness:
+
+```bash
+# Install Python dependencies
+make install
+
+# Check that all dependencies are documented
+make check-dependencies
+
+# Check markdown formatting
+make check-format
+
+# Run all validation checks
+make check-all
+```
+
+### Manual Validation
 - Each dependency file contains categorized lists with checkboxes for tracking analysis progress
 - Dependencies marked with [x] have been analyzed in detail
 - Dependencies marked with [ ] are pending detailed analysis
 - File paths and line numbers are provided for dependencies with limited usage (<5 files)
+
+## Maintenance
+
+### AI Agent Prompts
+See [agent-prompts.md](agent-prompts.md) for standardized prompts and instructions for AI agents to maintain this documentation.
+
+### Regular Maintenance Tasks
+1. Run `make check-dependencies` regularly to identify missing or incomplete documentation
+2. Update version information when dependencies are upgraded
+3. Add new dependencies when they are added to the project
+4. Remove dependencies when they are removed from the project
 
 ## Notes
 
