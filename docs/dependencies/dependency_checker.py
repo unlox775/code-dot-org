@@ -203,51 +203,35 @@ class DependencyChecker:
             f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write("="*80 + "\n")
             
-            # Combine all dependencies
-            all_deps = {}
+            # Helper function to sort dependencies within a section
+            def sort_deps_by_file_and_criticality(deps_list, deps_type):
+                def sort_key(dep_name):
+                    if dep_name in self.results['documented_deps']:
+                        doc_info = self.results['documented_deps'][dep_name]
+                        file_name = doc_info['file']
+                        severity = doc_info['severity']
+                        
+                        # Sort by file name first
+                        file_priority = 0
+                        
+                        # Then by criticality (CRITICAL=0, HIGH=1, MEDIUM=2, LOW=3, UNKNOWN=4)
+                        severity_order = {'CRITICAL': 0, 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3, 'UNKNOWN': 4}
+                        severity_priority = severity_order.get(severity, 4)
+                        
+                        # Then by name
+                        return (file_priority, file_name, severity_priority, dep_name)
+                    else:
+                        # Undocumented dependencies go last
+                        return (1, "UNDOCUMENTED", 999, dep_name)
+                
+                return sorted(deps_list, key=sort_key)
             
-            # Add Ruby dependencies
-            for dep in self.results['gemfile_deps']:
-                all_deps[dep] = {'type': 'Ruby', 'source': 'Gemfile'}
+            # Section 1: Ruby Dependencies (Gemfile)
+            f.write(f"\n🔴 RUBY DEPENDENCIES (Gemfile): {len(self.results['gemfile_deps'])} total\n")
+            f.write("-" * 50 + "\n")
             
-            # Add JavaScript dependencies  
-            for dep in self.results['package_json_deps']:
-                all_deps[dep] = {'type': 'JavaScript', 'source': 'package.json'}
-            
-            # Add Python dependencies
-            for dep in self.results['python_deps']:
-                all_deps[dep] = {'type': 'Python', 'source': 'pyproject.toml'}
-            
-            # Sort dependencies by file first, then by criticality, then by name
-            def sort_key(dep_info):
-                dep_name, info = dep_info
-                if dep_name in self.results['documented_deps']:
-                    doc_info = self.results['documented_deps'][dep_name]
-                    file_name = doc_info['file']
-                    severity = doc_info['severity']
-                    has_necessity = doc_info['has_necessity']
-                    
-                    # Sort by file first
-                    file_priority = 0
-                    
-                    # Then by criticality (CRITICAL=0, HIGH=1, MEDIUM=2, LOW=3, UNKNOWN=4)
-                    severity_order = {'CRITICAL': 0, 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3, 'UNKNOWN': 4}
-                    severity_priority = severity_order.get(severity, 4)
-                    
-                    # Then by name
-                    return (file_priority, file_name, severity_priority, dep_name)
-                else:
-                    # Undocumented dependencies go last
-                    return (1, info['type'], 999, dep_name)
-            
-            sorted_deps = sorted(all_deps.items(), key=sort_key)
-            
-            f.write(f"\n📋 ALL DEPENDENCIES: {len(all_deps)} total\n")
-            f.write("-" * 80 + "\n")
-            
-            current_file = None
-            for dep_name, info in sorted_deps:
-                # Get documentation info if available
+            ruby_deps_sorted = sort_deps_by_file_and_criticality(self.results['gemfile_deps'], 'Ruby')
+            for dep_name in ruby_deps_sorted:
                 if dep_name in self.results['documented_deps']:
                     doc_info = self.results['documented_deps'][dep_name]
                     file_name = doc_info['file']
@@ -265,26 +249,95 @@ class DependencyChecker:
                     else:
                         status = "🔨"  # Missing necessity
                     
-                    # Print file header if changed
-                    if current_file != file_name:
-                        current_file = file_name
-                        f.write(f"\n📁 {file_name.upper()}:\n")
+                    # Format severity display
+                    severity_display = f"({severity})" if severity != "UNKNOWN" else ""
+                    over_doc_display = f" [mentioned in {count} files]" if count > 1 else ""
+                    f.write(f"  {status} {dep_name} {severity_display}{over_doc_display} - {file_name}\n")
+                else:
+                    f.write(f"  ❌ {dep_name} (not documented)\n")
+            
+            # Section 2: JavaScript Dependencies (package.json)
+            f.write(f"\n🟡 JAVASCRIPT DEPENDENCIES (package.json): {len(self.results['package_json_deps'])} total\n")
+            f.write("-" * 50 + "\n")
+            
+            js_deps_sorted = sort_deps_by_file_and_criticality(self.results['package_json_deps'], 'JavaScript')
+            for dep_name in js_deps_sorted:
+                if dep_name in self.results['documented_deps']:
+                    doc_info = self.results['documented_deps'][dep_name]
+                    file_name = doc_info['file']
+                    severity = doc_info['severity']
+                    has_necessity = doc_info['has_necessity']
+                    count = doc_info['count']
+                    
+                    # Determine status emoji
+                    if count > 1:
+                        status = "⚠️"  # Over-documented (mentioned in multiple files)
+                    elif has_necessity and severity != "UNKNOWN":
+                        status = "✅"  # Complete
+                    elif has_necessity:
+                        status = "🔨"  # Has necessity but unknown severity
+                    else:
+                        status = "🔨"  # Missing necessity
                     
                     # Format severity display
                     severity_display = f"({severity})" if severity != "UNKNOWN" else ""
                     over_doc_display = f" [mentioned in {count} files]" if count > 1 else ""
-                    f.write(f"  {status} {dep_name} {severity_display}{over_doc_display}\n")
-                    
+                    f.write(f"  {status} {dep_name} {severity_display}{over_doc_display} - {file_name}\n")
                 else:
-                    # Not documented
-                    if current_file != "UNDOCUMENTED":
-                        current_file = "UNDOCUMENTED"
-                        f.write(f"\n❌ NOT DOCUMENTED:\n")
+                    f.write(f"  ❌ {dep_name} (not documented)\n")
+            
+            # Section 3: Python Dependencies (pyproject.toml)
+            f.write(f"\n🐍 PYTHON DEPENDENCIES (pyproject.toml): {len(self.results['python_deps'])} total\n")
+            f.write("-" * 50 + "\n")
+            
+            python_deps_sorted = sort_deps_by_file_and_criticality(self.results['python_deps'], 'Python')
+            for dep_name in python_deps_sorted:
+                if dep_name in self.results['documented_deps']:
+                    doc_info = self.results['documented_deps'][dep_name]
+                    file_name = doc_info['file']
+                    severity = doc_info['severity']
+                    has_necessity = doc_info['has_necessity']
+                    count = doc_info['count']
                     
-                    f.write(f"  ❌ {dep_name} ({info['type']} - {info['source']})\n")
+                    # Determine status emoji
+                    if count > 1:
+                        status = "⚠️"  # Over-documented (mentioned in multiple files)
+                    elif has_necessity and severity != "UNKNOWN":
+                        status = "✅"  # Complete
+                    elif has_necessity:
+                        status = "🔨"  # Has necessity but unknown severity
+                    else:
+                        status = "🔨"  # Missing necessity
+                    
+                    # Format severity display
+                    severity_display = f"({severity})" if severity != "UNKNOWN" else ""
+                    over_doc_display = f" [mentioned in {count} files]" if count > 1 else ""
+                    f.write(f"  {status} {dep_name} {severity_display}{over_doc_display} - {file_name}\n")
+                else:
+                    f.write(f"  ❌ {dep_name} (not documented)\n")
+            
+            # Section 4: Missing Dependencies (mixed from all sources)
+            f.write(f"\n❌ MISSING DEPENDENCIES: {len(self.results['missing_docs'])} total\n")
+            f.write("-" * 50 + "\n")
+            
+            # Group missing deps by source
+            missing_by_source = {'Ruby': [], 'JavaScript': [], 'Python': []}
+            for dep_name in self.results['missing_docs']:
+                if dep_name in self.results['gemfile_deps']:
+                    missing_by_source['Ruby'].append(dep_name)
+                elif dep_name in self.results['package_json_deps']:
+                    missing_by_source['JavaScript'].append(dep_name)
+                elif dep_name in self.results['python_deps']:
+                    missing_by_source['Python'].append(dep_name)
+            
+            for source_type, deps in missing_by_source.items():
+                if deps:
+                    f.write(f"\n  {source_type}:\n")
+                    for dep_name in sorted(deps):
+                        f.write(f"    ❌ {dep_name}\n")
             
             # Summary
-            total_deps = len(all_deps)
+            total_deps = len(self.results['gemfile_deps']) + len(self.results['package_json_deps']) + len(self.results['python_deps'])
             documented_count = len(self.results['documented_deps'])
             complete_count = sum(1 for info in self.results['documented_deps'].values() 
                                if info['has_necessity'] and info['severity'] != "UNKNOWN")
