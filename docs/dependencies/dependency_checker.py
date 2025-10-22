@@ -190,7 +190,7 @@ class DependencyChecker:
         return self.results
     
     def save_report(self, output_dir: Path = None):
-        """Save the report to a timestamped file"""
+        """Save the report to a timestamped file with enhanced format"""
         if output_dir is None:
             output_dir = Path(__file__).parent
         
@@ -203,57 +203,102 @@ class DependencyChecker:
             f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write("="*80 + "\n")
             
-            # Ruby dependencies
-            f.write(f"\n🔴 RUBY DEPENDENCIES (Gemfile): {len(self.results['gemfile_deps'])} total\n")
-            f.write("-" * 50 + "\n")
-            for dep in sorted(self.results['gemfile_deps']):
-                status = "✅" if dep in self.results['documented_deps'] else "❌"
-                f.write(f"  {status} {dep}\n")
+            # Combine all dependencies
+            all_deps = {}
             
-            # JavaScript dependencies
-            f.write(f"\n🟡 JAVASCRIPT DEPENDENCIES (package.json): {len(self.results['package_json_deps'])} total\n")
-            f.write("-" * 50 + "\n")
-            for dep in sorted(self.results['package_json_deps']):
-                status = "✅" if dep in self.results['documented_deps'] else "❌"
-                f.write(f"  {status} {dep}\n")
+            # Add Ruby dependencies
+            for dep in self.results['gemfile_deps']:
+                all_deps[dep] = {'type': 'Ruby', 'source': 'Gemfile'}
             
-            # Python dependencies
-            f.write(f"\n🐍 PYTHON DEPENDENCIES (pyproject.toml): {len(self.results['python_deps'])} total\n")
-            f.write("-" * 50 + "\n")
-            for dep in sorted(self.results['python_deps']):
-                status = "✅" if dep in self.results['documented_deps'] else "❌"
-                f.write(f"  {status} {dep}\n")
+            # Add JavaScript dependencies  
+            for dep in self.results['package_json_deps']:
+                all_deps[dep] = {'type': 'JavaScript', 'source': 'package.json'}
             
-            # Missing documentation
-            if self.results['missing_docs']:
-                f.write(f"\n❌ MISSING DEPENDENCIES NOT DOCUMENTED: {len(self.results['missing_docs'])}\n")
-                f.write("-" * 50 + "\n")
-                for dep in sorted(self.results['missing_docs']):
-                    f.write(f"  ❌ {dep}\n")
-            else:
-                f.write(f"\n✅ ALL DEPENDENCIES ARE DOCUMENTED!\n")
+            # Add Python dependencies
+            for dep in self.results['python_deps']:
+                all_deps[dep] = {'type': 'Python', 'source': 'pyproject.toml'}
             
-            # Incomplete documentation
-            if self.results['incomplete_docs']:
-                f.write(f"\n⚠️  DEPENDENCIES WITHOUT FULL DETAIL: {len(self.results['incomplete_docs'])}\n")
-                f.write("-" * 50 + "\n")
-                for dep in sorted(self.results['incomplete_docs']):
-                    f.write(f"  ⚠️  {dep} (missing necessity line)\n")
-            else:
-                f.write(f"\n✅ ALL DOCUMENTED DEPENDENCIES HAVE FULL DETAIL!\n")
+            # Sort dependencies by file first, then by criticality, then by name
+            def sort_key(dep_info):
+                dep_name, info = dep_info
+                if dep_name in self.results['documented_deps']:
+                    doc_info = self.results['documented_deps'][dep_name]
+                    file_name = doc_info['file']
+                    severity = doc_info['severity']
+                    has_necessity = doc_info['has_necessity']
+                    
+                    # Sort by file first
+                    file_priority = 0
+                    
+                    # Then by criticality (CRITICAL=0, HIGH=1, MEDIUM=2, LOW=3, UNKNOWN=4)
+                    severity_order = {'CRITICAL': 0, 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3, 'UNKNOWN': 4}
+                    severity_priority = severity_order.get(severity, 4)
+                    
+                    # Then by name
+                    return (file_priority, file_name, severity_priority, dep_name)
+                else:
+                    # Undocumented dependencies go last
+                    return (1, info['type'], 999, dep_name)
+            
+            sorted_deps = sorted(all_deps.items(), key=sort_key)
+            
+            f.write(f"\n📋 ALL DEPENDENCIES: {len(all_deps)} total\n")
+            f.write("-" * 80 + "\n")
+            
+            current_file = None
+            for dep_name, info in sorted_deps:
+                # Get documentation info if available
+                if dep_name in self.results['documented_deps']:
+                    doc_info = self.results['documented_deps'][dep_name]
+                    file_name = doc_info['file']
+                    severity = doc_info['severity']
+                    has_necessity = doc_info['has_necessity']
+                    count = doc_info['count']
+                    
+                    # Determine status emoji
+                    if count > 1:
+                        status = "⚠️"  # Over-documented (mentioned in multiple files)
+                    elif has_necessity and severity != "UNKNOWN":
+                        status = "✅"  # Complete
+                    elif has_necessity:
+                        status = "🔨"  # Has necessity but unknown severity
+                    else:
+                        status = "🔨"  # Missing necessity
+                    
+                    # Print file header if changed
+                    if current_file != file_name:
+                        current_file = file_name
+                        f.write(f"\n📁 {file_name.upper()}:\n")
+                    
+                    # Format severity display
+                    severity_display = f"({severity})" if severity != "UNKNOWN" else ""
+                    over_doc_display = f" [mentioned in {count} files]" if count > 1 else ""
+                    f.write(f"  {status} {dep_name} {severity_display}{over_doc_display}\n")
+                    
+                else:
+                    # Not documented
+                    if current_file != "UNDOCUMENTED":
+                        current_file = "UNDOCUMENTED"
+                        f.write(f"\n❌ NOT DOCUMENTED:\n")
+                    
+                    f.write(f"  ❌ {dep_name} ({info['type']} - {info['source']})\n")
             
             # Summary
-            total_deps = len(self.results['gemfile_deps']) + len(self.results['package_json_deps']) + len(self.results['python_deps'])
+            total_deps = len(all_deps)
             documented_count = len(self.results['documented_deps'])
             complete_count = sum(1 for info in self.results['documented_deps'].values() 
                                if info['has_necessity'] and info['severity'] != "UNKNOWN")
+            missing_count = len(self.results['missing_docs'])
+            incomplete_count = len(self.results['incomplete_docs'])
+            over_documented_count = len(self.results['over_documented_deps'])
             
             f.write(f"\n📈 SUMMARY:\n")
             f.write(f"  Total dependencies: {total_deps}\n")
             f.write(f"  Documented: {documented_count} ({documented_count/total_deps*100:.1f}%)\n")
             f.write(f"  Complete: {complete_count} ({complete_count/total_deps*100:.1f}%)\n")
-            f.write(f"  Missing: {len(self.results['missing_docs'])}\n")
-            f.write(f"  Incomplete: {len(self.results['incomplete_docs'])}\n")
+            f.write(f"  Missing: {missing_count}\n")
+            f.write(f"  Incomplete: {incomplete_count}\n")
+            f.write(f"  Over-documented: {over_documented_count}\n")
         
         print(f"📄 Report saved to: {report_file}")
         return report_file
