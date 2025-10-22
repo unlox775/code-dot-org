@@ -223,6 +223,28 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Documentation**: [AWS Google SDK](https://github.com/aws/aws-sdk-ruby) | [GitHub](https://github.com/aws/aws-sdk-ruby)
   - **Current version**: 0.8.x | **Latest stable**: 0.8.x | **Upgrade path**: Stable, no major changes needed
 
+### Additional AWS Services
+
+- [x] **aws-sdk-autoscaling** (~> 1.0) - AWS Auto Scaling service client
+  - **Usage**: Automatic scaling of EC2 instances and other resources
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/autoscaling_service.rb:1` - Auto scaling management
+  - **Necessity**: **MEDIUM** - Auto scaling, removing would break automatic scaling
+  - **Compensation if removed**: Would need to implement manual scaling or use different solution
+  - **Documentation**: [AWS Auto Scaling Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/AutoScaling/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
+  - **Current version**: 1.x | **Latest stable**: 1.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **aws-sdk-bedrockagentruntime** (~> 1.0) - AWS Bedrock Agent Runtime service client
+  - **Usage**: AI agent runtime for Bedrock services
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/bedrock_service.rb:1` - AI agent management
+  - **Necessity**: **LOW** - AI services, removing would break AI agent functionality
+  - **Compensation if removed**: Would need to use different AI service provider
+  - **Documentation**: [AWS Bedrock Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/BedrockAgentRuntime/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
+  - **Current version**: 1.x | **Latest stable**: 1.x | **Upgrade path**: Stable, regular updates available
+
 ## Summary
 
 ### Critical Dependencies (Cannot be removed)

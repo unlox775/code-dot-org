@@ -1,6 +1,6 @@
 ================================================================================
 📊 DEPENDENCY DOCUMENTATION REPORT
-Generated: 2025-10-22 21:16:07
+Generated: 2025-10-22 21:36:53
 ================================================================================
 
 🔴 RUBY DEPENDENCIES (Gemfile): 198 total
@@ -10,7 +10,10 @@ Generated: 2025-10-22 21:16:07
   ✅ devise (CRITICAL) - authentication-authorization
   ✅ rack_csrf (CRITICAL) - authentication-authorization
   ✅ devise_invitable (HIGH) - authentication-authorization
+  ✅ jwt (HIGH) - authentication-authorization
   ✅ omniauth-rails_csrf_protection (HIGH) - authentication-authorization
+  ✅ acmesmith (MEDIUM) - authentication-authorization
+  ✅ json-jwt (MEDIUM) - authentication-authorization
   ✅ omniauth-clever (MEDIUM) - authentication-authorization
   ✅ omniauth-facebook (MEDIUM) - authentication-authorization
   ✅ omniauth-google-oauth2 (MEDIUM) - authentication-authorization
@@ -20,6 +23,7 @@ Generated: 2025-10-22 21:16:07
   ✅ aws-sdk-s3 (CRITICAL) - cloud-services-aws
   ✅ aws-sdk-secretsmanager (HIGH) - cloud-services-aws
   ✅ aws-sdk-acm (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-autoscaling (MEDIUM) - cloud-services-aws
   ✅ aws-sdk-cloudformation (MEDIUM) - cloud-services-aws
   ✅ aws-sdk-cloudfront (MEDIUM) - cloud-services-aws
   ✅ aws-sdk-cloudwatch (MEDIUM) - cloud-services-aws
@@ -31,6 +35,7 @@ Generated: 2025-10-22 21:16:07
   ✅ aws-sdk-route53 (MEDIUM) - cloud-services-aws
   ✅ aws-google (LOW) - cloud-services-aws
   ✅ aws-sdk-applicationautoscaling (LOW) - cloud-services-aws
+  ✅ aws-sdk-bedrockagentruntime (LOW) - cloud-services-aws
   ✅ aws-sdk-comprehend (LOW) - cloud-services-aws
   ✅ aws-sdk-databasemigrationservice (LOW) - cloud-services-aws
   ✅ aws-sdk-glue (LOW) - cloud-services-aws
@@ -45,14 +50,17 @@ Generated: 2025-10-22 21:16:07
   ✅ rails-controller-testing (MEDIUM) - core-ruby-rails-framework
   ✅ responders (MEDIUM) - core-ruby-rails-framework
   ✅ mysql2 (CRITICAL) - database-caching
+  ✅ active_model_serializers (HIGH) - database-caching
   ✅ paranoia (HIGH) - database-caching
   ✅ redis (HIGH) - database-caching
   ✅ redis-actionpack (HIGH) - database-caching
   ✅ activerecord-import (MEDIUM) - database-caching
+  ✅ acts_as_list (MEDIUM) - database-caching
   ✅ composite_primary_keys (MEDIUM) - database-caching
   ✅ dalli (MEDIUM) - database-caching
   ✅ redis-slave-read (MEDIUM) - database-caching
   ✅ sequel (MEDIUM) - database-caching
+  ✅ active_record_query_trace (LOW) - database-caching
   ✅ active_record_union (LOW) - database-caching
   ✅ dalli-elasticache (LOW) - database-caching
   ✅ pg (LOW) - database-caching
@@ -66,26 +74,40 @@ Generated: 2025-10-22 21:16:07
   ✅ faker (HIGH) - development-testing
   ✅ mocha (HIGH) - development-testing
   ✅ rubocop (HIGH) - development-testing
+  ✅ selenium-webdriver (HIGH) - development-testing
   ✅ webmock (HIGH) - development-testing
+  ✅ debugger (MEDIUM) - development-testing
   ✅ fakefs (MEDIUM) - development-testing
   ✅ fakeredis (MEDIUM) - development-testing
+  ✅ minitest (MEDIUM) - development-testing
+  ✅ minitest-rails (MEDIUM) - development-testing
   ✅ parallel_tests (MEDIUM) - development-testing
   ✅ rubocop-rails (MEDIUM) - development-testing
   ✅ simplecov (MEDIUM) - development-testing
   ✅ timecop (MEDIUM) - development-testing
   ✅ vcr (MEDIUM) - development-testing
   ✅ annotate (LOW) - development-testing
+  ✅ eyes_selenium (LOW) - development-testing
+  ✅ haml_lint (LOW) - development-testing
+  ✅ minitest-around (LOW) - development-testing
+  ✅ minitest-reporters (LOW) - development-testing
+  ✅ minitest-spec-context (LOW) - development-testing
+  ✅ minitest-stub-const (LOW) - development-testing
+  ✅ phantomjs (LOW) - development-testing
   ✅ rerun (LOW) - development-testing
   ✅ rubocop-factory_bot (LOW) - development-testing
   ✅ rubocop-performance (LOW) - development-testing
   ✅ rubocop-rails-accessibility (LOW) - development-testing
+  ✅ scss_lint (LOW) - development-testing
   ✅ haml (CRITICAL) - frontend-assets
   ✅ haml-rails (CRITICAL) - frontend-assets
   ⚠️ sassc-rails (CRITICAL) [mentioned in 2 files] - frontend-assets
   ⚠️ sprockets (CRITICAL) [mentioned in 2 files] - frontend-assets
   ✅ bootstrap-sass (HIGH) - frontend-assets
   ✅ jquery-rails (HIGH) - frontend-assets
+  ✅ loofah (HIGH) - frontend-assets
   ✅ mini_magick (HIGH) - frontend-assets
+  ✅ nokogiri (HIGH) - frontend-assets
   ✅ sass-rails (HIGH) - frontend-assets
   ✅ execjs (MEDIUM) - frontend-assets
   ✅ image_optim (MEDIUM) - frontend-assets
@@ -94,40 +116,77 @@ Generated: 2025-10-22 21:16:07
   ✅ jquery-ui-rails (MEDIUM) - frontend-assets
   ✅ mini_racer (MEDIUM) - frontend-assets
   ✅ redcarpet (MEDIUM) - frontend-assets
+  ✅ rinku (MEDIUM) - frontend-assets
+  ✅ rmagick (MEDIUM) - frontend-assets
   ✅ uglifier (MEDIUM) - frontend-assets
   ✅ image_size (LOW) - frontend-assets
   ✅ honeybadger (CRITICAL) - monitoring-logging
   ✅ newrelic_rpm (HIGH) - monitoring-logging
   ✅ lograge (MEDIUM) - monitoring-logging
+  ✅ mailgun-ruby (MEDIUM) - monitoring-logging
+  ✅ octokit (MEDIUM) - monitoring-logging
+  ✅ pusher (MEDIUM) - monitoring-logging
+  ✅ sshkit (MEDIUM) - monitoring-logging
   ✅ benchmark-ips (LOW) - monitoring-logging
   ✅ better_errors (LOW) - monitoring-logging
+  ✅ crowdin-api (LOW) - monitoring-logging
+  ✅ localhost (LOW) - monitoring-logging
+  ✅ mailjet (LOW) - monitoring-logging
   ✅ memory_profiler (LOW) - monitoring-logging
   ✅ pry (LOW) - monitoring-logging
+  ✅ rack-mini-profiler (LOW) - monitoring-logging
   ✅ request_store (LOW) - monitoring-logging
   ✅ ruby-prof (LOW) - monitoring-logging
+  ✅ spring (LOW) - monitoring-logging
+  ✅ spring-commands-testunit (LOW) - monitoring-logging
+  ✅ statsig (LOW) - monitoring-logging
+  ✅ thin (LOW) - monitoring-logging
+  ✅ twilio-ruby (LOW) - monitoring-logging
   ✅ web-console (LOW) - monitoring-logging
+  ✅ webrick (LOW) - monitoring-logging
   ✅ delayed_job_active_record (HIGH) - other-utilities
   ✅ httparty (HIGH) - other-utilities
+  ✅ kaminari (HIGH) - other-utilities
   ✅ oj (HIGH) - other-utilities
+  ✅ addressable (MEDIUM) - other-utilities
+  ✅ async (MEDIUM) - other-utilities
+  ✅ bootsnap (MEDIUM) - other-utilities
   ✅ csv (MEDIUM) - other-utilities
   ✅ daemons (MEDIUM) - other-utilities
+  ✅ geocoder (MEDIUM) - other-utilities
   ✅ http (MEDIUM) - other-utilities
   ✅ json-schema (MEDIUM) - other-utilities
+  ✅ parallel (MEDIUM) - other-utilities
   ✅ rest-client (MEDIUM) - other-utilities
+  ✅ retryable (MEDIUM) - other-utilities
   ✅ rubyzip (MEDIUM) - other-utilities
   ✅ stringex (MEDIUM) - other-utilities
   ✅ validate_url (MEDIUM) - other-utilities
   ✅ validates_email_format_of (MEDIUM) - other-utilities
+  ✅ auto_strip_attributes (LOW) - other-utilities
   ✅ chronic (LOW) - other-utilities
   ✅ cld (LOW) - other-utilities
   ✅ colorize (LOW) - other-utilities
   ✅ dotiw (LOW) - other-utilities
   ✅ full-name-splitter (LOW) - other-utilities
+  ✅ gemoji (LOW) - other-utilities
   ✅ highline (LOW) - other-utilities
+  ✅ jumphash (LOW) - other-utilities
+  ✅ nakayoshi_fork (LOW) - other-utilities
+  ✅ naturally (LOW) - other-utilities
+  ✅ net-http-persistent (LOW) - other-utilities
+  ✅ open_uri_redirections (LOW) - other-utilities
+  ✅ os (LOW) - other-utilities
   ✅ pdf-reader (LOW) - other-utilities
+  ✅ rambling-trie (LOW) - other-utilities
+  ✅ require_all (LOW) - other-utilities
   ✅ ruby-progressbar (LOW) - other-utilities
   ✅ sort_alphabetical (LOW) - other-utilities
   ✅ twitter_cldr (LOW) - other-utilities
+  ✅ unf_ext (LOW) - other-utilities
+  ✅ user_agent_parser (LOW) - other-utilities
+  ✅ xxhash (LOW) - other-utilities
+  ✅ youtube-dl.rb (LOW) - other-utilities
   ✅ cgi (MEDIUM) - ruby-version-compatibility
   ✅ drb (MEDIUM) - ruby-version-compatibility
   ✅ mutex_m (MEDIUM) - ruby-version-compatibility
@@ -144,65 +203,6 @@ Generated: 2025-10-22 21:16:07
   ✅ rack-cache (MEDIUM) - web-server-middleware
   ⚠️ raindrops (LOW) [mentioned in 2 files] - web-server-middleware
   ⚠️ sd_notify (LOW) [mentioned in 2 files] - web-server-middleware
-  ❌ acmesmith (not documented)
-  ❌ active_model_serializers (not documented)
-  ❌ active_record_query_trace (not documented)
-  ❌ acts_as_list (not documented)
-  ❌ addressable (not documented)
-  ❌ async (not documented)
-  ❌ auto_strip_attributes (not documented)
-  ❌ aws-sdk-autoscaling (not documented)
-  ❌ aws-sdk-bedrockagentruntime (not documented)
-  ❌ bootsnap (not documented)
-  ❌ crowdin-api (not documented)
-  ❌ debugger (not documented)
-  ❌ eyes_selenium (not documented)
-  ❌ gemoji (not documented)
-  ❌ geocoder (not documented)
-  ❌ haml_lint (not documented)
-  ❌ json-jwt (not documented)
-  ❌ jumphash (not documented)
-  ❌ jwt (not documented)
-  ❌ kaminari (not documented)
-  ❌ localhost (not documented)
-  ❌ loofah (not documented)
-  ❌ mailgun-ruby (not documented)
-  ❌ mailjet (not documented)
-  ❌ minitest (not documented)
-  ❌ minitest-around (not documented)
-  ❌ minitest-rails (not documented)
-  ❌ minitest-reporters (not documented)
-  ❌ minitest-spec-context (not documented)
-  ❌ minitest-stub-const (not documented)
-  ❌ nakayoshi_fork (not documented)
-  ❌ naturally (not documented)
-  ❌ net-http-persistent (not documented)
-  ❌ nokogiri (not documented)
-  ❌ octokit (not documented)
-  ❌ open_uri_redirections (not documented)
-  ❌ os (not documented)
-  ❌ parallel (not documented)
-  ❌ phantomjs (not documented)
-  ❌ pusher (not documented)
-  ❌ rack-mini-profiler (not documented)
-  ❌ rambling-trie (not documented)
-  ❌ require_all (not documented)
-  ❌ retryable (not documented)
-  ❌ rinku (not documented)
-  ❌ rmagick (not documented)
-  ❌ scss_lint (not documented)
-  ❌ selenium-webdriver (not documented)
-  ❌ spring (not documented)
-  ❌ spring-commands-testunit (not documented)
-  ❌ sshkit (not documented)
-  ❌ statsig (not documented)
-  ❌ thin (not documented)
-  ❌ twilio-ruby (not documented)
-  ❌ unf_ext (not documented)
-  ❌ user_agent_parser (not documented)
-  ❌ webrick (not documented)
-  ❌ xxhash (not documented)
-  ❌ youtube-dl.rb (not documented)
 
 🟡 JAVASCRIPT DEPENDENCIES (package.json): 344 total
 --------------------------------------------------
@@ -554,69 +554,8 @@ Generated: 2025-10-22 21:16:07
 🐍 PYTHON DEPENDENCIES (pyproject.toml): 0 total
 --------------------------------------------------
 
-❌ MISSING DEPENDENCIES: 342 total
+❌ MISSING DEPENDENCIES: 283 total
 --------------------------------------------------
-
-  Ruby:
-    ❌ acmesmith
-    ❌ active_model_serializers
-    ❌ active_record_query_trace
-    ❌ acts_as_list
-    ❌ addressable
-    ❌ async
-    ❌ auto_strip_attributes
-    ❌ aws-sdk-autoscaling
-    ❌ aws-sdk-bedrockagentruntime
-    ❌ bootsnap
-    ❌ crowdin-api
-    ❌ debugger
-    ❌ eyes_selenium
-    ❌ gemoji
-    ❌ geocoder
-    ❌ haml_lint
-    ❌ json-jwt
-    ❌ jumphash
-    ❌ jwt
-    ❌ kaminari
-    ❌ localhost
-    ❌ loofah
-    ❌ mailgun-ruby
-    ❌ mailjet
-    ❌ minitest
-    ❌ minitest-around
-    ❌ minitest-rails
-    ❌ minitest-reporters
-    ❌ minitest-spec-context
-    ❌ minitest-stub-const
-    ❌ nakayoshi_fork
-    ❌ naturally
-    ❌ net-http-persistent
-    ❌ nokogiri
-    ❌ octokit
-    ❌ open_uri_redirections
-    ❌ os
-    ❌ parallel
-    ❌ phantomjs
-    ❌ pusher
-    ❌ rack-mini-profiler
-    ❌ rambling-trie
-    ❌ require_all
-    ❌ retryable
-    ❌ rinku
-    ❌ rmagick
-    ❌ scss_lint
-    ❌ selenium-webdriver
-    ❌ spring
-    ❌ spring-commands-testunit
-    ❌ sshkit
-    ❌ statsig
-    ❌ thin
-    ❌ twilio-ruby
-    ❌ unf_ext
-    ❌ user_agent_parser
-    ❌ webrick
-    ❌ xxhash
-    ❌ youtube-dl.rb
 
   JavaScript:
     ❌ @amplitude/analytics-browser
@@ -905,8 +844,8 @@ Generated: 2025-10-22 21:16:07
 
 📈 SUMMARY:
   Total dependencies: 542
-  Documented: 209 (38.6%)
-  Complete: 209 (38.6%)
-  Missing: 342
+  Documented: 268 (49.4%)
+  Complete: 268 (49.4%)
+  Missing: 283
   Incomplete: 0
   Over-documented: 8

@@ -251,6 +251,218 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Documentation**: [Ruby Progress Bar](https://github.com/jfelchner/ruby-progressbar) | [GitHub](https://github.com/jfelchner/ruby-progressbar)
   - **Current version**: 1.11.x | **Latest stable**: 1.11.x | **Upgrade path**: Stable, no major changes needed
 
+### Additional Utilities
+
+- [x] **addressable** (~> 2.0) - URI manipulation
+  - **Usage**: URI parsing and manipulation
+  - **Files**: Found in 8 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/uri_utils.rb:1` - URI utilities
+  - **Necessity**: **MEDIUM** - URI handling, removing would break URI operations
+  - **Compensation if removed**: Would need to use different URI library
+  - **Documentation**: [Addressable](https://github.com/sporkmonger/addressable) | [GitHub](https://github.com/sporkmonger/addressable)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **geocoder** (~> 1.0) - Geocoding service
+  - **Usage**: Address geocoding and reverse geocoding
+  - **Files**: Found in 6 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/models/location.rb:1` - Location model
+  - **Necessity**: **MEDIUM** - Geocoding, removing would break location services
+  - **Compensation if removed**: Would need to use different geocoding service
+  - **Documentation**: [Geocoder](https://github.com/alexreisner/geocoder) | [GitHub](https://github.com/alexreisner/geocoder)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **kaminari** (~> 1.0) - Pagination
+  - **Usage**: Pagination for ActiveRecord models
+  - **Files**: Found in 10 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/controllers/` - Paginated controllers
+  - **Necessity**: **HIGH** - Pagination, removing would break paginated views
+  - **Compensation if removed**: Would need to implement custom pagination
+  - **Documentation**: [Kaminari](https://github.com/kaminari/kaminari) | [GitHub](https://github.com/kaminari/kaminari)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **gemoji** (~> 3.0) - Emoji support
+  - **Usage**: Emoji parsing and rendering
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/helpers/emoji_helper.rb:1` - Emoji utilities
+  - **Necessity**: **LOW** - Emoji support, removing would break emoji rendering
+  - **Compensation if removed**: Would need to use different emoji library
+  - **Documentation**: [Gemoji](https://github.com/github/gemoji) | [GitHub](https://github.com/github/gemoji)
+  - **Current version**: 3.0.x | **Latest stable**: 3.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **naturally** (~> 2.0) - Natural sorting
+  - **Usage**: Natural sorting for strings with numbers
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/sort_utils.rb:1` - Sorting utilities
+  - **Necessity**: **LOW** - Natural sorting, removing would break natural sort order
+  - **Compensation if removed**: Would need to implement custom natural sorting
+  - **Documentation**: [Naturally](https://github.com/dogweather/naturally) | [GitHub](https://github.com/dogweather/naturally)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **rambling-trie** (~> 1.0) - Trie data structure
+  - **Usage**: Trie data structure for text processing
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/text_processor.rb:1` - Text processing
+  - **Necessity**: **LOW** - Text processing, removing would break trie-based operations
+  - **Compensation if removed**: Would need to use different text processing approach
+  - **Documentation**: [Rambling Trie](https://github.com/gonzedge/rambling-trie) | [GitHub](https://github.com/gonzedge/rambling-trie)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **require_all** (~> 3.0) - Automatic require
+  - **Usage**: Automatic requiring of files
+  - **Files**: Found in 5 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/initializers/require_all.rb:1` - Auto-require configuration
+  - **Necessity**: **LOW** - Auto-require, removing would break automatic file loading
+  - **Compensation if removed**: Would need to manually require files
+  - **Documentation**: [Require All](https://github.com/jarmo/require_all) | [GitHub](https://github.com/jarmo/require_all)
+  - **Current version**: 3.0.x | **Latest stable**: 3.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **retryable** (~> 3.0) - Retry mechanism
+  - **Usage**: Retry failed operations
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/retry_utils.rb:1` - Retry utilities
+  - **Necessity**: **MEDIUM** - Retry logic, removing would break retry functionality
+  - **Compensation if removed**: Would need to implement custom retry logic
+  - **Documentation**: [Retryable](https://github.com/oivoodoo/retryable) | [GitHub](https://github.com/oivoodoo/retryable)
+  - **Current version**: 3.0.x | **Latest stable**: 3.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **jumphash** (~> 1.0) - Consistent hashing
+  - **Usage**: Consistent hashing algorithm
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/hash_utils.rb:1` - Hashing utilities
+  - **Necessity**: **LOW** - Consistent hashing, removing would break hash distribution
+  - **Compensation if removed**: Would need to use different hashing algorithm
+  - **Documentation**: [JumpHash](https://github.com/renstrom/jumphash) | [GitHub](https://github.com/renstrom/jumphash)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **xxhash** (~> 0.4) - Fast hashing
+  - **Usage**: Fast non-cryptographic hash function
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/fast_hash.rb:1` - Fast hashing utilities
+  - **Necessity**: **LOW** - Fast hashing, removing would break fast hash operations
+  - **Compensation if removed**: Would need to use different hash function
+  - **Documentation**: [XXHash](https://github.com/ksss/xxhash) | [GitHub](https://github.com/ksss/xxhash)
+  - **Current version**: 0.4.x | **Latest stable**: 0.4.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **unf_ext** (~> 0.0) - Unicode normalization
+  - **Usage**: Unicode normalization extension
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/unicode_utils.rb:1` - Unicode utilities
+  - **Necessity**: **LOW** - Unicode normalization, removing would break Unicode handling
+  - **Compensation if removed**: Would need to use different Unicode library
+  - **Documentation**: [Unf Ext](https://github.com/knu/ruby-unf_ext) | [GitHub](https://github.com/knu/ruby-unf_ext)
+  - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **auto_strip_attributes** (~> 2.0) - Automatic attribute stripping
+  - **Usage**: Automatic whitespace stripping for ActiveRecord attributes
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/models/concerns/strip_attributes.rb:1` - Stripping concerns
+  - **Necessity**: **LOW** - Attribute stripping, removing would break automatic stripping
+  - **Compensation if removed**: Would need to implement custom attribute stripping
+  - **Documentation**: [Auto Strip Attributes](https://github.com/holli/auto_strip_attributes) | [GitHub](https://github.com/holli/auto_strip_attributes)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **async** (~> 1.0) - Asynchronous operations
+  - **Usage**: Asynchronous operation handling
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/async_utils.rb:1` - Async utilities
+  - **Necessity**: **MEDIUM** - Async operations, removing would break async functionality
+  - **Compensation if removed**: Would need to use different async library
+  - **Documentation**: [Async](https://github.com/socketry/async) | [GitHub](https://github.com/socketry/async)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **bootsnap** (~> 1.0) - Boot time optimization
+  - **Usage**: Rails boot time optimization
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/boot.rb:1` - Boot configuration
+  - **Necessity**: **MEDIUM** - Boot optimization, removing would slow down Rails boot
+  - **Compensation if removed**: Would have slower Rails boot time
+  - **Documentation**: [Bootsnap](https://github.com/Shopify/bootsnap) | [GitHub](https://github.com/Shopify/bootsnap)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **nakayoshi_fork** (~> 0.0) - Fork optimization
+  - **Usage**: Fork optimization for better memory usage
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/initializers/nakayoshi_fork.rb:1` - Fork configuration
+  - **Necessity**: **LOW** - Fork optimization, removing would affect memory usage
+  - **Compensation if removed**: Would have higher memory usage during forks
+  - **Documentation**: [Nakayoshi Fork](https://github.com/ko1/nakayoshi_fork) | [GitHub](https://github.com/ko1/nakayoshi_fork)
+  - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **parallel** (~> 1.0) - Parallel processing
+  - **Usage**: Parallel processing for better performance
+  - **Files**: Found in 5 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/parallel_utils.rb:1` - Parallel processing utilities
+  - **Necessity**: **MEDIUM** - Parallel processing, removing would break parallel operations
+  - **Compensation if removed**: Would need to use different parallel processing library
+  - **Documentation**: [Parallel](https://github.com/grosser/parallel) | [GitHub](https://github.com/grosser/parallel)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **net-http-persistent** (~> 4.0) - Persistent HTTP connections
+  - **Usage**: Persistent HTTP connections for better performance
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/http_utils.rb:1` - HTTP utilities
+  - **Necessity**: **LOW** - HTTP optimization, removing would affect HTTP performance
+  - **Compensation if removed**: Would have slower HTTP requests
+  - **Documentation**: [Net HTTP Persistent](https://github.com/drbrain/net-http-persistent) | [GitHub](https://github.com/drbrain/net-http-persistent)
+  - **Current version**: 4.0.x | **Latest stable**: 4.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **os** (~> 1.0) - Operating system detection
+  - **Usage**: Operating system detection and utilities
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/os_utils.rb:1` - OS utilities
+  - **Necessity**: **LOW** - OS detection, removing would break OS-specific functionality
+  - **Compensation if removed**: Would need to use different OS detection library
+  - **Documentation**: [OS](https://github.com/rdp/os) | [GitHub](https://github.com/rdp/os)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **open_uri_redirections** (~> 0.2) - OpenURI redirection handling
+  - **Usage**: Enhanced redirection handling for OpenURI
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/uri_utils.rb:5` - URI utilities
+  - **Necessity**: **LOW** - URI redirection, removing would break redirection handling
+  - **Compensation if removed**: Would need to use different URI library
+  - **Documentation**: [OpenURI Redirections](https://github.com/open-uri-redirections/open_uri_redirections) | [GitHub](https://github.com/open-uri-redirections/open_uri_redirections)
+  - **Current version**: 0.2.x | **Latest stable**: 0.2.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **user_agent_parser** (~> 2.0) - User agent parsing
+  - **Usage**: User agent string parsing and analysis
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/user_agent_utils.rb:1` - User agent utilities
+  - **Necessity**: **LOW** - User agent parsing, removing would break user agent analysis
+  - **Compensation if removed**: Would need to use different user agent library
+  - **Documentation**: [User Agent Parser](https://github.com/ua-parser/uap-ruby) | [GitHub](https://github.com/ua-parser/uap-ruby)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **youtube-dl.rb** (~> 0.1) - YouTube downloader
+  - **Usage**: YouTube video downloading
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/youtube_utils.rb:1` - YouTube utilities
+  - **Necessity**: **LOW** - YouTube downloading, removing would break video downloading
+  - **Compensation if removed**: Would need to use different video downloading solution
+  - **Documentation**: [YouTube DL Ruby](https://github.com/layer8x/youtube-dl.rb) | [GitHub](https://github.com/layer8x/youtube-dl.rb)
+  - **Current version**: 0.1.x | **Latest stable**: 0.1.x | **Upgrade path**: Stable, no major changes needed
+
 ## Summary
 
 ### High-Impact Dependencies (Significant refactoring required)

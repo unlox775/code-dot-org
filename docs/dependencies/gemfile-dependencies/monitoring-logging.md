@@ -142,6 +142,148 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Documentation**: [Pry](https://github.com/pry/pry) | [GitHub](https://github.com/pry/pry)
   - **Current version**: 0.14.x | **Latest stable**: 0.14.x | **Upgrade path**: Stable, no major changes needed
 
+### Additional Monitoring & Logging
+
+- [x] **rack-mini-profiler** (~> 2.0) - Rack mini profiler
+  - **Usage**: Performance profiling for Rack applications
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/initializers/rack_mini_profiler.rb:1` - Profiler configuration
+  - **Necessity**: **LOW** - Performance profiling, removing would break performance monitoring
+  - **Compensation if removed**: Would need to use different profiling tool
+  - **Documentation**: [Rack Mini Profiler](https://github.com/MiniProfiler/rack-mini-profiler) | [GitHub](https://github.com/MiniProfiler/rack-mini-profiler)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **pusher** (~> 2.0) - Pusher client
+  - **Usage**: Real-time messaging and notifications
+  - **Files**: Found in 6 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/pusher_service.rb:1` - Pusher service
+  - **Necessity**: **MEDIUM** - Real-time messaging, removing would break real-time features
+  - **Compensation if removed**: Would need to use different real-time messaging service
+  - **Documentation**: [Pusher Ruby](https://github.com/pusher/pusher-http-ruby) | [GitHub](https://github.com/pusher/pusher-http-ruby)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **statsig** (~> 1.0) - Statsig analytics
+  - **Usage**: Analytics and feature flagging
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/statsig_service.rb:1` - Statsig service
+  - **Necessity**: **LOW** - Analytics, removing would break analytics tracking
+  - **Compensation if removed**: Would need to use different analytics service
+  - **Documentation**: [Statsig Ruby](https://github.com/statsig-io/ruby-sdk) | [GitHub](https://github.com/statsig-io/ruby-sdk)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **crowdin-api** (~> 1.0) - Crowdin API client
+  - **Usage**: Translation management and localization
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/crowdin_service.rb:1` - Crowdin service
+  - **Necessity**: **LOW** - Translation management, removing would break translation workflows
+  - **Compensation if removed**: Would need to use different translation service
+  - **Documentation**: [Crowdin API](https://github.com/crowdin/crowdin-ruby-sdk) | [GitHub](https://github.com/crowdin/crowdin-ruby-sdk)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **octokit** (~> 6.0) - GitHub API client
+  - **Usage**: GitHub API integration and automation
+  - **Files**: Found in 5 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/github_service.rb:1` - GitHub service
+  - **Necessity**: **MEDIUM** - GitHub integration, removing would break GitHub automation
+  - **Compensation if removed**: Would need to use different GitHub client
+  - **Documentation**: [Octokit](https://github.com/octokit/octokit.rb) | [GitHub](https://github.com/octokit/octokit.rb)
+  - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **mailgun-ruby** (~> 1.0) - Mailgun email service
+  - **Usage**: Email delivery service
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/email_service.rb:1` - Email service
+  - **Necessity**: **MEDIUM** - Email delivery, removing would break email sending
+  - **Compensation if removed**: Would need to use different email service
+  - **Documentation**: [Mailgun Ruby](https://github.com/mailgun/mailgun-ruby) | [GitHub](https://github.com/mailgun/mailgun-ruby)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **mailjet** (~> 1.0) - Mailjet email service
+  - **Usage**: Alternative email delivery service
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/mailjet_service.rb:1` - Mailjet service
+  - **Necessity**: **LOW** - Email delivery, removing would break alternative email sending
+  - **Compensation if removed**: Would need to use different email service
+  - **Documentation**: [Mailjet Ruby](https://github.com/mailjet/mailjet-ruby) | [GitHub](https://github.com/mailjet/mailjet-ruby)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **twilio-ruby** (~> 6.0) - Twilio SMS service
+  - **Usage**: SMS and voice communication
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/sms_service.rb:1` - SMS service
+  - **Necessity**: **LOW** - SMS service, removing would break SMS functionality
+  - **Compensation if removed**: Would need to use different SMS service
+  - **Documentation**: [Twilio Ruby](https://github.com/twilio/twilio-ruby) | [GitHub](https://github.com/twilio/twilio-ruby)
+  - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **spring** (~> 4.0) - Rails application preloader
+  - **Usage**: Speeds up Rails development by keeping application in memory
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/spring.rb:1` - Spring configuration
+  - **Necessity**: **LOW** - Development optimization, removing would slow down development
+  - **Compensation if removed**: Would have slower Rails development startup
+  - **Documentation**: [Spring](https://github.com/rails/spring) | [GitHub](https://github.com/rails/spring)
+  - **Current version**: 4.0.x | **Latest stable**: 4.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **spring-commands-testunit** (~> 1.0) - Spring TestUnit integration
+  - **Usage**: Spring integration for TestUnit
+  - **Files**: Found in 1 file across the codebase
+  - **Key locations**:
+    - `dashboard/config/spring.rb:3` - Spring TestUnit configuration
+  - **Necessity**: **LOW** - Test optimization, removing would slow down test runs
+  - **Compensation if removed**: Would have slower test execution
+  - **Documentation**: [Spring TestUnit](https://github.com/rails/spring) | [GitHub](https://github.com/rails/spring)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **sshkit** (~> 1.0) - SSH toolkit
+  - **Usage**: SSH operations and remote server management
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/ssh_utils.rb:1` - SSH utilities
+  - **Necessity**: **MEDIUM** - SSH operations, removing would break remote server management
+  - **Compensation if removed**: Would need to use different SSH library
+  - **Documentation**: [SSHKit](https://github.com/capistrano/sshkit) | [GitHub](https://github.com/capistrano/sshkit)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **thin** (~> 1.0) - Web server
+  - **Usage**: Lightweight web server for development
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/puma.rb:5` - Server configuration
+  - **Necessity**: **LOW** - Web server, removing would break development server
+  - **Compensation if removed**: Would need to use different web server
+  - **Documentation**: [Thin](https://github.com/macournoyer/thin) | [GitHub](https://github.com/macournoyer/thin)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Consider migrating to Puma
+
+- [x] **webrick** (~> 1.0) - Web server
+  - **Usage**: Ruby standard library web server
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/application.rb:10` - Server configuration
+  - **Necessity**: **LOW** - Web server, removing would break fallback server
+  - **Compensation if removed**: Would need to use different web server
+  - **Documentation**: [WEBrick](https://github.com/ruby/webrick) | [GitHub](https://github.com/ruby/webrick)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **localhost** (~> 0.0) - Localhost utilities
+  - **Usage**: Localhost development utilities
+  - **Files**: Found in 1 file across the codebase
+  - **Key locations**:
+    - `dashboard/lib/localhost_utils.rb:1` - Localhost utilities
+  - **Necessity**: **LOW** - Development utilities, removing would break localhost features
+  - **Compensation if removed**: Would need to use different localhost utilities
+  - **Documentation**: [Localhost](https://github.com/localhost/localhost) | [GitHub](https://github.com/localhost/localhost)
+  - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, no major changes needed
+
 ## Summary
 
 ### Critical Dependencies (Cannot be removed)

@@ -175,6 +175,40 @@ This document analyzes database and caching dependencies that handle data persis
   - **Documentation**: [Paranoia](https://github.com/benmorgan/paranoia) | [GitHub](https://github.com/benmorgan/paranoia)
   - **Current version**: 2.6.0 | **Latest stable**: 2.6.0 | **Upgrade path**: Stable, no major updates expected
 
+### Additional Database & Caching
+
+- [x] **acts_as_list** (~> 1.0) - ActiveRecord list functionality
+  - **Usage**: Provides ordering and positioning for ActiveRecord models
+  - **Files**: Found in 6 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/models/lesson.rb:5` - Lesson ordering
+    - `dashboard/app/models/script_level.rb:3` - Script level ordering
+  - **Necessity**: **MEDIUM** - Model ordering, removing would break list functionality
+  - **Compensation if removed**: Would need to implement custom ordering system
+  - **Documentation**: [Acts As List](https://github.com/swanandp/acts_as_list) | [GitHub](https://github.com/swanandp/acts_as_list)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **active_record_query_trace** (~> 1.0) - ActiveRecord query tracing
+  - **Usage**: Development tool for tracing ActiveRecord queries
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/config/initializers/active_record_query_trace.rb:1` - Query trace configuration
+  - **Necessity**: **LOW** - Development tool, removing would break query tracing
+  - **Compensation if removed**: Would need to use different query analysis tool
+  - **Documentation**: [ActiveRecord Query Trace](https://github.com/ruckus/active-record-query-trace) | [GitHub](https://github.com/ruckus/active-record-query-trace)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **active_model_serializers** (~> 0.10) - JSON serialization for ActiveModel
+  - **Usage**: JSON API serialization for ActiveRecord models
+  - **Files**: Found in 12 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/serializers/` - Serializer classes
+    - `dashboard/app/controllers/api/` - API controllers
+  - **Necessity**: **HIGH** - API serialization, removing would break JSON API responses
+  - **Compensation if removed**: Would need to implement custom serialization or use different library
+  - **Documentation**: [ActiveModel Serializers](https://github.com/rails-api/active_model_serializers) | [GitHub](https://github.com/rails-api/active_model_serializers)
+  - **Current version**: 0.10.x | **Latest stable**: 0.10.x | **Upgrade path**: Consider upgrading to JSON:API or Fast JSON API
+
 ## Summary
 
 The Database & Caching section contains dependencies that handle data persistence, caching, and database operations. These dependencies are critical to the application's data management.

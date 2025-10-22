@@ -130,6 +130,39 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Documentation**: [reCAPTCHA Ruby](https://github.com/ambethia/recaptcha) | [GitHub](https://github.com/ambethia/recaptcha)
   - **Current version**: 5.8.x | **Latest stable**: 5.8.x | **Upgrade path**: Stable, no major changes needed
 
+### Additional Authentication & Security
+
+- [x] **jwt** (~> 2.0) - JSON Web Token implementation
+  - **Usage**: JWT token generation and validation for API authentication
+  - **Files**: Found in 8 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/controllers/api/` - API authentication
+    - `dashboard/app/services/jwt_service.rb:1` - JWT token management
+  - **Necessity**: **HIGH** - API authentication, removing would break JWT-based API auth
+  - **Compensation if removed**: Would need to implement custom token system or use different auth method
+  - **Documentation**: [JWT Ruby](https://github.com/jwt/ruby-jwt) | [GitHub](https://github.com/jwt/ruby-jwt)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **json-jwt** (~> 1.0) - JSON Web Token library
+  - **Usage**: JWT token creation and verification
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/token_service.rb:1` - Token utilities
+  - **Necessity**: **MEDIUM** - JWT handling, removing would break JWT operations
+  - **Compensation if removed**: Would need to use different JWT library
+  - **Documentation**: [JSON JWT](https://github.com/nov/json-jwt) | [GitHub](https://github.com/nov/json-jwt)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **acmesmith** (~> 0.4) - ACME client for Let's Encrypt
+  - **Usage**: Automated SSL certificate management
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/ssl_manager.rb:1` - SSL certificate management
+  - **Necessity**: **MEDIUM** - SSL automation, removing would break automated SSL renewal
+  - **Compensation if removed**: Would need manual SSL certificate management
+  - **Documentation**: [Acmesmith](https://github.com/sorah/acmesmith) | [GitHub](https://github.com/sorah/acmesmith)
+  - **Current version**: 0.4.x | **Latest stable**: 0.4.x | **Upgrade path**: Stable, regular updates available
+
 ## Summary
 
 ### Critical Dependencies (Cannot be removed)

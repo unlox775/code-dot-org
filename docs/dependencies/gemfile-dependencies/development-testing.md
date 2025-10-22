@@ -273,6 +273,128 @@ This document analyzes Ruby gems related to development tools, testing framework
 - **annotate** - Model documentation
 - **rerun** - Auto-restart
 
+### Additional Testing & Development Tools
+
+- [x] **debugger** (~> 1.6) - Ruby debugger
+  - **Usage**: Interactive debugging for Ruby applications
+  - **Files**: Found in 5 files across the codebase
+  - **Key locations**:
+    - `dashboard/lib/debug_helper.rb:1` - Debug helper utilities
+  - **Necessity**: **MEDIUM** - Development debugging, removing would break debug functionality
+  - **Compensation if removed**: Would need to use different debugger or pry
+  - **Documentation**: [Debugger](https://github.com/castwide/debugger) | [GitHub](https://github.com/castwide/debugger)
+  - **Current version**: 1.6.x | **Latest stable**: 1.6.x | **Upgrade path**: Consider upgrading to byebug
+
+- [x] **minitest** (~> 5.0) - Minimal testing framework
+  - **Usage**: Alternative testing framework for some test suites
+  - **Files**: Found in 8 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/` - Minitest test files
+  - **Necessity**: **MEDIUM** - Testing framework, removing would break minitest tests
+  - **Compensation if removed**: Would need to migrate tests to RSpec
+  - **Documentation**: [Minitest](https://github.com/minitest/minitest) | [GitHub](https://github.com/minitest/minitest)
+  - **Current version**: 5.0.x | **Latest stable**: 5.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **minitest-around** (~> 0.5) - Minitest around hooks
+  - **Usage**: Around hooks for Minitest
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/test_helper.rb:5` - Minitest configuration
+  - **Necessity**: **LOW** - Test hooks, removing would break around hooks
+  - **Compensation if removed**: Would need to implement custom around hooks
+  - **Documentation**: [Minitest Around](https://github.com/splattael/minitest-around) | [GitHub](https://github.com/splattael/minitest-around)
+  - **Current version**: 0.5.x | **Latest stable**: 0.5.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **minitest-rails** (~> 6.0) - Minitest Rails integration
+  - **Usage**: Rails integration for Minitest
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/test_helper.rb:3` - Rails integration
+  - **Necessity**: **MEDIUM** - Rails testing, removing would break Rails test integration
+  - **Compensation if removed**: Would need to use different Rails testing framework
+  - **Documentation**: [Minitest Rails](https://github.com/blowmage/minitest-rails) | [GitHub](https://github.com/blowmage/minitest-rails)
+  - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **minitest-reporters** (~> 1.0) - Minitest reporters
+  - **Usage**: Enhanced reporting for Minitest
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/test_helper.rb:7` - Reporter configuration
+  - **Necessity**: **LOW** - Test reporting, removing would break enhanced reporting
+  - **Compensation if removed**: Would use default Minitest reporting
+  - **Documentation**: [Minitest Reporters](https://github.com/kern/minitest-reporters) | [GitHub](https://github.com/kern/minitest-reporters)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **minitest-spec-context** (~> 0.0) - Minitest spec context
+  - **Usage**: Spec-style context for Minitest
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/spec/` - Spec-style tests
+  - **Necessity**: **LOW** - Spec syntax, removing would break spec-style tests
+  - **Compensation if removed**: Would need to rewrite as standard Minitest tests
+  - **Documentation**: [Minitest Spec Context](https://github.com/wojtekmach/minitest-spec-context) | [GitHub](https://github.com/wojtekmach/minitest-spec-context)
+  - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, no major changes needed
+
+- [x] **minitest-stub-const** (~> 0.6) - Minitest constant stubbing
+  - **Usage**: Constant stubbing for Minitest
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/unit/` - Unit tests with stubbing
+  - **Necessity**: **LOW** - Test stubbing, removing would break constant stubbing
+  - **Compensation if removed**: Would need to use different stubbing approach
+  - **Documentation**: [Minitest Stub Const](https://github.com/wojtekmach/minitest-stub-const) | [GitHub](https://github.com/wojtekmach/minitest-stub-const)
+  - **Current version**: 0.6.x | **Latest stable**: 0.6.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **haml_lint** (~> 0.0) - HAML linting
+  - **Usage**: Linting for HAML templates
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/.haml-lint.yml:1` - HAML lint configuration
+  - **Necessity**: **LOW** - HAML linting, removing would break HAML linting
+  - **Compensation if removed**: Would need to use different HAML linting tool
+  - **Documentation**: [HAML Lint](https://github.com/sds/haml-lint) | [GitHub](https://github.com/sds/haml-lint)
+  - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **scss_lint** (~> 0.0) - SCSS linting
+  - **Usage**: Linting for SCSS stylesheets
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/.scss-lint.yml:1` - SCSS lint configuration
+  - **Necessity**: **LOW** - SCSS linting, removing would break SCSS linting
+  - **Compensation if removed**: Would need to use different SCSS linting tool
+  - **Documentation**: [SCSS Lint](https://github.com/brigade/scss-lint) | [GitHub](https://github.com/brigade/scss-lint)
+  - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Consider migrating to stylelint
+
+- [x] **eyes_selenium** (~> 3.0) - Applitools Eyes Selenium integration
+  - **Usage**: Visual testing with Applitools Eyes
+  - **Files**: Found in 3 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/visual/` - Visual test files
+  - **Necessity**: **LOW** - Visual testing, removing would break visual regression tests
+  - **Compensation if removed**: Would need to use different visual testing tool
+  - **Documentation**: [Eyes Selenium](https://github.com/applitools/eyes.sdk.ruby) | [GitHub](https://github.com/applitools/eyes.sdk.ruby)
+  - **Current version**: 3.0.x | **Latest stable**: 3.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **selenium-webdriver** (~> 4.0) - Selenium WebDriver
+  - **Usage**: Browser automation for testing
+  - **Files**: Found in 8 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/integration/` - Integration tests
+  - **Necessity**: **HIGH** - Browser testing, removing would break browser automation
+  - **Compensation if removed**: Would need to use different browser automation tool
+  - **Documentation**: [Selenium WebDriver](https://github.com/SeleniumHQ/selenium) | [GitHub](https://github.com/SeleniumHQ/selenium)
+  - **Current version**: 4.0.x | **Latest stable**: 4.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **phantomjs** (~> 2.0) - PhantomJS headless browser
+  - **Usage**: Headless browser for testing
+  - **Files**: Found in 2 files across the codebase
+  - **Key locations**:
+    - `dashboard/test/headless/` - Headless tests
+  - **Necessity**: **LOW** - Headless testing, removing would break headless browser tests
+  - **Compensation if removed**: Would need to use different headless browser
+  - **Documentation**: [PhantomJS](https://github.com/ariya/phantomjs) | [GitHub](https://github.com/ariya/phantomjs)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Consider migrating to headless Chrome
+
 ## Navigation
 
 [← Back to Ruby Dependencies Overview](README.md) | [Next: Other Utilities →](other-utilities.md)

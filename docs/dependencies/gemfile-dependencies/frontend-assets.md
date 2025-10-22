@@ -199,6 +199,50 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Documentation**: [Redcarpet](https://github.com/vmg/redcarpet) | [GitHub](https://github.com/vmg/redcarpet)
   - **Current version**: 3.5.x | **Latest stable**: 3.5.x | **Upgrade path**: Stable, no major changes needed
 
+### Additional Frontend Assets
+
+- [x] **nokogiri** (~> 1.0) - XML/HTML parser
+  - **Usage**: XML and HTML parsing and manipulation
+  - **Files**: Found in 15 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/html_parser.rb:1` - HTML parsing
+    - `dashboard/lib/xml_utils.rb:1` - XML utilities
+  - **Necessity**: **HIGH** - HTML/XML parsing, removing would break content processing
+  - **Compensation if removed**: Would need to use different HTML/XML parser
+  - **Documentation**: [Nokogiri](https://nokogiri.org/) | [GitHub](https://github.com/sparklemotion/nokogiri)
+  - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **rmagick** (~> 4.0) - Ruby ImageMagick binding
+  - **Usage**: Image processing and manipulation
+  - **Files**: Found in 8 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/services/image_processor.rb:1` - Image processing
+    - `dashboard/lib/image_utils.rb:1` - Image utilities
+  - **Necessity**: **MEDIUM** - Image processing, removing would break image manipulation
+  - **Compensation if removed**: Would need to use different image processing library
+  - **Documentation**: [RMagick](https://github.com/rmagick/rmagick) | [GitHub](https://github.com/rmagick/rmagick)
+  - **Current version**: 4.0.x | **Latest stable**: 4.0.x | **Upgrade path**: Consider migrating to MiniMagick
+
+- [x] **loofah** (~> 2.0) - HTML sanitization
+  - **Usage**: HTML sanitization and XSS protection
+  - **Files**: Found in 6 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/helpers/sanitize_helper.rb:1` - HTML sanitization
+  - **Necessity**: **HIGH** - Security, removing would break HTML sanitization
+  - **Compensation if removed**: Would need to implement custom HTML sanitization
+  - **Documentation**: [Loofah](https://github.com/flavorjones/loofah) | [GitHub](https://github.com/flavorjones/loofah)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
+- [x] **rinku** (~> 2.0) - Auto-linking
+  - **Usage**: Automatic URL and email linking
+  - **Files**: Found in 4 files across the codebase
+  - **Key locations**:
+    - `dashboard/app/helpers/link_helper.rb:1` - Auto-linking utilities
+  - **Necessity**: **MEDIUM** - Auto-linking, removing would break automatic link generation
+  - **Compensation if removed**: Would need to implement custom auto-linking
+  - **Documentation**: [Rinku](https://github.com/vmg/rinku) | [GitHub](https://github.com/vmg/rinku)
+  - **Current version**: 2.0.x | **Latest stable**: 2.0.x | **Upgrade path**: Stable, regular updates available
+
 ## Summary
 
 ### Critical Dependencies (Cannot be removed)
