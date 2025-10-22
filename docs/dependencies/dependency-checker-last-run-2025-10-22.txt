@@ -1,591 +1,912 @@
 ================================================================================
 📊 DEPENDENCY DOCUMENTATION REPORT
-Generated: 2025-10-22 20:45:19
+Generated: 2025-10-22 21:16:07
 ================================================================================
 
-📋 ALL DEPENDENCIES: 540 total
---------------------------------------------------------------------------------
+🔴 RUBY DEPENDENCIES (Gemfile): 198 total
+--------------------------------------------------
+  ✅ bcrypt (CRITICAL) - authentication-authorization
+  ✅ cancancan (CRITICAL) - authentication-authorization
+  ✅ devise (CRITICAL) - authentication-authorization
+  ✅ rack_csrf (CRITICAL) - authentication-authorization
+  ✅ devise_invitable (HIGH) - authentication-authorization
+  ✅ omniauth-rails_csrf_protection (HIGH) - authentication-authorization
+  ✅ omniauth-clever (MEDIUM) - authentication-authorization
+  ✅ omniauth-facebook (MEDIUM) - authentication-authorization
+  ✅ omniauth-google-oauth2 (MEDIUM) - authentication-authorization
+  ✅ omniauth-microsoft_v2_auth (MEDIUM) - authentication-authorization
+  ✅ recaptcha (MEDIUM) - authentication-authorization
+  ✅ aws-sdk-core (CRITICAL) - cloud-services-aws
+  ✅ aws-sdk-s3 (CRITICAL) - cloud-services-aws
+  ✅ aws-sdk-secretsmanager (HIGH) - cloud-services-aws
+  ✅ aws-sdk-acm (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-cloudformation (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-cloudfront (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-cloudwatch (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-cloudwatchlogs (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-dynamodb (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-ec2 (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-firehose (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-rds (MEDIUM) - cloud-services-aws
+  ✅ aws-sdk-route53 (MEDIUM) - cloud-services-aws
+  ✅ aws-google (LOW) - cloud-services-aws
+  ✅ aws-sdk-applicationautoscaling (LOW) - cloud-services-aws
+  ✅ aws-sdk-comprehend (LOW) - cloud-services-aws
+  ✅ aws-sdk-databasemigrationservice (LOW) - cloud-services-aws
+  ✅ aws-sdk-glue (LOW) - cloud-services-aws
+  ✅ aws-sdk-sagemakerruntime (LOW) - cloud-services-aws
+  ✅ google-apis-core (CRITICAL) - cloud-services-google
+  ✅ google-apis-analytics_v3 (HIGH) - cloud-services-google
+  ✅ google-apis-classroom_v1 (HIGH) - cloud-services-google
+  ✅ google-apis-youtube_v3 (MEDIUM) - cloud-services-google
+  ✅ google_drive (MEDIUM) - cloud-services-google
+  ✅ pycall (CRITICAL) - core-python
+  ✅ rails (CRITICAL) - core-ruby-rails-framework
+  ✅ rails-controller-testing (MEDIUM) - core-ruby-rails-framework
+  ✅ responders (MEDIUM) - core-ruby-rails-framework
+  ✅ mysql2 (CRITICAL) - database-caching
+  ✅ paranoia (HIGH) - database-caching
+  ✅ redis (HIGH) - database-caching
+  ✅ redis-actionpack (HIGH) - database-caching
+  ✅ activerecord-import (MEDIUM) - database-caching
+  ✅ composite_primary_keys (MEDIUM) - database-caching
+  ✅ dalli (MEDIUM) - database-caching
+  ✅ redis-slave-read (MEDIUM) - database-caching
+  ✅ sequel (MEDIUM) - database-caching
+  ✅ active_record_union (LOW) - database-caching
+  ✅ dalli-elasticache (LOW) - database-caching
+  ✅ pg (LOW) - database-caching
+  ✅ scenic (LOW) - database-caching
+  ✅ scenic-mysql_adapter (LOW) - database-caching
+  ✅ factory_bot_rails (CRITICAL) - development-testing
+  ✅ rspec (CRITICAL) - development-testing
+  ✅ brakeman (HIGH) - development-testing
+  ✅ cucumber (HIGH) - development-testing
+  ✅ database_cleaner-active_record (HIGH) - development-testing
+  ✅ faker (HIGH) - development-testing
+  ✅ mocha (HIGH) - development-testing
+  ✅ rubocop (HIGH) - development-testing
+  ✅ webmock (HIGH) - development-testing
+  ✅ fakefs (MEDIUM) - development-testing
+  ✅ fakeredis (MEDIUM) - development-testing
+  ✅ parallel_tests (MEDIUM) - development-testing
+  ✅ rubocop-rails (MEDIUM) - development-testing
+  ✅ simplecov (MEDIUM) - development-testing
+  ✅ timecop (MEDIUM) - development-testing
+  ✅ vcr (MEDIUM) - development-testing
+  ✅ annotate (LOW) - development-testing
+  ✅ rerun (LOW) - development-testing
+  ✅ rubocop-factory_bot (LOW) - development-testing
+  ✅ rubocop-performance (LOW) - development-testing
+  ✅ rubocop-rails-accessibility (LOW) - development-testing
+  ✅ haml (CRITICAL) - frontend-assets
+  ✅ haml-rails (CRITICAL) - frontend-assets
+  ⚠️ sassc-rails (CRITICAL) [mentioned in 2 files] - frontend-assets
+  ⚠️ sprockets (CRITICAL) [mentioned in 2 files] - frontend-assets
+  ✅ bootstrap-sass (HIGH) - frontend-assets
+  ✅ jquery-rails (HIGH) - frontend-assets
+  ✅ mini_magick (HIGH) - frontend-assets
+  ✅ sass-rails (HIGH) - frontend-assets
+  ✅ execjs (MEDIUM) - frontend-assets
+  ✅ image_optim (MEDIUM) - frontend-assets
+  ✅ image_optim_pack (MEDIUM) - frontend-assets
+  ✅ image_optim_rails (MEDIUM) - frontend-assets
+  ✅ jquery-ui-rails (MEDIUM) - frontend-assets
+  ✅ mini_racer (MEDIUM) - frontend-assets
+  ✅ redcarpet (MEDIUM) - frontend-assets
+  ✅ uglifier (MEDIUM) - frontend-assets
+  ✅ image_size (LOW) - frontend-assets
+  ✅ honeybadger (CRITICAL) - monitoring-logging
+  ✅ newrelic_rpm (HIGH) - monitoring-logging
+  ✅ lograge (MEDIUM) - monitoring-logging
+  ✅ benchmark-ips (LOW) - monitoring-logging
+  ✅ better_errors (LOW) - monitoring-logging
+  ✅ memory_profiler (LOW) - monitoring-logging
+  ✅ pry (LOW) - monitoring-logging
+  ✅ request_store (LOW) - monitoring-logging
+  ✅ ruby-prof (LOW) - monitoring-logging
+  ✅ web-console (LOW) - monitoring-logging
+  ✅ delayed_job_active_record (HIGH) - other-utilities
+  ✅ httparty (HIGH) - other-utilities
+  ✅ oj (HIGH) - other-utilities
+  ✅ csv (MEDIUM) - other-utilities
+  ✅ daemons (MEDIUM) - other-utilities
+  ✅ http (MEDIUM) - other-utilities
+  ✅ json-schema (MEDIUM) - other-utilities
+  ✅ rest-client (MEDIUM) - other-utilities
+  ✅ rubyzip (MEDIUM) - other-utilities
+  ✅ stringex (MEDIUM) - other-utilities
+  ✅ validate_url (MEDIUM) - other-utilities
+  ✅ validates_email_format_of (MEDIUM) - other-utilities
+  ✅ chronic (LOW) - other-utilities
+  ✅ cld (LOW) - other-utilities
+  ✅ colorize (LOW) - other-utilities
+  ✅ dotiw (LOW) - other-utilities
+  ✅ full-name-splitter (LOW) - other-utilities
+  ✅ highline (LOW) - other-utilities
+  ✅ pdf-reader (LOW) - other-utilities
+  ✅ ruby-progressbar (LOW) - other-utilities
+  ✅ sort_alphabetical (LOW) - other-utilities
+  ✅ twitter_cldr (LOW) - other-utilities
+  ✅ cgi (MEDIUM) - ruby-version-compatibility
+  ✅ drb (MEDIUM) - ruby-version-compatibility
+  ✅ mutex_m (MEDIUM) - ruby-version-compatibility
+  ✅ observer (MEDIUM) - ruby-version-compatibility
+  ✅ syslog (MEDIUM) - ruby-version-compatibility
+  ✅ thwait (MEDIUM) - ruby-version-compatibility
+  ✅ abbrev (LOW) - ruby-version-compatibility
+  ✅ sorted_set (LOW) - ruby-version-compatibility
+  ✅ puma (CRITICAL) - web-server-middleware
+  ✅ rack-cors (HIGH) - web-server-middleware
+  ✅ rack-ssl-enforcer (HIGH) - web-server-middleware
+  ✅ sinatra (HIGH) - web-server-middleware
+  ✅ puma_worker_killer (MEDIUM) - web-server-middleware
+  ✅ rack-cache (MEDIUM) - web-server-middleware
+  ⚠️ raindrops (LOW) [mentioned in 2 files] - web-server-middleware
+  ⚠️ sd_notify (LOW) [mentioned in 2 files] - web-server-middleware
+  ❌ acmesmith (not documented)
+  ❌ active_model_serializers (not documented)
+  ❌ active_record_query_trace (not documented)
+  ❌ acts_as_list (not documented)
+  ❌ addressable (not documented)
+  ❌ async (not documented)
+  ❌ auto_strip_attributes (not documented)
+  ❌ aws-sdk-autoscaling (not documented)
+  ❌ aws-sdk-bedrockagentruntime (not documented)
+  ❌ bootsnap (not documented)
+  ❌ crowdin-api (not documented)
+  ❌ debugger (not documented)
+  ❌ eyes_selenium (not documented)
+  ❌ gemoji (not documented)
+  ❌ geocoder (not documented)
+  ❌ haml_lint (not documented)
+  ❌ json-jwt (not documented)
+  ❌ jumphash (not documented)
+  ❌ jwt (not documented)
+  ❌ kaminari (not documented)
+  ❌ localhost (not documented)
+  ❌ loofah (not documented)
+  ❌ mailgun-ruby (not documented)
+  ❌ mailjet (not documented)
+  ❌ minitest (not documented)
+  ❌ minitest-around (not documented)
+  ❌ minitest-rails (not documented)
+  ❌ minitest-reporters (not documented)
+  ❌ minitest-spec-context (not documented)
+  ❌ minitest-stub-const (not documented)
+  ❌ nakayoshi_fork (not documented)
+  ❌ naturally (not documented)
+  ❌ net-http-persistent (not documented)
+  ❌ nokogiri (not documented)
+  ❌ octokit (not documented)
+  ❌ open_uri_redirections (not documented)
+  ❌ os (not documented)
+  ❌ parallel (not documented)
+  ❌ phantomjs (not documented)
+  ❌ pusher (not documented)
+  ❌ rack-mini-profiler (not documented)
+  ❌ rambling-trie (not documented)
+  ❌ require_all (not documented)
+  ❌ retryable (not documented)
+  ❌ rinku (not documented)
+  ❌ rmagick (not documented)
+  ❌ scss_lint (not documented)
+  ❌ selenium-webdriver (not documented)
+  ❌ spring (not documented)
+  ❌ spring-commands-testunit (not documented)
+  ❌ sshkit (not documented)
+  ❌ statsig (not documented)
+  ❌ thin (not documented)
+  ❌ twilio-ruby (not documented)
+  ❌ unf_ext (not documented)
+  ❌ user_agent_parser (not documented)
+  ❌ webrick (not documented)
+  ❌ xxhash (not documented)
+  ❌ youtube-dl.rb (not documented)
 
-📁 AUTHENTICATION-AUTHORIZATION:
-  ✅ bcrypt (CRITICAL)
-  ✅ cancancan (CRITICAL)
-  ✅ devise (CRITICAL)
-  ✅ rack_csrf (CRITICAL)
-  ✅ devise_invitable (HIGH)
-  ✅ omniauth-rails_csrf_protection (HIGH)
-  ✅ omniauth-clever (MEDIUM)
-  ✅ omniauth-facebook (MEDIUM)
-  ✅ omniauth-google-oauth2 (MEDIUM)
-  ✅ omniauth-microsoft_v2_auth (MEDIUM)
-  ✅ recaptcha (MEDIUM)
+🟡 JAVASCRIPT DEPENDENCIES (package.json): 344 total
+--------------------------------------------------
+  ✅ @code-dot-org/blockly (CRITICAL) - blockly-visual-programming
+  ✅ blockly (CRITICAL) - blockly-visual-programming
+  ✅ @blockly/block-shareable-procedures (HIGH) - blockly-visual-programming
+  ✅ @blockly/keyboard-navigation (HIGH) - blockly-visual-programming
+  ✅ @blockly/theme-highcontrast (HIGH) - blockly-visual-programming
+  ✅ @blockly/field-bitmap (MEDIUM) - blockly-visual-programming
+  ✅ @blockly/field-colour (MEDIUM) - blockly-visual-programming
+  ✅ @blockly/field-grid-dropdown (MEDIUM) - blockly-visual-programming
+  ✅ @blockly/plugin-cross-tab-copy-paste (MEDIUM) - blockly-visual-programming
+  ✅ @blockly/theme-dark (MEDIUM) - blockly-visual-programming
+  ✅ @blockly/plugin-scroll-options (LOW) - blockly-visual-programming
+  ✅ @babel/core (CRITICAL) - build-tools
+  ✅ @babel/preset-react (CRITICAL) - build-tools
+  ✅ babel-loader (CRITICAL) - build-tools
+  ✅ webpack (CRITICAL) - build-tools
+  ✅ webpack-cli (CRITICAL) - build-tools
+  ✅ @babel/preset-env (HIGH) - build-tools
+  ✅ css-loader (HIGH) - build-tools
+  ✅ sass (HIGH) - build-tools
+  ✅ sass-loader (HIGH) - build-tools
+  ✅ style-loader (HIGH) - build-tools
+  ✅ terser-webpack-plugin (HIGH) - build-tools
+  ✅ webpack-dev-server (HIGH) - build-tools
+  ✅ grunt (MEDIUM) - build-tools
+  ✅ grunt-cli (MEDIUM) - build-tools
+  ✅ webpack-manifest-plugin (MEDIUM) - build-tools
+  ✅ uglify-js (LOW) - build-tools
+  ✅ webpack-bundle-analyzer (LOW) - build-tools
+  ✅ @codemirror/language (CRITICAL) - code-editors
+  ✅ @codemirror/state (CRITICAL) - code-editors
+  ✅ @codemirror/view (CRITICAL) - code-editors
+  ✅ codemirror (CRITICAL) - code-editors
+  ✅ @codemirror/autocomplete (HIGH) - code-editors
+  ✅ @codemirror/commands (HIGH) - code-editors
+  ✅ @codemirror/lang-javascript (HIGH) - code-editors
+  ✅ @codemirror/lang-python (HIGH) - code-editors
+  ✅ @codemirror/lint (HIGH) - code-editors
+  ✅ @lezer/highlight (HIGH) - code-editors
+  ✅ @codemirror/lang-css (MEDIUM) - code-editors
+  ✅ @codemirror/lang-html (MEDIUM) - code-editors
+  ✅ @codemirror/lang-markdown (MEDIUM) - code-editors
+  ✅ @codemirror/search (MEDIUM) - code-editors
+  ✅ @codemirror/lang-java (LOW) - code-editors
+  ✅ codemirror-spell-checker (LOW) - code-editors
+  ✅ react (CRITICAL) - core-react-ui
+  ✅ react-dom (CRITICAL) - core-react-ui
+  ✅ @emotion/react (HIGH) - core-react-ui
+  ✅ @emotion/styled (HIGH) - core-react-ui
+  ✅ @mui/material (HIGH) - core-react-ui
+  ✅ @types/react (HIGH) - core-react-ui
+  ✅ @types/react-dom (HIGH) - core-react-ui
+  ✅ prop-types (MEDIUM) - core-react-ui
+  ✅ react-is (MEDIUM) - core-react-ui
+  ✅ mocha (HIGH) - development-testing
+  ✅ bootstrap-sass (HIGH) - frontend-assets
+  ✅ @reduxjs/toolkit (HIGH) - state-management
+  ✅ react-redux (HIGH) - state-management
+  ✅ redux (HIGH) - state-management
+  ✅ redux-thunk (HIGH) - state-management
+  ✅ redux-mock-store (MEDIUM) - state-management
+  ✅ redux-logger (LOW) - state-management
+  ❌ @amplitude/analytics-browser (not documented)
+  ❌ @babel/eslint-parser (not documented)
+  ❌ @babel/plugin-proposal-object-rest-spread (not documented)
+  ❌ @babel/plugin-proposal-optional-chaining (not documented)
+  ❌ @babel/plugin-syntax-dynamic-import (not documented)
+  ❌ @babel/plugin-transform-class-properties (not documented)
+  ❌ @babel/plugin-transform-classes (not documented)
+  ❌ @babel/plugin-transform-regenerator (not documented)
+  ❌ @babel/polyfill (not documented)
+  ❌ @cdo/interpreted (not documented)
+  ❌ @code-dot-org/artist (not documented)
+  ❌ @code-dot-org/component-library (not documented)
+  ❌ @code-dot-org/component-library-styles (not documented)
+  ❌ @code-dot-org/craft (not documented)
+  ❌ @code-dot-org/dance-party (not documented)
+  ❌ @code-dot-org/fonts (not documented)
+  ❌ @code-dot-org/johnny-five (not documented)
+  ❌ @code-dot-org/js-interpreter (not documented)
+  ❌ @code-dot-org/js-numbers (not documented)
+  ❌ @code-dot-org/maze (not documented)
+  ❌ @code-dot-org/ml-activities (not documented)
+  ❌ @code-dot-org/ml-playground (not documented)
+  ❌ @code-dot-org/p5.play (not documented)
+  ❌ @code-dot-org/piskel (not documented)
+  ❌ @code-dot-org/redactable-markdown (not documented)
+  ❌ @code-dot-org/remark-plugins (not documented)
+  ❌ @dnd-kit/core (not documented)
+  ❌ @dnd-kit/modifiers (not documented)
+  ❌ @dnd-kit/sortable (not documented)
+  ❌ @dnd-kit/utilities (not documented)
+  ❌ @dsco_/link (not documented)
+  ❌ @eslint/js (not documented)
+  ❌ @excalidraw/excalidraw (not documented)
+  ❌ @magenta/music (not documented)
+  ❌ @mapbox/search-js-react (not documented)
+  ❌ @microbit/microbit-fs (not documented)
+  ❌ @microsoft/immersive-reader-sdk (not documented)
+  ❌ @pmmmwh/react-refresh-webpack-plugin (not documented)
+  ❌ @pyodide/webpack-plugin (not documented)
+  ❌ @react-bootstrap/pagination (not documented)
+  ❌ @react-pdf/renderer (not documented)
+  ❌ @replit/codemirror-css-color-picker (not documented)
+  ❌ @selectize/selectize (not documented)
+  ❌ @statsig/js-client (not documented)
+  ❌ @statsig/session-replay (not documented)
+  ❌ @statsig/web-analytics (not documented)
+  ❌ @storybook/addon-a11y (not documented)
+  ❌ @storybook/addon-essentials (not documented)
+  ❌ @storybook/addon-webpack5-compiler-babel (not documented)
+  ❌ @storybook/core-common (not documented)
+  ❌ @storybook/csf-tools (not documented)
+  ❌ @storybook/react (not documented)
+  ❌ @storybook/react-webpack5 (not documented)
+  ❌ @testing-library/dom (not documented)
+  ❌ @testing-library/jest-dom (not documented)
+  ❌ @testing-library/react (not documented)
+  ❌ @testing-library/react-hooks (not documented)
+  ❌ @testing-library/user-event (not documented)
+  ❌ @types/chai (not documented)
+  ❌ @types/htmlhint (not documented)
+  ❌ @types/jest (not documented)
+  ❌ @types/jquery (not documented)
+  ❌ @types/js-cookie (not documented)
+  ❌ @types/mocha (not documented)
+  ❌ @types/papaparse (not documented)
+  ❌ @types/qrcode.react (not documented)
+  ❌ @types/react-bootstrap (not documented)
+  ❌ @types/react-csv (not documented)
+  ❌ @types/react-is (not documented)
+  ❌ @types/react-router-dom (not documented)
+  ❌ @types/react-select (not documented)
+  ❌ @types/react-typist (not documented)
+  ❌ @types/reactabular-table (not documented)
+  ❌ @types/sinon (not documented)
+  ❌ @types/video.js (not documented)
+  ❌ @typescript-eslint/eslint-plugin (not documented)
+  ❌ @typescript-eslint/parser (not documented)
+  ❌ @wojtekmaj/enzyme-adapter-react-17 (not documented)
+  ❌ @xterm/addon-fit (not documented)
+  ❌ @xterm/addon-image (not documented)
+  ❌ @xterm/xterm (not documented)
+  ❌ @xyflow/react (not documented)
+  ❌ acorn-import-assertions (not documented)
+  ❌ aws-sdk (not documented)
+  ❌ babel-plugin-add-module-exports (not documented)
+  ❌ babel-plugin-dynamic-import-node (not documented)
+  ❌ babel-plugin-syntax-async-functions (not documented)
+  ❌ browser-process-hrtime (not documented)
+  ❌ buffer (not documented)
+  ❌ canvg (not documented)
+  ❌ chai (not documented)
+  ❌ chai-as-promised (not documented)
+  ❌ chai-enzyme (not documented)
+  ❌ chai-subset (not documented)
+  ❌ chai-xml (not documented)
+  ❌ chalk (not documented)
+  ❌ circular-dependency-plugin (not documented)
+  ❌ classnames (not documented)
+  ❌ copy-webpack-plugin (not documented)
+  ❌ dapjs (not documented)
+  ❌ dedent (not documented)
+  ❌ details-element-polyfill (not documented)
+  ❌ ejs (not documented)
+  ❌ enzyme (not documented)
+  ❌ eslint (not documented)
+  ❌ eslint-config-prettier (not documented)
+  ❌ eslint-import-resolver-typescript (not documented)
+  ❌ eslint-linter-browserify (not documented)
+  ❌ eslint-plugin-babel (not documented)
+  ❌ eslint-plugin-cdo-custom-rules (not documented)
+  ❌ eslint-plugin-import (not documented)
+  ❌ eslint-plugin-jest (not documented)
+  ❌ eslint-plugin-jsx-a11y (not documented)
+  ❌ eslint-plugin-mocha (not documented)
+  ❌ eslint-plugin-prettier (not documented)
+  ❌ eslint-plugin-react (not documented)
+  ❌ eslint-plugin-react-hooks (not documented)
+  ❌ eslint-plugin-storybook (not documented)
+  ❌ events (not documented)
+  ❌ fast-memoize (not documented)
+  ❌ filesaver.js (not documented)
+  ❌ firmata (not documented)
+  ❌ focus-trap-react (not documented)
+  ❌ fork-ts-checker-webpack-plugin (not documented)
+  ❌ globals (not documented)
+  ❌ grunt-concurrent (not documented)
+  ❌ grunt-contrib-clean (not documented)
+  ❌ grunt-contrib-copy (not documented)
+  ❌ grunt-contrib-uglify (not documented)
+  ❌ grunt-contrib-watch (not documented)
+  ❌ grunt-exec (not documented)
+  ❌ grunt-newer (not documented)
+  ❌ grunt-notify (not documented)
+  ❌ grunt-sass (not documented)
+  ❌ grunt-webpack (not documented)
+  ❌ hammerjs (not documented)
+  ❌ history (not documented)
+  ❌ html2canvas (not documented)
+  ❌ htmlhint (not documented)
+  ❌ identity-obj-proxy (not documented)
+  ❌ immutable (not documented)
+  ❌ intro.js (not documented)
+  ❌ intro.js-react (not documented)
+  ❌ isolate-react (not documented)
+  ❌ jest (not documented)
+  ❌ jest-canvas-mock (not documented)
+  ❌ jest-environment-jsdom (not documented)
+  ❌ jest-fetch-mock (not documented)
+  ❌ jest-html-reporter (not documented)
+  ❌ jest-scss-transform (not documented)
+  ❌ jest-transform-stub (not documented)
+  ❌ jquery (not documented)
+  ❌ jquery-ui (not documented)
+  ❌ js-cookie (not documented)
+  ❌ js-file-download (not documented)
+  ❌ jshint (not documented)
+  ❌ json-parse-better-errors (not documented)
+  ❌ jsonic (not documented)
+  ❌ jszip (not documented)
+  ❌ karma (not documented)
+  ❌ karma-chrome-launcher (not documented)
+  ❌ karma-junit-reporter (not documented)
+  ❌ karma-mocha (not documented)
+  ❌ karma-mocha-reporter (not documented)
+  ❌ karma-sourcemap-loader (not documented)
+  ❌ karma-webpack (not documented)
+  ❌ lazysizes (not documented)
+  ❌ load-grunt-tasks (not documented)
+  ❌ loadable-components (not documented)
+  ❌ loader-utils (not documented)
+  ❌ lodash (not documented)
+  ❌ lottie-web (not documented)
+  ❌ magicast (not documented)
+  ❌ markdown-to-txt (not documented)
+  ❌ md5 (not documented)
+  ❌ memoize-one (not documented)
+  ❌ merge (not documented)
+  ❌ messageformat (not documented)
+  ❌ ml-knn (not documented)
+  ❌ mock-firmata (not documented)
+  ❌ moment (not documented)
+  ❌ moment-timezone (not documented)
+  ❌ object-fit-images (not documented)
+  ❌ papaparse (not documented)
+  ❌ path-browserify (not documented)
+  ❌ pdf-lib (not documented)
+  ❌ pepjs (not documented)
+  ❌ pixelmatch (not documented)
+  ❌ playground-io (not documented)
+  ❌ prettier (not documented)
+  ❌ process (not documented)
+  ❌ progress-bar-webpack-plugin (not documented)
+  ❌ pusher-js (not documented)
+  ❌ pyodide (not documented)
+  ❌ qrcode.react (not documented)
+  ❌ qtip2 (not documented)
+  ❌ query-string (not documented)
+  ❌ radium (not documented)
+  ❌ react-beautiful-dnd (not documented)
+  ❌ react-bootstrap (not documented)
+  ❌ react-bootstrap-2 (not documented)
+  ❌ react-color (not documented)
+  ❌ react-csv (not documented)
+  ❌ react-datepicker (not documented)
+  ❌ react-debounce-input (not documented)
+  ❌ react-dom-confetti (not documented)
+  ❌ react-draggable (not documented)
+  ❌ react-focus-on (not documented)
+  ❌ react-google-charts (not documented)
+  ❌ react-idle-timer (not documented)
+  ❌ react-inspector (not documented)
+  ❌ react-lazy-load (not documented)
+  ❌ react-loading-skeleton (not documented)
+  ❌ react-motion (not documented)
+  ❌ react-onclickoutside (not documented)
+  ❌ react-paginate (not documented)
+  ❌ react-pointable (not documented)
+  ❌ react-portal (not documented)
+  ❌ react-refresh (not documented)
+  ❌ react-refresh-typescript (not documented)
+  ❌ react-resizable-layout (not documented)
+  ❌ react-router (not documented)
+  ❌ react-router-dom (not documented)
+  ❌ react-schemaorg (not documented)
+  ❌ react-select (not documented)
+  ❌ react-select-5 (not documented)
+  ❌ react-sticky (not documented)
+  ❌ react-string-replace (not documented)
+  ❌ react-tether (not documented)
+  ❌ react-tooltip (not documented)
+  ❌ react-transition-group (not documented)
+  ❌ react-typist (not documented)
+  ❌ react-virtualized (not documented)
+  ❌ react-virtualized-select (not documented)
+  ❌ react-with-context (not documented)
+  ❌ reactabular-sticky (not documented)
+  ❌ reactabular-table (not documented)
+  ❌ reactabular-virtualized (not documented)
+  ❌ recharts (not documented)
+  ❌ recorder-js (not documented)
+  ❌ rehype-raw (not documented)
+  ❌ rehype-react (not documented)
+  ❌ rehype-sanitize (not documented)
+  ❌ remark-parse (not documented)
+  ❌ remark-rehype (not documented)
+  ❌ rgbcolor (not documented)
+  ❌ rosie (not documented)
+  ❌ sanitize-html (not documented)
+  ❌ schema-dts (not documented)
+  ❌ script-loader (not documented)
+  ❌ seedrandom (not documented)
+  ❌ sinon (not documented)
+  ❌ sinon-chai (not documented)
+  ❌ slate (not documented)
+  ❌ slate-react (not documented)
+  ❌ sortabular (not documented)
+  ❌ source-map-loader (not documented)
+  ❌ sprintf-js (not documented)
+  ❌ storybook (not documented)
+  ❌ storybook-addon-rtl (not documented)
+  ❌ stream-browserify (not documented)
+  ❌ stylelint (not documented)
+  ❌ stylelint-config-standard (not documented)
+  ❌ stylelint-config-standard-scss (not documented)
+  ❌ survey-react (not documented)
+  ❌ swiper (not documented)
+  ❌ timers-browserify (not documented)
+  ❌ tone (not documented)
+  ❌ ts-jest (not documented)
+  ❌ ts-loader (not documented)
+  ❌ ts-sinon (not documented)
+  ❌ typescript (not documented)
+  ❌ unified (not documented)
+  ❌ unminified-webpack-plugin (not documented)
+  ❌ unplugin (not documented)
+  ❌ video.js (not documented)
+  ❌ vm-browserify (not documented)
+  ❌ vmsg (not documented)
+  ❌ webpack-livereload-plugin (not documented)
+  ❌ webpack-notifier (not documented)
+  ❌ webpack-stats-plugin (not documented)
+  ❌ wgxpath (not documented)
+  ❌ whatwg-fetch (not documented)
 
-📁 BLOCKLY-VISUAL-PROGRAMMING:
-  ✅ @code-dot-org/blockly (CRITICAL)
-  ✅ blockly (CRITICAL)
-  ✅ @blockly/block-shareable-procedures (HIGH)
-  ✅ @blockly/keyboard-navigation (HIGH)
-  ✅ @blockly/theme-highcontrast (HIGH)
-  ✅ @blockly/field-bitmap (MEDIUM)
-  ✅ @blockly/field-colour (MEDIUM)
-  ✅ @blockly/field-grid-dropdown (MEDIUM)
-  ✅ @blockly/plugin-cross-tab-copy-paste (MEDIUM)
-  ✅ @blockly/theme-dark (MEDIUM)
-  ✅ @blockly/plugin-scroll-options (LOW)
+🐍 PYTHON DEPENDENCIES (pyproject.toml): 0 total
+--------------------------------------------------
 
-📁 BUILD-TOOLS:
-  ✅ @babel/core (CRITICAL)
-  ✅ @babel/preset-react (CRITICAL)
-  ✅ babel-loader (CRITICAL)
-  ✅ webpack (CRITICAL)
-  ✅ webpack-cli (CRITICAL)
-  ✅ @babel/preset-env (HIGH)
-  ✅ css-loader (HIGH)
-  ✅ sass (HIGH)
-  ✅ sass-loader (HIGH)
-  ✅ style-loader (HIGH)
-  ✅ terser-webpack-plugin (HIGH)
-  ✅ webpack-dev-server (HIGH)
-  ✅ grunt (MEDIUM)
-  ✅ grunt-cli (MEDIUM)
-  ✅ webpack-manifest-plugin (MEDIUM)
-  ✅ uglify-js (LOW)
-  ✅ webpack-bundle-analyzer (LOW)
+❌ MISSING DEPENDENCIES: 342 total
+--------------------------------------------------
 
-📁 CLOUD-SERVICES-AWS:
-  ✅ aws-sdk-core (CRITICAL)
-  ✅ aws-sdk-s3 (CRITICAL)
-  ✅ aws-sdk-secretsmanager (HIGH)
-  ✅ aws-sdk-acm (MEDIUM)
-  ✅ aws-sdk-cloudformation (MEDIUM)
-  ✅ aws-sdk-cloudfront (MEDIUM)
-  ✅ aws-sdk-cloudwatch (MEDIUM)
-  ✅ aws-sdk-cloudwatchlogs (MEDIUM)
-  ✅ aws-sdk-dynamodb (MEDIUM)
-  ✅ aws-sdk-ec2 (MEDIUM)
-  ✅ aws-sdk-firehose (MEDIUM)
-  ✅ aws-sdk-rds (MEDIUM)
-  ✅ aws-sdk-route53 (MEDIUM)
-  ✅ aws-google (LOW)
-  ✅ aws-sdk-applicationautoscaling (LOW)
-  ✅ aws-sdk-comprehend (LOW)
-  ✅ aws-sdk-databasemigrationservice (LOW)
-  ✅ aws-sdk-glue (LOW)
-  ✅ aws-sdk-sagemakerruntime (LOW)
+  Ruby:
+    ❌ acmesmith
+    ❌ active_model_serializers
+    ❌ active_record_query_trace
+    ❌ acts_as_list
+    ❌ addressable
+    ❌ async
+    ❌ auto_strip_attributes
+    ❌ aws-sdk-autoscaling
+    ❌ aws-sdk-bedrockagentruntime
+    ❌ bootsnap
+    ❌ crowdin-api
+    ❌ debugger
+    ❌ eyes_selenium
+    ❌ gemoji
+    ❌ geocoder
+    ❌ haml_lint
+    ❌ json-jwt
+    ❌ jumphash
+    ❌ jwt
+    ❌ kaminari
+    ❌ localhost
+    ❌ loofah
+    ❌ mailgun-ruby
+    ❌ mailjet
+    ❌ minitest
+    ❌ minitest-around
+    ❌ minitest-rails
+    ❌ minitest-reporters
+    ❌ minitest-spec-context
+    ❌ minitest-stub-const
+    ❌ nakayoshi_fork
+    ❌ naturally
+    ❌ net-http-persistent
+    ❌ nokogiri
+    ❌ octokit
+    ❌ open_uri_redirections
+    ❌ os
+    ❌ parallel
+    ❌ phantomjs
+    ❌ pusher
+    ❌ rack-mini-profiler
+    ❌ rambling-trie
+    ❌ require_all
+    ❌ retryable
+    ❌ rinku
+    ❌ rmagick
+    ❌ scss_lint
+    ❌ selenium-webdriver
+    ❌ spring
+    ❌ spring-commands-testunit
+    ❌ sshkit
+    ❌ statsig
+    ❌ thin
+    ❌ twilio-ruby
+    ❌ unf_ext
+    ❌ user_agent_parser
+    ❌ webrick
+    ❌ xxhash
+    ❌ youtube-dl.rb
 
-📁 CLOUD-SERVICES-GOOGLE:
-  ✅ google-apis-core (CRITICAL)
-  ✅ google-apis-analytics_v3 (HIGH)
-  ✅ google-apis-classroom_v1 (HIGH)
-  ✅ google-apis-youtube_v3 (MEDIUM)
-  ✅ google_drive (MEDIUM)
-
-📁 CODE-EDITORS:
-  ✅ @codemirror/language (CRITICAL)
-  ✅ @codemirror/state (CRITICAL)
-  ✅ @codemirror/view (CRITICAL)
-  ✅ codemirror (CRITICAL)
-  ✅ @codemirror/autocomplete (HIGH)
-  ✅ @codemirror/commands (HIGH)
-  ✅ @codemirror/lang-javascript (HIGH)
-  ✅ @codemirror/lang-python (HIGH)
-  ✅ @codemirror/lint (HIGH)
-  ✅ @lezer/highlight (HIGH)
-  ✅ @codemirror/lang-css (MEDIUM)
-  ✅ @codemirror/lang-html (MEDIUM)
-  ✅ @codemirror/lang-markdown (MEDIUM)
-  ✅ @codemirror/search (MEDIUM)
-  ✅ @codemirror/lang-java (LOW)
-  ✅ codemirror-spell-checker (LOW)
-
-📁 CORE-PYTHON:
-  ✅ pycall (CRITICAL)
-
-📁 CORE-REACT-UI:
-  ✅ react (CRITICAL)
-  ✅ react-dom (CRITICAL)
-  ✅ @emotion/react (HIGH)
-  ✅ @emotion/styled (HIGH)
-  ✅ @mui/material (HIGH)
-  ✅ @types/react (HIGH)
-  ✅ @types/react-dom (HIGH)
-  ✅ prop-types (MEDIUM)
-  ✅ react-is (MEDIUM)
-
-📁 CORE-RUBY-RAILS-FRAMEWORK:
-  ✅ rails (CRITICAL)
-  ✅ rails-controller-testing (MEDIUM)
-  ✅ responders (MEDIUM)
-
-📁 DATABASE-CACHING:
-  ✅ mysql2 (CRITICAL)
-  ✅ paranoia (HIGH)
-  ✅ redis (HIGH)
-  ✅ redis-actionpack (HIGH)
-  ✅ activerecord-import (MEDIUM)
-  ✅ composite_primary_keys (MEDIUM)
-  ✅ dalli (MEDIUM)
-  ✅ redis-slave-read (MEDIUM)
-  ✅ sequel (MEDIUM)
-  ✅ active_record_union (LOW)
-  ✅ dalli-elasticache (LOW)
-  ✅ pg (LOW)
-  ✅ scenic (LOW)
-  ✅ scenic-mysql_adapter (LOW)
-
-📁 DEVELOPMENT-TESTING:
-  ✅ factory_bot_rails (CRITICAL)
-  ✅ rspec (CRITICAL)
-  ✅ brakeman (HIGH)
-  ✅ cucumber (HIGH)
-  ✅ database_cleaner-active_record (HIGH)
-  ✅ faker (HIGH)
-  ✅ mocha (HIGH)
-  ✅ rubocop (HIGH)
-  ✅ webmock (HIGH)
-  ✅ fakefs (MEDIUM)
-  ✅ fakeredis (MEDIUM)
-  ✅ parallel_tests (MEDIUM)
-  ✅ rubocop-rails (MEDIUM)
-  ✅ simplecov (MEDIUM)
-  ✅ timecop (MEDIUM)
-  ✅ vcr (MEDIUM)
-  ✅ annotate (LOW)
-  ✅ rerun (LOW)
-  ✅ rubocop-factory_bot (LOW)
-  ✅ rubocop-performance (LOW)
-  ✅ rubocop-rails-accessibility (LOW)
-
-📁 FRONTEND-ASSETS:
-  ✅ haml (CRITICAL)
-  ✅ haml-rails (CRITICAL)
-  ⚠️ sassc-rails (CRITICAL) [mentioned in 2 files]
-  ⚠️ sprockets (CRITICAL) [mentioned in 2 files]
-  ✅ bootstrap-sass (HIGH)
-  ✅ jquery-rails (HIGH)
-  ✅ mini_magick (HIGH)
-  ✅ sass-rails (HIGH)
-  ✅ execjs (MEDIUM)
-  ✅ image_optim (MEDIUM)
-  ✅ image_optim_pack (MEDIUM)
-  ✅ image_optim_rails (MEDIUM)
-  ✅ jquery-ui-rails (MEDIUM)
-  ✅ mini_racer (MEDIUM)
-  ✅ redcarpet (MEDIUM)
-  ✅ uglifier (MEDIUM)
-  ✅ image_size (LOW)
-
-📁 MONITORING-LOGGING:
-  ✅ honeybadger (CRITICAL)
-  ✅ newrelic_rpm (HIGH)
-  ✅ lograge (MEDIUM)
-  ✅ benchmark-ips (LOW)
-  ✅ better_errors (LOW)
-  ✅ memory_profiler (LOW)
-  ✅ pry (LOW)
-  ✅ request_store (LOW)
-  ✅ ruby-prof (LOW)
-  ✅ web-console (LOW)
-
-📁 OTHER-UTILITIES:
-  ✅ delayed_job_active_record (HIGH)
-  ✅ httparty (HIGH)
-  ✅ oj (HIGH)
-  ✅ csv (MEDIUM)
-  ✅ daemons (MEDIUM)
-  ✅ http (MEDIUM)
-  ✅ json-schema (MEDIUM)
-  ✅ rest-client (MEDIUM)
-  ✅ rubyzip (MEDIUM)
-  ✅ stringex (MEDIUM)
-  ✅ validate_url (MEDIUM)
-  ✅ validates_email_format_of (MEDIUM)
-  ✅ chronic (LOW)
-  ✅ cld (LOW)
-  ✅ colorize (LOW)
-  ✅ dotiw (LOW)
-  ✅ full-name-splitter (LOW)
-  ✅ highline (LOW)
-  ✅ pdf-reader (LOW)
-  ✅ ruby-progressbar (LOW)
-  ✅ sort_alphabetical (LOW)
-  ✅ twitter_cldr (LOW)
-
-📁 RUBY-VERSION-COMPATIBILITY:
-  ✅ cgi (MEDIUM)
-  ✅ drb (MEDIUM)
-  ✅ mutex_m (MEDIUM)
-  ✅ observer (MEDIUM)
-  ✅ syslog (MEDIUM)
-  ✅ thwait (MEDIUM)
-  ✅ abbrev (LOW)
-  ✅ sorted_set (LOW)
-
-📁 STATE-MANAGEMENT:
-  ✅ @reduxjs/toolkit (HIGH)
-  ✅ react-redux (HIGH)
-  ✅ redux (HIGH)
-  ✅ redux-thunk (HIGH)
-  ✅ redux-mock-store (MEDIUM)
-  ✅ redux-logger (LOW)
-
-📁 WEB-SERVER-MIDDLEWARE:
-  ✅ puma (CRITICAL)
-  ✅ rack-cors (HIGH)
-  ✅ rack-ssl-enforcer (HIGH)
-  ✅ sinatra (HIGH)
-  ✅ puma_worker_killer (MEDIUM)
-  ✅ rack-cache (MEDIUM)
-  ⚠️ raindrops (LOW) [mentioned in 2 files]
-  ⚠️ sd_notify (LOW) [mentioned in 2 files]
-
-❌ NOT DOCUMENTED:
-  ❌ @amplitude/analytics-browser (JavaScript - package.json)
-  ❌ @babel/eslint-parser (JavaScript - package.json)
-  ❌ @babel/plugin-proposal-object-rest-spread (JavaScript - package.json)
-  ❌ @babel/plugin-proposal-optional-chaining (JavaScript - package.json)
-  ❌ @babel/plugin-syntax-dynamic-import (JavaScript - package.json)
-  ❌ @babel/plugin-transform-class-properties (JavaScript - package.json)
-  ❌ @babel/plugin-transform-classes (JavaScript - package.json)
-  ❌ @babel/plugin-transform-regenerator (JavaScript - package.json)
-  ❌ @babel/polyfill (JavaScript - package.json)
-  ❌ @cdo/interpreted (JavaScript - package.json)
-  ❌ @code-dot-org/artist (JavaScript - package.json)
-  ❌ @code-dot-org/component-library (JavaScript - package.json)
-  ❌ @code-dot-org/component-library-styles (JavaScript - package.json)
-  ❌ @code-dot-org/craft (JavaScript - package.json)
-  ❌ @code-dot-org/dance-party (JavaScript - package.json)
-  ❌ @code-dot-org/fonts (JavaScript - package.json)
-  ❌ @code-dot-org/johnny-five (JavaScript - package.json)
-  ❌ @code-dot-org/js-interpreter (JavaScript - package.json)
-  ❌ @code-dot-org/js-numbers (JavaScript - package.json)
-  ❌ @code-dot-org/maze (JavaScript - package.json)
-  ❌ @code-dot-org/ml-activities (JavaScript - package.json)
-  ❌ @code-dot-org/ml-playground (JavaScript - package.json)
-  ❌ @code-dot-org/p5.play (JavaScript - package.json)
-  ❌ @code-dot-org/piskel (JavaScript - package.json)
-  ❌ @code-dot-org/redactable-markdown (JavaScript - package.json)
-  ❌ @code-dot-org/remark-plugins (JavaScript - package.json)
-  ❌ @dnd-kit/core (JavaScript - package.json)
-  ❌ @dnd-kit/modifiers (JavaScript - package.json)
-  ❌ @dnd-kit/sortable (JavaScript - package.json)
-  ❌ @dnd-kit/utilities (JavaScript - package.json)
-  ❌ @dsco_/link (JavaScript - package.json)
-  ❌ @eslint/js (JavaScript - package.json)
-  ❌ @excalidraw/excalidraw (JavaScript - package.json)
-  ❌ @magenta/music (JavaScript - package.json)
-  ❌ @mapbox/search-js-react (JavaScript - package.json)
-  ❌ @microbit/microbit-fs (JavaScript - package.json)
-  ❌ @microsoft/immersive-reader-sdk (JavaScript - package.json)
-  ❌ @pmmmwh/react-refresh-webpack-plugin (JavaScript - package.json)
-  ❌ @pyodide/webpack-plugin (JavaScript - package.json)
-  ❌ @react-bootstrap/pagination (JavaScript - package.json)
-  ❌ @react-pdf/renderer (JavaScript - package.json)
-  ❌ @replit/codemirror-css-color-picker (JavaScript - package.json)
-  ❌ @selectize/selectize (JavaScript - package.json)
-  ❌ @statsig/js-client (JavaScript - package.json)
-  ❌ @statsig/session-replay (JavaScript - package.json)
-  ❌ @statsig/web-analytics (JavaScript - package.json)
-  ❌ @storybook/addon-a11y (JavaScript - package.json)
-  ❌ @storybook/addon-essentials (JavaScript - package.json)
-  ❌ @storybook/addon-webpack5-compiler-babel (JavaScript - package.json)
-  ❌ @storybook/core-common (JavaScript - package.json)
-  ❌ @storybook/csf-tools (JavaScript - package.json)
-  ❌ @storybook/react (JavaScript - package.json)
-  ❌ @storybook/react-webpack5 (JavaScript - package.json)
-  ❌ @testing-library/dom (JavaScript - package.json)
-  ❌ @testing-library/jest-dom (JavaScript - package.json)
-  ❌ @testing-library/react (JavaScript - package.json)
-  ❌ @testing-library/react-hooks (JavaScript - package.json)
-  ❌ @testing-library/user-event (JavaScript - package.json)
-  ❌ @types/chai (JavaScript - package.json)
-  ❌ @types/htmlhint (JavaScript - package.json)
-  ❌ @types/jest (JavaScript - package.json)
-  ❌ @types/jquery (JavaScript - package.json)
-  ❌ @types/js-cookie (JavaScript - package.json)
-  ❌ @types/mocha (JavaScript - package.json)
-  ❌ @types/papaparse (JavaScript - package.json)
-  ❌ @types/qrcode.react (JavaScript - package.json)
-  ❌ @types/react-bootstrap (JavaScript - package.json)
-  ❌ @types/react-csv (JavaScript - package.json)
-  ❌ @types/react-is (JavaScript - package.json)
-  ❌ @types/react-router-dom (JavaScript - package.json)
-  ❌ @types/react-select (JavaScript - package.json)
-  ❌ @types/react-typist (JavaScript - package.json)
-  ❌ @types/reactabular-table (JavaScript - package.json)
-  ❌ @types/sinon (JavaScript - package.json)
-  ❌ @types/video.js (JavaScript - package.json)
-  ❌ @typescript-eslint/eslint-plugin (JavaScript - package.json)
-  ❌ @typescript-eslint/parser (JavaScript - package.json)
-  ❌ @wojtekmaj/enzyme-adapter-react-17 (JavaScript - package.json)
-  ❌ @xterm/addon-fit (JavaScript - package.json)
-  ❌ @xterm/addon-image (JavaScript - package.json)
-  ❌ @xterm/xterm (JavaScript - package.json)
-  ❌ @xyflow/react (JavaScript - package.json)
-  ❌ acorn-import-assertions (JavaScript - package.json)
-  ❌ aws-sdk (JavaScript - package.json)
-  ❌ babel-plugin-add-module-exports (JavaScript - package.json)
-  ❌ babel-plugin-dynamic-import-node (JavaScript - package.json)
-  ❌ babel-plugin-syntax-async-functions (JavaScript - package.json)
-  ❌ browser-process-hrtime (JavaScript - package.json)
-  ❌ buffer (JavaScript - package.json)
-  ❌ canvg (JavaScript - package.json)
-  ❌ chai (JavaScript - package.json)
-  ❌ chai-as-promised (JavaScript - package.json)
-  ❌ chai-enzyme (JavaScript - package.json)
-  ❌ chai-subset (JavaScript - package.json)
-  ❌ chai-xml (JavaScript - package.json)
-  ❌ chalk (JavaScript - package.json)
-  ❌ circular-dependency-plugin (JavaScript - package.json)
-  ❌ classnames (JavaScript - package.json)
-  ❌ copy-webpack-plugin (JavaScript - package.json)
-  ❌ dapjs (JavaScript - package.json)
-  ❌ dedent (JavaScript - package.json)
-  ❌ details-element-polyfill (JavaScript - package.json)
-  ❌ ejs (JavaScript - package.json)
-  ❌ enzyme (JavaScript - package.json)
-  ❌ eslint (JavaScript - package.json)
-  ❌ eslint-config-prettier (JavaScript - package.json)
-  ❌ eslint-import-resolver-typescript (JavaScript - package.json)
-  ❌ eslint-linter-browserify (JavaScript - package.json)
-  ❌ eslint-plugin-babel (JavaScript - package.json)
-  ❌ eslint-plugin-cdo-custom-rules (JavaScript - package.json)
-  ❌ eslint-plugin-import (JavaScript - package.json)
-  ❌ eslint-plugin-jest (JavaScript - package.json)
-  ❌ eslint-plugin-jsx-a11y (JavaScript - package.json)
-  ❌ eslint-plugin-mocha (JavaScript - package.json)
-  ❌ eslint-plugin-prettier (JavaScript - package.json)
-  ❌ eslint-plugin-react (JavaScript - package.json)
-  ❌ eslint-plugin-react-hooks (JavaScript - package.json)
-  ❌ eslint-plugin-storybook (JavaScript - package.json)
-  ❌ events (JavaScript - package.json)
-  ❌ fast-memoize (JavaScript - package.json)
-  ❌ filesaver.js (JavaScript - package.json)
-  ❌ firmata (JavaScript - package.json)
-  ❌ focus-trap-react (JavaScript - package.json)
-  ❌ fork-ts-checker-webpack-plugin (JavaScript - package.json)
-  ❌ globals (JavaScript - package.json)
-  ❌ grunt-concurrent (JavaScript - package.json)
-  ❌ grunt-contrib-clean (JavaScript - package.json)
-  ❌ grunt-contrib-copy (JavaScript - package.json)
-  ❌ grunt-contrib-uglify (JavaScript - package.json)
-  ❌ grunt-contrib-watch (JavaScript - package.json)
-  ❌ grunt-exec (JavaScript - package.json)
-  ❌ grunt-newer (JavaScript - package.json)
-  ❌ grunt-notify (JavaScript - package.json)
-  ❌ grunt-sass (JavaScript - package.json)
-  ❌ grunt-webpack (JavaScript - package.json)
-  ❌ hammerjs (JavaScript - package.json)
-  ❌ history (JavaScript - package.json)
-  ❌ html2canvas (JavaScript - package.json)
-  ❌ htmlhint (JavaScript - package.json)
-  ❌ identity-obj-proxy (JavaScript - package.json)
-  ❌ immutable (JavaScript - package.json)
-  ❌ intro.js (JavaScript - package.json)
-  ❌ intro.js-react (JavaScript - package.json)
-  ❌ isolate-react (JavaScript - package.json)
-  ❌ jest (JavaScript - package.json)
-  ❌ jest-canvas-mock (JavaScript - package.json)
-  ❌ jest-environment-jsdom (JavaScript - package.json)
-  ❌ jest-fetch-mock (JavaScript - package.json)
-  ❌ jest-html-reporter (JavaScript - package.json)
-  ❌ jest-scss-transform (JavaScript - package.json)
-  ❌ jest-transform-stub (JavaScript - package.json)
-  ❌ jquery (JavaScript - package.json)
-  ❌ jquery-ui (JavaScript - package.json)
-  ❌ js-cookie (JavaScript - package.json)
-  ❌ js-file-download (JavaScript - package.json)
-  ❌ jshint (JavaScript - package.json)
-  ❌ json-parse-better-errors (JavaScript - package.json)
-  ❌ jsonic (JavaScript - package.json)
-  ❌ jszip (JavaScript - package.json)
-  ❌ karma (JavaScript - package.json)
-  ❌ karma-chrome-launcher (JavaScript - package.json)
-  ❌ karma-junit-reporter (JavaScript - package.json)
-  ❌ karma-mocha (JavaScript - package.json)
-  ❌ karma-mocha-reporter (JavaScript - package.json)
-  ❌ karma-sourcemap-loader (JavaScript - package.json)
-  ❌ karma-webpack (JavaScript - package.json)
-  ❌ lazysizes (JavaScript - package.json)
-  ❌ load-grunt-tasks (JavaScript - package.json)
-  ❌ loadable-components (JavaScript - package.json)
-  ❌ loader-utils (JavaScript - package.json)
-  ❌ lodash (JavaScript - package.json)
-  ❌ lottie-web (JavaScript - package.json)
-  ❌ magicast (JavaScript - package.json)
-  ❌ markdown-to-txt (JavaScript - package.json)
-  ❌ md5 (JavaScript - package.json)
-  ❌ memoize-one (JavaScript - package.json)
-  ❌ merge (JavaScript - package.json)
-  ❌ messageformat (JavaScript - package.json)
-  ❌ ml-knn (JavaScript - package.json)
-  ❌ mock-firmata (JavaScript - package.json)
-  ❌ moment (JavaScript - package.json)
-  ❌ moment-timezone (JavaScript - package.json)
-  ❌ object-fit-images (JavaScript - package.json)
-  ❌ papaparse (JavaScript - package.json)
-  ❌ path-browserify (JavaScript - package.json)
-  ❌ pdf-lib (JavaScript - package.json)
-  ❌ pepjs (JavaScript - package.json)
-  ❌ pixelmatch (JavaScript - package.json)
-  ❌ playground-io (JavaScript - package.json)
-  ❌ prettier (JavaScript - package.json)
-  ❌ process (JavaScript - package.json)
-  ❌ progress-bar-webpack-plugin (JavaScript - package.json)
-  ❌ pusher-js (JavaScript - package.json)
-  ❌ pyodide (JavaScript - package.json)
-  ❌ qrcode.react (JavaScript - package.json)
-  ❌ qtip2 (JavaScript - package.json)
-  ❌ query-string (JavaScript - package.json)
-  ❌ radium (JavaScript - package.json)
-  ❌ react-beautiful-dnd (JavaScript - package.json)
-  ❌ react-bootstrap (JavaScript - package.json)
-  ❌ react-bootstrap-2 (JavaScript - package.json)
-  ❌ react-color (JavaScript - package.json)
-  ❌ react-csv (JavaScript - package.json)
-  ❌ react-datepicker (JavaScript - package.json)
-  ❌ react-debounce-input (JavaScript - package.json)
-  ❌ react-dom-confetti (JavaScript - package.json)
-  ❌ react-draggable (JavaScript - package.json)
-  ❌ react-focus-on (JavaScript - package.json)
-  ❌ react-google-charts (JavaScript - package.json)
-  ❌ react-idle-timer (JavaScript - package.json)
-  ❌ react-inspector (JavaScript - package.json)
-  ❌ react-lazy-load (JavaScript - package.json)
-  ❌ react-loading-skeleton (JavaScript - package.json)
-  ❌ react-motion (JavaScript - package.json)
-  ❌ react-onclickoutside (JavaScript - package.json)
-  ❌ react-paginate (JavaScript - package.json)
-  ❌ react-pointable (JavaScript - package.json)
-  ❌ react-portal (JavaScript - package.json)
-  ❌ react-refresh (JavaScript - package.json)
-  ❌ react-refresh-typescript (JavaScript - package.json)
-  ❌ react-resizable-layout (JavaScript - package.json)
-  ❌ react-router (JavaScript - package.json)
-  ❌ react-router-dom (JavaScript - package.json)
-  ❌ react-schemaorg (JavaScript - package.json)
-  ❌ react-select (JavaScript - package.json)
-  ❌ react-select-5 (JavaScript - package.json)
-  ❌ react-sticky (JavaScript - package.json)
-  ❌ react-string-replace (JavaScript - package.json)
-  ❌ react-tether (JavaScript - package.json)
-  ❌ react-tooltip (JavaScript - package.json)
-  ❌ react-transition-group (JavaScript - package.json)
-  ❌ react-typist (JavaScript - package.json)
-  ❌ react-virtualized (JavaScript - package.json)
-  ❌ react-virtualized-select (JavaScript - package.json)
-  ❌ react-with-context (JavaScript - package.json)
-  ❌ reactabular-sticky (JavaScript - package.json)
-  ❌ reactabular-table (JavaScript - package.json)
-  ❌ reactabular-virtualized (JavaScript - package.json)
-  ❌ recharts (JavaScript - package.json)
-  ❌ recorder-js (JavaScript - package.json)
-  ❌ rehype-raw (JavaScript - package.json)
-  ❌ rehype-react (JavaScript - package.json)
-  ❌ rehype-sanitize (JavaScript - package.json)
-  ❌ remark-parse (JavaScript - package.json)
-  ❌ remark-rehype (JavaScript - package.json)
-  ❌ rgbcolor (JavaScript - package.json)
-  ❌ rosie (JavaScript - package.json)
-  ❌ sanitize-html (JavaScript - package.json)
-  ❌ schema-dts (JavaScript - package.json)
-  ❌ script-loader (JavaScript - package.json)
-  ❌ seedrandom (JavaScript - package.json)
-  ❌ sinon (JavaScript - package.json)
-  ❌ sinon-chai (JavaScript - package.json)
-  ❌ slate (JavaScript - package.json)
-  ❌ slate-react (JavaScript - package.json)
-  ❌ sortabular (JavaScript - package.json)
-  ❌ source-map-loader (JavaScript - package.json)
-  ❌ sprintf-js (JavaScript - package.json)
-  ❌ storybook (JavaScript - package.json)
-  ❌ storybook-addon-rtl (JavaScript - package.json)
-  ❌ stream-browserify (JavaScript - package.json)
-  ❌ stylelint (JavaScript - package.json)
-  ❌ stylelint-config-standard (JavaScript - package.json)
-  ❌ stylelint-config-standard-scss (JavaScript - package.json)
-  ❌ survey-react (JavaScript - package.json)
-  ❌ swiper (JavaScript - package.json)
-  ❌ timers-browserify (JavaScript - package.json)
-  ❌ tone (JavaScript - package.json)
-  ❌ ts-jest (JavaScript - package.json)
-  ❌ ts-loader (JavaScript - package.json)
-  ❌ ts-sinon (JavaScript - package.json)
-  ❌ typescript (JavaScript - package.json)
-  ❌ unified (JavaScript - package.json)
-  ❌ unminified-webpack-plugin (JavaScript - package.json)
-  ❌ unplugin (JavaScript - package.json)
-  ❌ video.js (JavaScript - package.json)
-  ❌ vm-browserify (JavaScript - package.json)
-  ❌ vmsg (JavaScript - package.json)
-  ❌ webpack-livereload-plugin (JavaScript - package.json)
-  ❌ webpack-notifier (JavaScript - package.json)
-  ❌ webpack-stats-plugin (JavaScript - package.json)
-  ❌ wgxpath (JavaScript - package.json)
-  ❌ whatwg-fetch (JavaScript - package.json)
-  ❌ acmesmith (Ruby - Gemfile)
-  ❌ active_model_serializers (Ruby - Gemfile)
-  ❌ active_record_query_trace (Ruby - Gemfile)
-  ❌ acts_as_list (Ruby - Gemfile)
-  ❌ addressable (Ruby - Gemfile)
-  ❌ async (Ruby - Gemfile)
-  ❌ auto_strip_attributes (Ruby - Gemfile)
-  ❌ aws-sdk-autoscaling (Ruby - Gemfile)
-  ❌ aws-sdk-bedrockagentruntime (Ruby - Gemfile)
-  ❌ bootsnap (Ruby - Gemfile)
-  ❌ crowdin-api (Ruby - Gemfile)
-  ❌ debugger (Ruby - Gemfile)
-  ❌ eyes_selenium (Ruby - Gemfile)
-  ❌ gemoji (Ruby - Gemfile)
-  ❌ geocoder (Ruby - Gemfile)
-  ❌ haml_lint (Ruby - Gemfile)
-  ❌ json-jwt (Ruby - Gemfile)
-  ❌ jumphash (Ruby - Gemfile)
-  ❌ jwt (Ruby - Gemfile)
-  ❌ kaminari (Ruby - Gemfile)
-  ❌ localhost (Ruby - Gemfile)
-  ❌ loofah (Ruby - Gemfile)
-  ❌ mailgun-ruby (Ruby - Gemfile)
-  ❌ mailjet (Ruby - Gemfile)
-  ❌ minitest (Ruby - Gemfile)
-  ❌ minitest-around (Ruby - Gemfile)
-  ❌ minitest-rails (Ruby - Gemfile)
-  ❌ minitest-reporters (Ruby - Gemfile)
-  ❌ minitest-spec-context (Ruby - Gemfile)
-  ❌ minitest-stub-const (Ruby - Gemfile)
-  ❌ nakayoshi_fork (Ruby - Gemfile)
-  ❌ naturally (Ruby - Gemfile)
-  ❌ net-http-persistent (Ruby - Gemfile)
-  ❌ nokogiri (Ruby - Gemfile)
-  ❌ octokit (Ruby - Gemfile)
-  ❌ open_uri_redirections (Ruby - Gemfile)
-  ❌ os (Ruby - Gemfile)
-  ❌ parallel (Ruby - Gemfile)
-  ❌ phantomjs (Ruby - Gemfile)
-  ❌ pusher (Ruby - Gemfile)
-  ❌ rack-mini-profiler (Ruby - Gemfile)
-  ❌ rambling-trie (Ruby - Gemfile)
-  ❌ require_all (Ruby - Gemfile)
-  ❌ retryable (Ruby - Gemfile)
-  ❌ rinku (Ruby - Gemfile)
-  ❌ rmagick (Ruby - Gemfile)
-  ❌ scss_lint (Ruby - Gemfile)
-  ❌ selenium-webdriver (Ruby - Gemfile)
-  ❌ spring (Ruby - Gemfile)
-  ❌ spring-commands-testunit (Ruby - Gemfile)
-  ❌ sshkit (Ruby - Gemfile)
-  ❌ statsig (Ruby - Gemfile)
-  ❌ thin (Ruby - Gemfile)
-  ❌ twilio-ruby (Ruby - Gemfile)
-  ❌ unf_ext (Ruby - Gemfile)
-  ❌ user_agent_parser (Ruby - Gemfile)
-  ❌ webrick (Ruby - Gemfile)
-  ❌ xxhash (Ruby - Gemfile)
-  ❌ youtube-dl.rb (Ruby - Gemfile)
+  JavaScript:
+    ❌ @amplitude/analytics-browser
+    ❌ @babel/eslint-parser
+    ❌ @babel/plugin-proposal-object-rest-spread
+    ❌ @babel/plugin-proposal-optional-chaining
+    ❌ @babel/plugin-syntax-dynamic-import
+    ❌ @babel/plugin-transform-class-properties
+    ❌ @babel/plugin-transform-classes
+    ❌ @babel/plugin-transform-regenerator
+    ❌ @babel/polyfill
+    ❌ @cdo/interpreted
+    ❌ @code-dot-org/artist
+    ❌ @code-dot-org/component-library
+    ❌ @code-dot-org/component-library-styles
+    ❌ @code-dot-org/craft
+    ❌ @code-dot-org/dance-party
+    ❌ @code-dot-org/fonts
+    ❌ @code-dot-org/johnny-five
+    ❌ @code-dot-org/js-interpreter
+    ❌ @code-dot-org/js-numbers
+    ❌ @code-dot-org/maze
+    ❌ @code-dot-org/ml-activities
+    ❌ @code-dot-org/ml-playground
+    ❌ @code-dot-org/p5.play
+    ❌ @code-dot-org/piskel
+    ❌ @code-dot-org/redactable-markdown
+    ❌ @code-dot-org/remark-plugins
+    ❌ @dnd-kit/core
+    ❌ @dnd-kit/modifiers
+    ❌ @dnd-kit/sortable
+    ❌ @dnd-kit/utilities
+    ❌ @dsco_/link
+    ❌ @eslint/js
+    ❌ @excalidraw/excalidraw
+    ❌ @magenta/music
+    ❌ @mapbox/search-js-react
+    ❌ @microbit/microbit-fs
+    ❌ @microsoft/immersive-reader-sdk
+    ❌ @pmmmwh/react-refresh-webpack-plugin
+    ❌ @pyodide/webpack-plugin
+    ❌ @react-bootstrap/pagination
+    ❌ @react-pdf/renderer
+    ❌ @replit/codemirror-css-color-picker
+    ❌ @selectize/selectize
+    ❌ @statsig/js-client
+    ❌ @statsig/session-replay
+    ❌ @statsig/web-analytics
+    ❌ @storybook/addon-a11y
+    ❌ @storybook/addon-essentials
+    ❌ @storybook/addon-webpack5-compiler-babel
+    ❌ @storybook/core-common
+    ❌ @storybook/csf-tools
+    ❌ @storybook/react
+    ❌ @storybook/react-webpack5
+    ❌ @testing-library/dom
+    ❌ @testing-library/jest-dom
+    ❌ @testing-library/react
+    ❌ @testing-library/react-hooks
+    ❌ @testing-library/user-event
+    ❌ @types/chai
+    ❌ @types/htmlhint
+    ❌ @types/jest
+    ❌ @types/jquery
+    ❌ @types/js-cookie
+    ❌ @types/mocha
+    ❌ @types/papaparse
+    ❌ @types/qrcode.react
+    ❌ @types/react-bootstrap
+    ❌ @types/react-csv
+    ❌ @types/react-is
+    ❌ @types/react-router-dom
+    ❌ @types/react-select
+    ❌ @types/react-typist
+    ❌ @types/reactabular-table
+    ❌ @types/sinon
+    ❌ @types/video.js
+    ❌ @typescript-eslint/eslint-plugin
+    ❌ @typescript-eslint/parser
+    ❌ @wojtekmaj/enzyme-adapter-react-17
+    ❌ @xterm/addon-fit
+    ❌ @xterm/addon-image
+    ❌ @xterm/xterm
+    ❌ @xyflow/react
+    ❌ acorn-import-assertions
+    ❌ aws-sdk
+    ❌ babel-plugin-add-module-exports
+    ❌ babel-plugin-dynamic-import-node
+    ❌ babel-plugin-syntax-async-functions
+    ❌ browser-process-hrtime
+    ❌ buffer
+    ❌ canvg
+    ❌ chai
+    ❌ chai-as-promised
+    ❌ chai-enzyme
+    ❌ chai-subset
+    ❌ chai-xml
+    ❌ chalk
+    ❌ circular-dependency-plugin
+    ❌ classnames
+    ❌ copy-webpack-plugin
+    ❌ dapjs
+    ❌ dedent
+    ❌ details-element-polyfill
+    ❌ ejs
+    ❌ enzyme
+    ❌ eslint
+    ❌ eslint-config-prettier
+    ❌ eslint-import-resolver-typescript
+    ❌ eslint-linter-browserify
+    ❌ eslint-plugin-babel
+    ❌ eslint-plugin-cdo-custom-rules
+    ❌ eslint-plugin-import
+    ❌ eslint-plugin-jest
+    ❌ eslint-plugin-jsx-a11y
+    ❌ eslint-plugin-mocha
+    ❌ eslint-plugin-prettier
+    ❌ eslint-plugin-react
+    ❌ eslint-plugin-react-hooks
+    ❌ eslint-plugin-storybook
+    ❌ events
+    ❌ fast-memoize
+    ❌ filesaver.js
+    ❌ firmata
+    ❌ focus-trap-react
+    ❌ fork-ts-checker-webpack-plugin
+    ❌ globals
+    ❌ grunt-concurrent
+    ❌ grunt-contrib-clean
+    ❌ grunt-contrib-copy
+    ❌ grunt-contrib-uglify
+    ❌ grunt-contrib-watch
+    ❌ grunt-exec
+    ❌ grunt-newer
+    ❌ grunt-notify
+    ❌ grunt-sass
+    ❌ grunt-webpack
+    ❌ hammerjs
+    ❌ history
+    ❌ html2canvas
+    ❌ htmlhint
+    ❌ identity-obj-proxy
+    ❌ immutable
+    ❌ intro.js
+    ❌ intro.js-react
+    ❌ isolate-react
+    ❌ jest
+    ❌ jest-canvas-mock
+    ❌ jest-environment-jsdom
+    ❌ jest-fetch-mock
+    ❌ jest-html-reporter
+    ❌ jest-scss-transform
+    ❌ jest-transform-stub
+    ❌ jquery
+    ❌ jquery-ui
+    ❌ js-cookie
+    ❌ js-file-download
+    ❌ jshint
+    ❌ json-parse-better-errors
+    ❌ jsonic
+    ❌ jszip
+    ❌ karma
+    ❌ karma-chrome-launcher
+    ❌ karma-junit-reporter
+    ❌ karma-mocha
+    ❌ karma-mocha-reporter
+    ❌ karma-sourcemap-loader
+    ❌ karma-webpack
+    ❌ lazysizes
+    ❌ load-grunt-tasks
+    ❌ loadable-components
+    ❌ loader-utils
+    ❌ lodash
+    ❌ lottie-web
+    ❌ magicast
+    ❌ markdown-to-txt
+    ❌ md5
+    ❌ memoize-one
+    ❌ merge
+    ❌ messageformat
+    ❌ ml-knn
+    ❌ mock-firmata
+    ❌ moment
+    ❌ moment-timezone
+    ❌ object-fit-images
+    ❌ papaparse
+    ❌ path-browserify
+    ❌ pdf-lib
+    ❌ pepjs
+    ❌ pixelmatch
+    ❌ playground-io
+    ❌ prettier
+    ❌ process
+    ❌ progress-bar-webpack-plugin
+    ❌ pusher-js
+    ❌ pyodide
+    ❌ qrcode.react
+    ❌ qtip2
+    ❌ query-string
+    ❌ radium
+    ❌ react-beautiful-dnd
+    ❌ react-bootstrap
+    ❌ react-bootstrap-2
+    ❌ react-color
+    ❌ react-csv
+    ❌ react-datepicker
+    ❌ react-debounce-input
+    ❌ react-dom-confetti
+    ❌ react-draggable
+    ❌ react-focus-on
+    ❌ react-google-charts
+    ❌ react-idle-timer
+    ❌ react-inspector
+    ❌ react-lazy-load
+    ❌ react-loading-skeleton
+    ❌ react-motion
+    ❌ react-onclickoutside
+    ❌ react-paginate
+    ❌ react-pointable
+    ❌ react-portal
+    ❌ react-refresh
+    ❌ react-refresh-typescript
+    ❌ react-resizable-layout
+    ❌ react-router
+    ❌ react-router-dom
+    ❌ react-schemaorg
+    ❌ react-select
+    ❌ react-select-5
+    ❌ react-sticky
+    ❌ react-string-replace
+    ❌ react-tether
+    ❌ react-tooltip
+    ❌ react-transition-group
+    ❌ react-typist
+    ❌ react-virtualized
+    ❌ react-virtualized-select
+    ❌ react-with-context
+    ❌ reactabular-sticky
+    ❌ reactabular-table
+    ❌ reactabular-virtualized
+    ❌ recharts
+    ❌ recorder-js
+    ❌ rehype-raw
+    ❌ rehype-react
+    ❌ rehype-sanitize
+    ❌ remark-parse
+    ❌ remark-rehype
+    ❌ rgbcolor
+    ❌ rosie
+    ❌ sanitize-html
+    ❌ schema-dts
+    ❌ script-loader
+    ❌ seedrandom
+    ❌ sinon
+    ❌ sinon-chai
+    ❌ slate
+    ❌ slate-react
+    ❌ sortabular
+    ❌ source-map-loader
+    ❌ sprintf-js
+    ❌ storybook
+    ❌ storybook-addon-rtl
+    ❌ stream-browserify
+    ❌ stylelint
+    ❌ stylelint-config-standard
+    ❌ stylelint-config-standard-scss
+    ❌ survey-react
+    ❌ swiper
+    ❌ timers-browserify
+    ❌ tone
+    ❌ ts-jest
+    ❌ ts-loader
+    ❌ ts-sinon
+    ❌ typescript
+    ❌ unified
+    ❌ unminified-webpack-plugin
+    ❌ unplugin
+    ❌ video.js
+    ❌ vm-browserify
+    ❌ vmsg
+    ❌ webpack-livereload-plugin
+    ❌ webpack-notifier
+    ❌ webpack-stats-plugin
+    ❌ wgxpath
+    ❌ whatwg-fetch
 
 📈 SUMMARY:
-  Total dependencies: 540
-  Documented: 209 (38.7%)
-  Complete: 209 (38.7%)
+  Total dependencies: 542
+  Documented: 209 (38.6%)
+  Complete: 209 (38.6%)
   Missing: 342
   Incomplete: 0
   Over-documented: 8
