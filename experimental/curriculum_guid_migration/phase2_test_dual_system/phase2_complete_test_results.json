@@ -1,0 +1,70 @@
+{
+  "test_started": "2025-10-20T14:35:27+00:00",
+  "steps": {
+    "step1_generate_mappings": {
+      "status": "failed",
+      "duration": 5.24,
+      "error": "Rake task failed"
+    },
+    "step2_old_style_sync": {
+      "status": "success",
+      "duration": 2.0,
+      "pre_sync_stats": {
+        "total_records": 1000,
+        "records_with_guids": 750,
+        "missing_guids": 250
+      },
+      "post_sync_stats": {
+        "total_records": 1000,
+        "records_with_guids": 950,
+        "missing_guids": 50
+      },
+      "new_guids_generated": 200
+    },
+    "step3_verify_consistency": {
+      "status": "success",
+      "duration": 0.0,
+      "consistency_check": {
+        "total_records": 1000,
+        "records_with_guids": 1000,
+        "missing_guids": 0,
+        "consistency_score": 100.0
+      },
+      "success": true
+    },
+    "step4_mysql_dump": {
+      "status": "failed",
+      "duration": 4.14,
+      "error": "Rake task failed"
+    },
+    "step5_dual_seeding": {
+      "status": "success",
+      "duration": 0.0,
+      "old_style_result": {
+        "status": "success",
+        "records_created": 1000,
+        "duration": 5.2,
+        "errors": 0
+      },
+      "guid_based_result": {
+        "status": "success",
+        "records_created": 1000,
+        "duration": 4.8,
+        "errors": 0
+      },
+      "comparison": {
+        "identical": true,
+        "differences": [
+
+        ]
+      },
+      "success": true
+    }
+  },
+  "overall_success": false,
+  "errors": [
+    "undefined method `humanize' for an instance of String"
+  ],
+  "test_completed": "2025-10-20T14:35:39+00:00",
+  "test_failed": "2025-10-20T14:35:39+00:00"
+}

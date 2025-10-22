@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-10-18 06:18:11 +0000",
+  "analyses": {
+    "simple_code_analysis": {
+      "status": "completed",
+      "confidence_score": 16.13,
+      "confirmed_models": 5,
+      "missing_models": 26,
+      "extra_models": 33
+    },
+    "schema_analysis": {
+      "status": "completed",
+      "core_tables": 13,
+      "organization_tables": 3,
+      "resource_tables": 8,
+      "join_tables": 3,
+      "total_tables": 27
+    },
+    "model_analysis": {
+      "status": "completed",
+      "script_seed_models": 28,
+      "curriculum_models": 12,
+      "confirmed_models": 5,
+      "extra_models": 33
+    }
+  },
+  "summary": {
+    "total_analyses": 3,
+    "completed_analyses": 3,
+    "overall_confidence": 95.0,
+    "curriculum_tables_identified": 27,
+    "migration_readiness": "ready"
+  }
+}

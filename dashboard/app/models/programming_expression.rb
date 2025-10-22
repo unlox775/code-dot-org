@@ -24,7 +24,8 @@ require 'honeybadger/ruby'
 class ProgrammingExpression < ApplicationRecord
   include CurriculumHelper
   include SerializedProperties
-  include Rails.application.routes.url_helpers
+  include Rails
+  include GuidSupport.application.routes.url_helpers
 
   belongs_to :programming_environment, optional: true
   belongs_to :programming_environment_category, optional: true

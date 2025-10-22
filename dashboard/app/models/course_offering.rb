@@ -35,6 +35,7 @@
 class CourseOffering < ApplicationRecord
   include Curriculum::SharedCourseConstants
   include Localizable
+  include GuidSupport
 
   ACCEPTABLE_RESOURCE_TYPES = [
     'Answer Key',

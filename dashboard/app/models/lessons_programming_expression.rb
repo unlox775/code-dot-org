@@ -11,6 +11,7 @@
 #  programming_expression_lesson  (programming_expression_id,lesson_id)
 #
 class LessonsProgrammingExpression < ApplicationRecord
+  include GuidSupport
   belongs_to :lesson, optional: true
   belongs_to :programming_expression, optional: true
 

@@ -20,6 +20,7 @@
 # @attr [String] description - What the student should learn
 class Objective < ApplicationRecord
   include SerializedProperties
+  include GuidSupport
 
   belongs_to :lesson, optional: true
 

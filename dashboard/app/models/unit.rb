@@ -47,6 +47,7 @@ class Unit < ApplicationRecord
   include SharedConstants
   include Rails.application.routes.url_helpers
   include Unit::TextToSpeech
+  include GuidSupport
 
   include Seeded
   has_many :lesson_groups, -> {order(:position)}, foreign_key: 'script_id', dependent: :destroy
@@ -470,41 +471,48 @@ class Unit < ApplicationRecord
     self.class.get_from_cache(id)
   end
 
-  def self.get_without_cache(id_or_name, with_associated_models: true)
+  def self.get_without_cache(id_or_guid_or_name, with_associated_models: true)
+    # Try to find by GUID first (newer approach)
+    if guid_column_exists? && id_or_guid_or_name.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+      unit_model = with_associated_models ? Unit.with_associated_models : Unit
+      unit = unit_model.find_by(guid: id_or_guid_or_name)
+      return unit if unit
+    end
+
     # Also serve any unit by its new_name, if it has one.
-    unit = id_or_name && Unit.find_by(new_name: id_or_name)
+    unit = id_or_guid_or_name && Unit.find_by(new_name: id_or_guid_or_name)
     return unit if unit
 
     # a bit of trickery so we support both ids which are numbers and
     # names which are strings that may contain numbers (eg. 2-3)
-    is_id = id_or_name.to_i.to_s == id_or_name.to_s
+    is_id = id_or_guid_or_name.to_i.to_s == id_or_guid_or_name.to_s
     find_by = is_id ? :id : :name
     unit_model = with_associated_models ? Unit.with_associated_models : Unit
-    unit = unit_model.find_by(find_by => id_or_name)
+    unit = unit_model.find_by(find_by => id_or_guid_or_name)
     return unit if unit
   end
 
-  # Returns the unit with the specified id, or a unit with the specified
-  # name. Also populates the unit cache so that future responses will be cached.
+  # Returns the unit with the specified id, GUID, or name. Also populates the unit cache so that future responses will be cached.
   # For example:
-  #   get_from_cache('11') --> script_cache['11'] = <Unit id=11, name=...>
-  #   get_from_cache('frozen') --> script_cache['frozen'] = <Unit name="frozen", id=...>
+  #   get_from_cache('11') --> script_cache['id:11'] = <Unit id=11, name=...>
+  #   get_from_cache('frozen') --> script_cache['name:frozen'] = <Unit name="frozen", id=...>
+  #   get_from_cache('uuid-here') --> script_cache['guid:uuid-here'] = <Unit guid="uuid-here", id=...>
   #
-  # @param id_or_name [String, Integer] script id, script name, or script family name.
-  def self.get_from_cache(id_or_name, raise_exceptions: true)
+  # @param id_or_guid_or_name [String, Integer] script id, GUID, script name, or script family name.
+  def self.get_from_cache(id_or_guid_or_name, raise_exceptions: true)
     script =
       if should_cache?
-        cache_key = id_or_name.to_s
+        cache_key = cache_key_with_guid(id_or_guid_or_name)
         script_cache.fetch(cache_key) do
           # Populate cache on miss.
-          script_cache[cache_key] = get_without_cache(id_or_name)
+          script_cache[cache_key] = get_without_cache(id_or_guid_or_name)
         end
       else
-        get_without_cache(id_or_name, with_associated_models: false)
+        get_without_cache(id_or_guid_or_name, with_associated_models: false)
       end
     return script if script
     if raise_exceptions
-      raise ActiveRecord::RecordNotFound.new("Couldn't find Unit with id|name=#{id_or_name}")
+      raise ActiveRecord::RecordNotFound.new("Couldn't find Unit with id|guid|name=#{id_or_guid_or_name}")
     end
   end
 
@@ -1872,7 +1880,10 @@ class Unit < ApplicationRecord
   # @param [ScriptSeed::SeedContext] seed_context - contains preloaded data to use when looking up associated objects
   # @return [Hash<String, String>] all information needed to uniquely identify this object across environments.
   def seeding_key(seed_context)
-    {'script.name': name}.stringify_keys
+    key = {'script.name': name}
+    # Include GUID if available for better identification
+    key['script.guid'] = guid if guid_column_exists? && guid.present?
+    key.stringify_keys
   end
 
   # Wrapper for convenience

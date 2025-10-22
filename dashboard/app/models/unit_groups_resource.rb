@@ -11,4 +11,5 @@
 #  index_unit_groups_resources_on_unit_group_id_and_resource_id  (unit_group_id,resource_id) UNIQUE
 #
 class UnitGroupsResource < ApplicationRecord
+  include GuidSupport
 end
