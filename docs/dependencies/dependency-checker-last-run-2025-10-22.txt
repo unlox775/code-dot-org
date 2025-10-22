@@ -1,6 +1,6 @@
 ================================================================================
 📊 DEPENDENCY DOCUMENTATION REPORT
-Generated: 2025-10-22 18:51:54
+Generated: 2025-10-22 19:02:19
 ================================================================================
 
 🔴 RUBY DEPENDENCIES (Gemfile): 198 total
@@ -207,7 +207,7 @@ Generated: 2025-10-22 18:51:54
 🟡 JAVASCRIPT DEPENDENCIES (package.json): 344 total
 --------------------------------------------------
   ❌ @amplitude/analytics-browser
-  ❌ @babel/core
+  ✅ @babel/core
   ❌ @babel/eslint-parser
   ❌ @babel/plugin-proposal-object-rest-spread
   ❌ @babel/plugin-proposal-optional-chaining
@@ -216,8 +216,8 @@ Generated: 2025-10-22 18:51:54
   ❌ @babel/plugin-transform-classes
   ❌ @babel/plugin-transform-regenerator
   ❌ @babel/polyfill
-  ❌ @babel/preset-env
-  ❌ @babel/preset-react
+  ✅ @babel/preset-env
+  ✅ @babel/preset-react
   ✅ @blockly/block-shareable-procedures
   ✅ @blockly/field-bitmap
   ✅ @blockly/field-colour
@@ -245,19 +245,19 @@ Generated: 2025-10-22 18:51:54
   ❌ @code-dot-org/piskel
   ❌ @code-dot-org/redactable-markdown
   ❌ @code-dot-org/remark-plugins
-  ❌ @codemirror/autocomplete
-  ❌ @codemirror/commands
-  ❌ @codemirror/lang-css
-  ❌ @codemirror/lang-html
-  ❌ @codemirror/lang-java
-  ❌ @codemirror/lang-javascript
-  ❌ @codemirror/lang-markdown
-  ❌ @codemirror/lang-python
-  ❌ @codemirror/language
-  ❌ @codemirror/lint
-  ❌ @codemirror/search
-  ❌ @codemirror/state
-  ❌ @codemirror/view
+  ✅ @codemirror/autocomplete
+  ✅ @codemirror/commands
+  ✅ @codemirror/lang-css
+  ✅ @codemirror/lang-html
+  ✅ @codemirror/lang-java
+  ✅ @codemirror/lang-javascript
+  ✅ @codemirror/lang-markdown
+  ✅ @codemirror/lang-python
+  ✅ @codemirror/language
+  ✅ @codemirror/lint
+  ✅ @codemirror/search
+  ✅ @codemirror/state
+  ✅ @codemirror/view
   ❌ @dnd-kit/core
   ❌ @dnd-kit/modifiers
   ❌ @dnd-kit/sortable
@@ -267,7 +267,7 @@ Generated: 2025-10-22 18:51:54
   ✅ @emotion/styled
   ❌ @eslint/js
   ❌ @excalidraw/excalidraw
-  ❌ @lezer/highlight
+  ✅ @lezer/highlight
   ❌ @magenta/music
   ❌ @mapbox/search-js-react
   ❌ @microbit/microbit-fs
@@ -323,7 +323,7 @@ Generated: 2025-10-22 18:51:54
   ❌ @xyflow/react
   ❌ acorn-import-assertions
   ❌ aws-sdk
-  ❌ babel-loader
+  ✅ babel-loader
   ❌ babel-plugin-add-module-exports
   ❌ babel-plugin-dynamic-import-node
   ❌ babel-plugin-syntax-async-functions
@@ -340,10 +340,10 @@ Generated: 2025-10-22 18:51:54
   ❌ chalk
   ❌ circular-dependency-plugin
   ❌ classnames
-  ❌ codemirror
-  ❌ codemirror-spell-checker
+  ✅ codemirror
+  ✅ codemirror-spell-checker
   ❌ copy-webpack-plugin
-  ❌ css-loader
+  ✅ css-loader
   ❌ dapjs
   ❌ dedent
   ❌ details-element-polyfill
@@ -370,8 +370,8 @@ Generated: 2025-10-22 18:51:54
   ❌ focus-trap-react
   ❌ fork-ts-checker-webpack-plugin
   ❌ globals
-  ❌ grunt
-  ❌ grunt-cli
+  ✅ grunt
+  ✅ grunt-cli
   ❌ grunt-concurrent
   ❌ grunt-contrib-clean
   ❌ grunt-contrib-copy
@@ -505,8 +505,8 @@ Generated: 2025-10-22 18:51:54
   ❌ rgbcolor
   ❌ rosie
   ❌ sanitize-html
-  ❌ sass
-  ❌ sass-loader
+  ✅ sass
+  ✅ sass-loader
   ❌ schema-dts
   ❌ script-loader
   ❌ seedrandom
@@ -520,32 +520,32 @@ Generated: 2025-10-22 18:51:54
   ❌ storybook
   ❌ storybook-addon-rtl
   ❌ stream-browserify
-  ❌ style-loader
+  ✅ style-loader
   ❌ stylelint
   ❌ stylelint-config-standard
   ❌ stylelint-config-standard-scss
   ❌ survey-react
   ❌ swiper
-  ❌ terser-webpack-plugin
+  ✅ terser-webpack-plugin
   ❌ timers-browserify
   ❌ tone
   ❌ ts-jest
   ❌ ts-loader
   ❌ ts-sinon
   ❌ typescript
-  ❌ uglify-js
+  ✅ uglify-js
   ❌ unified
   ❌ unminified-webpack-plugin
   ❌ unplugin
   ❌ video.js
   ❌ vm-browserify
   ❌ vmsg
-  ❌ webpack
-  ❌ webpack-bundle-analyzer
-  ❌ webpack-cli
-  ❌ webpack-dev-server
+  ✅ webpack
+  ✅ webpack-bundle-analyzer
+  ✅ webpack-cli
+  ✅ webpack-dev-server
   ❌ webpack-livereload-plugin
-  ❌ webpack-manifest-plugin
+  ✅ webpack-manifest-plugin
   ❌ webpack-notifier
   ❌ webpack-stats-plugin
   ❌ wgxpath
@@ -554,10 +554,9 @@ Generated: 2025-10-22 18:51:54
 🐍 PYTHON DEPENDENCIES (pyproject.toml): 0 total
 --------------------------------------------------
 
-❌ MISSING DEPENDENCIES NOT DOCUMENTED: 375
+❌ MISSING DEPENDENCIES NOT DOCUMENTED: 342
 --------------------------------------------------
   ❌ @amplitude/analytics-browser
-  ❌ @babel/core
   ❌ @babel/eslint-parser
   ❌ @babel/plugin-proposal-object-rest-spread
   ❌ @babel/plugin-proposal-optional-chaining
@@ -566,8 +565,6 @@ Generated: 2025-10-22 18:51:54
   ❌ @babel/plugin-transform-classes
   ❌ @babel/plugin-transform-regenerator
   ❌ @babel/polyfill
-  ❌ @babel/preset-env
-  ❌ @babel/preset-react
   ❌ @cdo/interpreted
   ❌ @code-dot-org/artist
   ❌ @code-dot-org/component-library
@@ -585,19 +582,6 @@ Generated: 2025-10-22 18:51:54
   ❌ @code-dot-org/piskel
   ❌ @code-dot-org/redactable-markdown
   ❌ @code-dot-org/remark-plugins
-  ❌ @codemirror/autocomplete
-  ❌ @codemirror/commands
-  ❌ @codemirror/lang-css
-  ❌ @codemirror/lang-html
-  ❌ @codemirror/lang-java
-  ❌ @codemirror/lang-javascript
-  ❌ @codemirror/lang-markdown
-  ❌ @codemirror/lang-python
-  ❌ @codemirror/language
-  ❌ @codemirror/lint
-  ❌ @codemirror/search
-  ❌ @codemirror/state
-  ❌ @codemirror/view
   ❌ @dnd-kit/core
   ❌ @dnd-kit/modifiers
   ❌ @dnd-kit/sortable
@@ -605,7 +589,6 @@ Generated: 2025-10-22 18:51:54
   ❌ @dsco_/link
   ❌ @eslint/js
   ❌ @excalidraw/excalidraw
-  ❌ @lezer/highlight
   ❌ @magenta/music
   ❌ @mapbox/search-js-react
   ❌ @microbit/microbit-fs
@@ -666,7 +649,6 @@ Generated: 2025-10-22 18:51:54
   ❌ aws-sdk
   ❌ aws-sdk-autoscaling
   ❌ aws-sdk-bedrockagentruntime
-  ❌ babel-loader
   ❌ babel-plugin-add-module-exports
   ❌ babel-plugin-dynamic-import-node
   ❌ babel-plugin-syntax-async-functions
@@ -682,11 +664,8 @@ Generated: 2025-10-22 18:51:54
   ❌ chalk
   ❌ circular-dependency-plugin
   ❌ classnames
-  ❌ codemirror
-  ❌ codemirror-spell-checker
   ❌ copy-webpack-plugin
   ❌ crowdin-api
-  ❌ css-loader
   ❌ dapjs
   ❌ debugger
   ❌ dedent
@@ -717,8 +696,6 @@ Generated: 2025-10-22 18:51:54
   ❌ gemoji
   ❌ geocoder
   ❌ globals
-  ❌ grunt
-  ❌ grunt-cli
   ❌ grunt-concurrent
   ❌ grunt-contrib-clean
   ❌ grunt-contrib-copy
@@ -873,8 +850,6 @@ Generated: 2025-10-22 18:51:54
   ❌ rmagick
   ❌ rosie
   ❌ sanitize-html
-  ❌ sass
-  ❌ sass-loader
   ❌ schema-dts
   ❌ script-loader
   ❌ scss_lint
@@ -894,13 +869,11 @@ Generated: 2025-10-22 18:51:54
   ❌ storybook
   ❌ storybook-addon-rtl
   ❌ stream-browserify
-  ❌ style-loader
   ❌ stylelint
   ❌ stylelint-config-standard
   ❌ stylelint-config-standard-scss
   ❌ survey-react
   ❌ swiper
-  ❌ terser-webpack-plugin
   ❌ thin
   ❌ timers-browserify
   ❌ tone
@@ -909,7 +882,6 @@ Generated: 2025-10-22 18:51:54
   ❌ ts-sinon
   ❌ twilio-ruby
   ❌ typescript
-  ❌ uglify-js
   ❌ unf_ext
   ❌ unified
   ❌ unminified-webpack-plugin
@@ -918,12 +890,7 @@ Generated: 2025-10-22 18:51:54
   ❌ video.js
   ❌ vm-browserify
   ❌ vmsg
-  ❌ webpack
-  ❌ webpack-bundle-analyzer
-  ❌ webpack-cli
-  ❌ webpack-dev-server
   ❌ webpack-livereload-plugin
-  ❌ webpack-manifest-plugin
   ❌ webpack-notifier
   ❌ webpack-stats-plugin
   ❌ webrick
@@ -936,7 +903,7 @@ Generated: 2025-10-22 18:51:54
 
 📈 SUMMARY:
   Total dependencies: 542
-  Documented: 176 (32.5%)
-  Complete: 176 (32.5%)
-  Missing: 375
+  Documented: 209 (38.6%)
+  Complete: 209 (38.6%)
+  Missing: 342
   Incomplete: 0

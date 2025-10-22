@@ -101,9 +101,9 @@ class DependencyChecker:
         
         return deps
     
-    def scan_markdown_files(self) -> Tuple[Set[str], Set[str]]:
+    def scan_markdown_files(self) -> Tuple[Dict[str, Dict], Set[str]]:
         """Scan all markdown files for documented dependencies and check completeness"""
-        documented_deps = set()
+        documented_deps = {}  # dep_name -> {file: str, severity: str, has_necessity: bool}
         incomplete_deps = set()
         
         # Scan all markdown files in the docs directory
@@ -121,10 +121,29 @@ class DependencyChecker:
             for dep_name in matches:
                 # Clean up the dependency name
                 dep_name = dep_name.strip()
-                documented_deps.add(dep_name)
+                file_name = md_file.stem  # Get filename without extension
                 
                 # Check if this dependency has a necessity line
-                if not self._has_necessity_line(content, dep_name):
+                has_necessity = self._has_necessity_line(content, dep_name)
+                
+                # Extract severity if present
+                severity = "UNKNOWN"
+                if has_necessity:
+                    # Look for necessity line after the dependency name
+                    dep_section = re.search(rf'\*\*{re.escape(dep_name)}\*\*.*?(?=\n- \[|$)', content, re.DOTALL)
+                    if dep_section:
+                        section_content = dep_section.group(0)
+                        severity_match = re.search(r'- \*\*Necessity\*\*:\s*\*\*(LOW|MEDIUM|HIGH|CRITICAL)\*\*', section_content)
+                        if severity_match:
+                            severity = severity_match.group(1)
+                
+                documented_deps[dep_name] = {
+                    'file': file_name,
+                    'severity': severity,
+                    'has_necessity': has_necessity
+                }
+                
+                if not has_necessity:
                     incomplete_deps.add(dep_name)
         
         return documented_deps, incomplete_deps
@@ -151,7 +170,7 @@ class DependencyChecker:
         
         # Find missing dependencies
         all_source_deps = self.results['gemfile_deps'] | self.results['package_json_deps'] | self.results['python_deps']
-        self.results['missing_docs'] = all_source_deps - self.results['documented_deps']
+        self.results['missing_docs'] = all_source_deps - set(self.results['documented_deps'].keys())
         
         return self.results
     
@@ -211,7 +230,8 @@ class DependencyChecker:
             # Summary
             total_deps = len(self.results['gemfile_deps']) + len(self.results['package_json_deps']) + len(self.results['python_deps'])
             documented_count = len(self.results['documented_deps'])
-            complete_count = documented_count - len(self.results['incomplete_docs'])
+            complete_count = sum(1 for info in self.results['documented_deps'].values() 
+                               if info['has_necessity'] and info['severity'] != "UNKNOWN")
             
             f.write(f"\n📈 SUMMARY:\n")
             f.write(f"  Total dependencies: {total_deps}\n")
@@ -224,63 +244,90 @@ class DependencyChecker:
         return report_file
 
     def print_report(self):
-        """Print a comprehensive report"""
+        """Print a comprehensive report with enhanced details"""
         print("\n" + "="*80)
         print("📊 DEPENDENCY DOCUMENTATION REPORT")
         print("="*80)
         
-        # Ruby/Gemfile dependencies
-        print(f"\n🔴 RUBY DEPENDENCIES (Gemfile): {len(self.results['gemfile_deps'])} total")
-        print("-" * 50)
-        for dep in sorted(self.results['gemfile_deps']):
-            status = "✅" if dep in self.results['documented_deps'] else "❌"
-            print(f"  {status} {dep}")
+        # Combine all dependencies and sort by file
+        all_deps = {}
         
-        # JavaScript/Node.js dependencies
-        print(f"\n🟡 JAVASCRIPT DEPENDENCIES (package.json): {len(self.results['package_json_deps'])} total")
-        print("-" * 50)
-        for dep in sorted(self.results['package_json_deps']):
-            status = "✅" if dep in self.results['documented_deps'] else "❌"
-            print(f"  {status} {dep}")
+        # Add Ruby dependencies
+        for dep in self.results['gemfile_deps']:
+            all_deps[dep] = {'type': 'Ruby', 'source': 'Gemfile'}
         
-        # Python dependencies
-        print(f"\n🐍 PYTHON DEPENDENCIES (pyproject.toml): {len(self.results['python_deps'])} total")
-        print("-" * 50)
-        for dep in sorted(self.results['python_deps']):
-            status = "✅" if dep in self.results['documented_deps'] else "❌"
-            print(f"  {status} {dep}")
+        # Add JavaScript dependencies  
+        for dep in self.results['package_json_deps']:
+            all_deps[dep] = {'type': 'JavaScript', 'source': 'package.json'}
         
-        # Missing documentation
-        if self.results['missing_docs']:
-            print(f"\n❌ MISSING DEPENDENCIES NOT DOCUMENTED: {len(self.results['missing_docs'])}")
-            print("-" * 50)
-            for dep in sorted(self.results['missing_docs']):
-                print(f"  ❌ {dep}")
-        else:
-            print(f"\n✅ ALL DEPENDENCIES ARE DOCUMENTED!")
+        # Add Python dependencies
+        for dep in self.results['python_deps']:
+            all_deps[dep] = {'type': 'Python', 'source': 'pyproject.toml'}
         
-        # Incomplete documentation
-        if self.results['incomplete_docs']:
-            print(f"\n⚠️  DEPENDENCIES WITHOUT FULL DETAIL: {len(self.results['incomplete_docs'])}")
-            print("-" * 50)
-            for dep in sorted(self.results['incomplete_docs']):
-                print(f"  ⚠️  {dep} (missing necessity line)")
-        else:
-            print(f"\n✅ ALL DOCUMENTED DEPENDENCIES HAVE FULL DETAIL!")
+        # Sort dependencies by file name (if documented) or by type
+        def sort_key(dep_info):
+            dep_name, info = dep_info
+            if dep_name in self.results['documented_deps']:
+                doc_info = self.results['documented_deps'][dep_name]
+                return (0, doc_info['file'], dep_name)  # Documented first, sorted by file
+            else:
+                return (1, info['type'], dep_name)  # Undocumented last, sorted by type
+        
+        sorted_deps = sorted(all_deps.items(), key=sort_key)
+        
+        print(f"\n📋 ALL DEPENDENCIES: {len(all_deps)} total")
+        print("-" * 80)
+        
+        current_file = None
+        for dep_name, info in sorted_deps:
+            # Get documentation info if available
+            if dep_name in self.results['documented_deps']:
+                doc_info = self.results['documented_deps'][dep_name]
+                file_name = doc_info['file']
+                severity = doc_info['severity']
+                has_necessity = doc_info['has_necessity']
+                
+                # Determine status emoji
+                if has_necessity and severity != "UNKNOWN":
+                    status = "✅"  # Complete
+                elif has_necessity:
+                    status = "🔨"  # Has necessity but unknown severity
+                else:
+                    status = "⚠️"   # Missing necessity
+                
+                # Print file header if changed
+                if current_file != file_name:
+                    current_file = file_name
+                    print(f"\n📁 {file_name.upper()}:")
+                
+                # Format severity display
+                severity_display = f"({severity})" if severity != "UNKNOWN" else ""
+                print(f"  {status} {dep_name} {severity_display}")
+                
+            else:
+                # Not documented
+                if current_file != "UNDOCUMENTED":
+                    current_file = "UNDOCUMENTED"
+                    print(f"\n❌ NOT DOCUMENTED:")
+                
+                print(f"  ❌ {dep_name} ({info['type']} - {info['source']})")
         
         # Summary
-        total_deps = len(self.results['gemfile_deps']) + len(self.results['package_json_deps']) + len(self.results['python_deps'])
+        total_deps = len(all_deps)
         documented_count = len(self.results['documented_deps'])
-        complete_count = documented_count - len(self.results['incomplete_docs'])
+        complete_count = sum(1 for info in self.results['documented_deps'].values() 
+                           if info['has_necessity'] and info['severity'] != "UNKNOWN")
+        missing_count = len(self.results['missing_docs'])
+        incomplete_count = len(self.results['incomplete_docs'])
         
         print(f"\n📈 SUMMARY:")
         print(f"  Total dependencies: {total_deps}")
         print(f"  Documented: {documented_count} ({documented_count/total_deps*100:.1f}%)")
         print(f"  Complete: {complete_count} ({complete_count/total_deps*100:.1f}%)")
-        print(f"  Missing: {len(self.results['missing_docs'])}")
-        print(f"  Incomplete: {len(self.results['incomplete_docs'])}")
+        print(f"  Missing: {missing_count}")
+        print(f"  Incomplete: {incomplete_count}")
         
-        return len(self.results['missing_docs']) == 0 and len(self.results['incomplete_docs']) == 0
+        return missing_count == 0 and incomplete_count == 0
 
 def main():
     """Main entry point"""
