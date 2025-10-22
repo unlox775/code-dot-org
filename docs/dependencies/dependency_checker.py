@@ -101,10 +101,14 @@ class DependencyChecker:
         
         return deps
     
-    def scan_markdown_files(self) -> Tuple[Dict[str, Dict], Set[str]]:
+    def scan_markdown_files(self) -> Tuple[Dict[str, Dict], Set[str], Set[str]]:
         """Scan all markdown files for documented dependencies and check completeness"""
-        documented_deps = {}  # dep_name -> {file: str, severity: str, has_necessity: bool}
+        documented_deps = {}  # dep_name -> {file: str, severity: str, has_necessity: bool, count: int}
         incomplete_deps = set()
+        over_documented_deps = set()
+        
+        # Track which dependencies appear in multiple files
+        dep_file_count = {}
         
         # Scan all markdown files in the docs directory
         for md_file in self.docs_dir.rglob('*.md'):
@@ -123,6 +127,11 @@ class DependencyChecker:
                 dep_name = dep_name.strip()
                 file_name = md_file.stem  # Get filename without extension
                 
+                # Track file count for this dependency
+                if dep_name not in dep_file_count:
+                    dep_file_count[dep_name] = 0
+                dep_file_count[dep_name] += 1
+                
                 # Check if this dependency has a necessity line
                 has_necessity = self._has_necessity_line(content, dep_name)
                 
@@ -140,13 +149,19 @@ class DependencyChecker:
                 documented_deps[dep_name] = {
                     'file': file_name,
                     'severity': severity,
-                    'has_necessity': has_necessity
+                    'has_necessity': has_necessity,
+                    'count': dep_file_count[dep_name]
                 }
                 
                 if not has_necessity:
                     incomplete_deps.add(dep_name)
         
-        return documented_deps, incomplete_deps
+        # Find over-documented dependencies (appear in multiple files)
+        for dep_name, count in dep_file_count.items():
+            if count > 1:
+                over_documented_deps.add(dep_name)
+        
+        return documented_deps, incomplete_deps, over_documented_deps
     
     def _has_necessity_line(self, content: str, dep_name: str) -> bool:
         """Check if a dependency has a necessity line in the content"""
@@ -166,7 +181,7 @@ class DependencyChecker:
         print("📚 Scanning documentation files...")
         
         # Scan documentation
-        self.results['documented_deps'], self.results['incomplete_docs'] = self.scan_markdown_files()
+        self.results['documented_deps'], self.results['incomplete_docs'], self.results['over_documented_deps'] = self.scan_markdown_files()
         
         # Find missing dependencies
         all_source_deps = self.results['gemfile_deps'] | self.results['package_json_deps'] | self.results['python_deps']
@@ -249,7 +264,7 @@ class DependencyChecker:
         print("📊 DEPENDENCY DOCUMENTATION REPORT")
         print("="*80)
         
-        # Combine all dependencies and sort by file
+        # Combine all dependencies
         all_deps = {}
         
         # Add Ruby dependencies
@@ -264,14 +279,27 @@ class DependencyChecker:
         for dep in self.results['python_deps']:
             all_deps[dep] = {'type': 'Python', 'source': 'pyproject.toml'}
         
-        # Sort dependencies by file name (if documented) or by type
+        # Sort dependencies by file first, then by criticality, then by name
         def sort_key(dep_info):
             dep_name, info = dep_info
             if dep_name in self.results['documented_deps']:
                 doc_info = self.results['documented_deps'][dep_name]
-                return (0, doc_info['file'], dep_name)  # Documented first, sorted by file
+                file_name = doc_info['file']
+                severity = doc_info['severity']
+                has_necessity = doc_info['has_necessity']
+                
+                # Sort by file first
+                file_priority = 0
+                
+                # Then by criticality (CRITICAL=0, HIGH=1, MEDIUM=2, LOW=3, UNKNOWN=4)
+                severity_order = {'CRITICAL': 0, 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3, 'UNKNOWN': 4}
+                severity_priority = severity_order.get(severity, 4)
+                
+                # Then by name
+                return (file_priority, file_name, severity_priority, dep_name)
             else:
-                return (1, info['type'], dep_name)  # Undocumented last, sorted by type
+                # Undocumented dependencies go last
+                return (1, info['type'], 999, dep_name)
         
         sorted_deps = sorted(all_deps.items(), key=sort_key)
         
@@ -286,14 +314,17 @@ class DependencyChecker:
                 file_name = doc_info['file']
                 severity = doc_info['severity']
                 has_necessity = doc_info['has_necessity']
+                count = doc_info['count']
                 
                 # Determine status emoji
-                if has_necessity and severity != "UNKNOWN":
+                if count > 1:
+                    status = "⚠️"  # Over-documented (mentioned in multiple files)
+                elif has_necessity and severity != "UNKNOWN":
                     status = "✅"  # Complete
                 elif has_necessity:
                     status = "🔨"  # Has necessity but unknown severity
                 else:
-                    status = "⚠️"   # Missing necessity
+                    status = "🔨"  # Missing necessity
                 
                 # Print file header if changed
                 if current_file != file_name:
@@ -302,7 +333,8 @@ class DependencyChecker:
                 
                 # Format severity display
                 severity_display = f"({severity})" if severity != "UNKNOWN" else ""
-                print(f"  {status} {dep_name} {severity_display}")
+                over_doc_display = f" [mentioned in {count} files]" if count > 1 else ""
+                print(f"  {status} {dep_name} {severity_display}{over_doc_display}")
                 
             else:
                 # Not documented
@@ -319,6 +351,7 @@ class DependencyChecker:
                            if info['has_necessity'] and info['severity'] != "UNKNOWN")
         missing_count = len(self.results['missing_docs'])
         incomplete_count = len(self.results['incomplete_docs'])
+        over_documented_count = len(self.results['over_documented_deps'])
         
         print(f"\n📈 SUMMARY:")
         print(f"  Total dependencies: {total_deps}")
@@ -326,8 +359,9 @@ class DependencyChecker:
         print(f"  Complete: {complete_count} ({complete_count/total_deps*100:.1f}%)")
         print(f"  Missing: {missing_count}")
         print(f"  Incomplete: {incomplete_count}")
+        print(f"  Over-documented: {over_documented_count}")
         
-        return missing_count == 0 and incomplete_count == 0
+        return missing_count == 0 and incomplete_count == 0 and over_documented_count == 0
 
 def main():
     """Main entry point"""
