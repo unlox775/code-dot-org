@@ -17,6 +17,7 @@ import yaml
 import sys
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Optional
+from datetime import datetime
 
 class DependencyChecker:
     def __init__(self, base_dir: str = None):
@@ -154,6 +155,74 @@ class DependencyChecker:
         
         return self.results
     
+    def save_report(self, output_dir: Path = None):
+        """Save the report to a timestamped file"""
+        if output_dir is None:
+            output_dir = Path(__file__).parent
+        
+        timestamp = datetime.now().strftime("%Y-%m-%d")
+        report_file = output_dir / f"dependency-checker-last-run-{timestamp}.txt"
+        
+        with open(report_file, 'w') as f:
+            f.write("="*80 + "\n")
+            f.write("📊 DEPENDENCY DOCUMENTATION REPORT\n")
+            f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write("="*80 + "\n")
+            
+            # Ruby dependencies
+            f.write(f"\n🔴 RUBY DEPENDENCIES (Gemfile): {len(self.results['gemfile_deps'])} total\n")
+            f.write("-" * 50 + "\n")
+            for dep in sorted(self.results['gemfile_deps']):
+                status = "✅" if dep in self.results['documented_deps'] else "❌"
+                f.write(f"  {status} {dep}\n")
+            
+            # JavaScript dependencies
+            f.write(f"\n🟡 JAVASCRIPT DEPENDENCIES (package.json): {len(self.results['package_json_deps'])} total\n")
+            f.write("-" * 50 + "\n")
+            for dep in sorted(self.results['package_json_deps']):
+                status = "✅" if dep in self.results['documented_deps'] else "❌"
+                f.write(f"  {status} {dep}\n")
+            
+            # Python dependencies
+            f.write(f"\n🐍 PYTHON DEPENDENCIES (pyproject.toml): {len(self.results['python_deps'])} total\n")
+            f.write("-" * 50 + "\n")
+            for dep in sorted(self.results['python_deps']):
+                status = "✅" if dep in self.results['documented_deps'] else "❌"
+                f.write(f"  {status} {dep}\n")
+            
+            # Missing documentation
+            if self.results['missing_docs']:
+                f.write(f"\n❌ MISSING DEPENDENCIES NOT DOCUMENTED: {len(self.results['missing_docs'])}\n")
+                f.write("-" * 50 + "\n")
+                for dep in sorted(self.results['missing_docs']):
+                    f.write(f"  ❌ {dep}\n")
+            else:
+                f.write(f"\n✅ ALL DEPENDENCIES ARE DOCUMENTED!\n")
+            
+            # Incomplete documentation
+            if self.results['incomplete_docs']:
+                f.write(f"\n⚠️  DEPENDENCIES WITHOUT FULL DETAIL: {len(self.results['incomplete_docs'])}\n")
+                f.write("-" * 50 + "\n")
+                for dep in sorted(self.results['incomplete_docs']):
+                    f.write(f"  ⚠️  {dep} (missing necessity line)\n")
+            else:
+                f.write(f"\n✅ ALL DOCUMENTED DEPENDENCIES HAVE FULL DETAIL!\n")
+            
+            # Summary
+            total_deps = len(self.results['gemfile_deps']) + len(self.results['package_json_deps']) + len(self.results['python_deps'])
+            documented_count = len(self.results['documented_deps'])
+            complete_count = documented_count - len(self.results['incomplete_docs'])
+            
+            f.write(f"\n📈 SUMMARY:\n")
+            f.write(f"  Total dependencies: {total_deps}\n")
+            f.write(f"  Documented: {documented_count} ({documented_count/total_deps*100:.1f}%)\n")
+            f.write(f"  Complete: {complete_count} ({complete_count/total_deps*100:.1f}%)\n")
+            f.write(f"  Missing: {len(self.results['missing_docs'])}\n")
+            f.write(f"  Incomplete: {len(self.results['incomplete_docs'])}\n")
+        
+        print(f"📄 Report saved to: {report_file}")
+        return report_file
+
     def print_report(self):
         """Print a comprehensive report"""
         print("\n" + "="*80)
@@ -217,6 +286,11 @@ def main():
     """Main entry point"""
     checker = DependencyChecker()
     checker.run_check()
+    
+    # Save timestamped report
+    report_file = checker.save_report()
+    
+    # Print report to console
     success = checker.print_report()
     
     if success:
