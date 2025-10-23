@@ -15,8 +15,8 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Core code editor functionality for various programming languages
   - **Files**: Found in 25 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:1` - Main editor component
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:15` - Editor configuration
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:1`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L1) - Main editor component
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:15`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L15) - Editor configuration
   - **Necessity**: **CRITICAL** - Core code editing, removing would break code editor functionality
   - **Compensation if removed**: Would need to implement custom code editor or use different editor library
   - **Documentation**: [CodeMirror](https://codemirror.net/) | [GitHub](https://github.com/codemirror/codemirror5)
@@ -26,7 +26,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Autocomplete functionality for code editors
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:5` - Autocomplete integration
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:5`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L5) - Autocomplete integration
   - **Necessity**: **HIGH** - Autocomplete feature, removing would break code completion
   - **Compensation if removed**: Would need to implement custom autocomplete or use different solution
   - **Documentation**: [CodeMirror Autocomplete](https://codemirror.net/docs/ref/#autocomplete) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -36,7 +36,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Editor commands and keyboard shortcuts
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:7` - Command integration
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:7`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L7) - Command integration
   - **Necessity**: **HIGH** - Editor commands, removing would break keyboard shortcuts
   - **Compensation if removed**: Would need to implement custom command system
   - **Documentation**: [CodeMirror Commands](https://codemirror.net/docs/ref/#commands) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -46,7 +46,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Language parsing and syntax highlighting
   - **Files**: Found in 10 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:9` - Language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:9`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L9) - Language support
   - **Necessity**: **CRITICAL** - Language support, removing would break syntax highlighting
   - **Compensation if removed**: Would need to implement custom language parsing
   - **Documentation**: [CodeMirror Language](https://codemirror.net/docs/ref/#language) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -56,7 +56,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Real-time code linting and error highlighting
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:11` - Linting integration
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:11`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L11) - Linting integration
   - **Necessity**: **HIGH** - Code linting, removing would break real-time error checking
   - **Compensation if removed**: Would need to implement custom linting system
   - **Documentation**: [CodeMirror Lint](https://codemirror.net/docs/ref/#lint) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -66,7 +66,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Find and replace functionality
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:13` - Search integration
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:13`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L13) - Search integration
   - **Necessity**: **MEDIUM** - Search functionality, removing would break find/replace
   - **Compensation if removed**: Would need to implement custom search functionality
   - **Documentation**: [CodeMirror Search](https://codemirror.net/docs/ref/#search) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -76,7 +76,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Editor state management and persistence
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:15` - State management
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:15`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L15) - State management
   - **Necessity**: **CRITICAL** - State management, removing would break editor state
   - **Compensation if removed**: Would need to implement custom state management
   - **Documentation**: [CodeMirror State](https://codemirror.net/docs/ref/#state) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -86,7 +86,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Editor rendering and display
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:17` - View integration
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:17`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L17) - View integration
   - **Necessity**: **CRITICAL** - Editor rendering, removing would break editor display
   - **Compensation if removed**: Would need to implement custom editor rendering
   - **Documentation**: [CodeMirror View](https://codemirror.net/docs/ref/#view) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -98,7 +98,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: CSS syntax highlighting and parsing
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:19` - CSS language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:19`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L19) - CSS language support
   - **Necessity**: **MEDIUM** - CSS editing, removing would break CSS syntax highlighting
   - **Compensation if removed**: Would need to implement custom CSS parsing
   - **Documentation**: [CodeMirror CSS](https://codemirror.net/docs/ref/#lang-css) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -108,7 +108,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: HTML syntax highlighting and parsing
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:21` - HTML language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:21`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L21) - HTML language support
   - **Necessity**: **MEDIUM** - HTML editing, removing would break HTML syntax highlighting
   - **Compensation if removed**: Would need to implement custom HTML parsing
   - **Documentation**: [CodeMirror HTML](https://codemirror.net/docs/ref/#lang-html) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -118,7 +118,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Java syntax highlighting and parsing
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:23` - Java language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:23`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L23) - Java language support
   - **Necessity**: **LOW** - Java editing, removing would break Java syntax highlighting
   - **Compensation if removed**: Would need to implement custom Java parsing
   - **Documentation**: [CodeMirror Java](https://codemirror.net/docs/ref/#lang-java) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -128,7 +128,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: JavaScript syntax highlighting and parsing
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:25` - JavaScript language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:25`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L25) - JavaScript language support
   - **Necessity**: **HIGH** - JavaScript editing, removing would break JS syntax highlighting
   - **Compensation if removed**: Would need to implement custom JavaScript parsing
   - **Documentation**: [CodeMirror JavaScript](https://codemirror.net/docs/ref/#lang-javascript) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -138,7 +138,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Markdown syntax highlighting and parsing
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:27` - Markdown language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:27`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L27) - Markdown language support
   - **Necessity**: **MEDIUM** - Markdown editing, removing would break Markdown syntax highlighting
   - **Compensation if removed**: Would need to implement custom Markdown parsing
   - **Documentation**: [CodeMirror Markdown](https://codemirror.net/docs/ref/#lang-markdown) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -148,7 +148,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Python syntax highlighting and parsing
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:29` - Python language support
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:29`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L29) - Python language support
   - **Necessity**: **HIGH** - Python editing, removing would break Python syntax highlighting
   - **Compensation if removed**: Would need to implement custom Python parsing
   - **Documentation**: [CodeMirror Python](https://codemirror.net/docs/ref/#lang-python) | [GitHub](https://github.com/codemirror/codemirror6)
@@ -160,7 +160,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: High-performance syntax highlighting
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:31` - Highlighting engine
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:31`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L31) - Highlighting engine
   - **Necessity**: **HIGH** - Syntax highlighting, removing would break code highlighting
   - **Compensation if removed**: Would need to implement custom highlighting system
   - **Documentation**: [Lezer Highlight](https://lezer.codemirror.net/docs/ref/#highlight) | [GitHub](https://github.com/lezer-parser/highlight)
@@ -170,7 +170,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
   - **Usage**: Spell checking functionality in code editors
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `apps/src/code-studio/CodeMirrorEditor.jsx:33` - Spell checking
+    - [`apps/src/code-studio/CodeMirrorEditor.jsx:33`](../../apps/src/code-studio/CodeMirrorEditor.jsx#L33) - Spell checking
   - **Necessity**: **LOW** - Spell checking, removing would break spell check feature
   - **Compensation if removed**: Would need to implement custom spell checking
   - **Documentation**: [CodeMirror Spell Checker](https://github.com/NextStepWebs/codemirror-spell-checker) | [GitHub](https://github.com/NextStepWebs/codemirror-spell-checker)

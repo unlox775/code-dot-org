@@ -15,8 +15,8 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Real-time error tracking and exception monitoring
   - **Files**: Found in 10 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/honeybadger.rb:1` - Honeybadger configuration
-    - `dashboard/app/controllers/application_controller.rb:8` - Error handling
+    - [`dashboard/config/initializers/honeybadger.rb:1`](../../dashboard/config/initializers/honeybadger.rb#L1) - Honeybadger configuration
+    - [`dashboard/app/controllers/application_controller.rb:8`](../../dashboard/app/controllers/application_controller.rb#L8) - Error handling
   - **Necessity**: **CRITICAL** - Error monitoring, removing would break error tracking and alerting
   - **Compensation if removed**: Would need to implement custom error tracking or use different monitoring service
   - **Documentation**: [Honeybadger Ruby](https://docs.honeybadger.io/lib/ruby.html) | [GitHub](https://github.com/honeybadger-io/honeybadger-ruby)
@@ -26,8 +26,8 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Application performance monitoring and metrics collection
   - **Files**: Found in 9 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/newrelic.rb:1` - New Relic configuration
-    - `dashboard/app/controllers/application_controller.rb:6` - Performance monitoring
+    - [`dashboard/config/initializers/newrelic.rb:1`](../../dashboard/config/initializers/newrelic.rb#L1) - New Relic configuration
+    - [`dashboard/app/controllers/application_controller.rb:6`](../../dashboard/app/controllers/application_controller.rb#L6) - Performance monitoring
   - **Necessity**: **HIGH** - Performance monitoring, removing would break APM and performance insights
   - **Compensation if removed**: Would need to use different APM solution or implement custom performance monitoring
   - **Documentation**: [New Relic Ruby](https://docs.newrelic.com/docs/agents/ruby-agent/) | [GitHub](https://github.com/newrelic/newrelic-ruby-agent)
@@ -39,8 +39,8 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Structured logging and log formatting
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/lograge.rb:1` - Lograge configuration
-    - `dashboard/config/application.rb:20` - Logging setup
+    - [`dashboard/config/initializers/lograge.rb:1`](../../dashboard/config/initializers/lograge.rb#L1) - Lograge configuration
+    - [`dashboard/config/application.rb:20`](../../dashboard/config/application.rb#L20) - Logging setup
   - **Necessity**: **MEDIUM** - Log formatting, removing would break structured logging
   - **Compensation if removed**: Would need to implement custom log formatting
   - **Documentation**: [Lograge](https://github.com/roidrage/lograge) | [GitHub](https://github.com/roidrage/lograge)
@@ -50,7 +50,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Request-scoped data storage for logging and debugging
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/controllers/application_controller.rb:4` - Request context
+    - [`dashboard/app/controllers/application_controller.rb:4`](../../dashboard/app/controllers/application_controller.rb#L4) - Request context
   - **Necessity**: **LOW** - Request context, removing would break request-scoped logging
   - **Compensation if removed**: Would need to implement custom request context management
   - **Documentation**: [Request Store](https://github.com/steveklabnik/request_store) | [GitHub](https://github.com/steveklabnik/request_store)
@@ -94,7 +94,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Unix socket monitoring and statistics
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/raindrops.rb:1` - Raindrops configuration
+    - [`dashboard/config/initializers/raindrops.rb:1`](../../dashboard/config/initializers/raindrops.rb#L1) - Raindrops configuration
   - **Necessity**: **LOW** - System monitoring, removing would break socket monitoring
   - **Compensation if removed**: Would need to use different system monitoring tool
   - **Documentation**: [Raindrops](https://github.com/tmm1/raindrops) | [GitHub](https://github.com/tmm1/raindrops)
@@ -104,7 +104,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Systemd service notification and status reporting
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/sd_notify.rb:1` - Systemd notification
+    - [`dashboard/config/initializers/sd_notify.rb:1`](../../dashboard/config/initializers/sd_notify.rb#L1) - Systemd notification
   - **Necessity**: **LOW** - System integration, removing would break systemd integration
   - **Compensation if removed**: Would need to use different system integration approach
   - **Documentation**: [SD Notify](https://github.com/agis/sd_notify) | [GitHub](https://github.com/agis/sd_notify)
@@ -116,7 +116,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Enhanced error pages during development
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/environments/development.rb:15` - Development error handling
+    - [`dashboard/config/environments/development.rb:15`](../../dashboard/config/environments/development.rb#L15) - Development error handling
   - **Necessity**: **LOW** - Development tool, removing would break enhanced error pages
   - **Compensation if removed**: Would use standard Rails error pages
   - **Documentation**: [Better Errors](https://github.com/BetterErrors/better_errors) | [GitHub](https://github.com/BetterErrors/better_errors)
@@ -126,7 +126,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Interactive debugging console in development
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/environments/development.rb:18` - Development console
+    - [`dashboard/config/environments/development.rb:18`](../../dashboard/config/environments/development.rb#L18) - Development console
   - **Necessity**: **LOW** - Development tool, removing would break interactive console
   - **Compensation if removed**: Would use standard Rails console
   - **Documentation**: [Web Console](https://github.com/rails/web-console) | [GitHub](https://github.com/rails/web-console)
@@ -136,7 +136,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Enhanced Ruby debugging and exploration
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/config/environments/development.rb:20` - Development debugging
+    - [`dashboard/config/environments/development.rb:20`](../../dashboard/config/environments/development.rb#L20) - Development debugging
   - **Necessity**: **LOW** - Development tool, removing would break enhanced debugging
   - **Compensation if removed**: Would use standard Ruby IRB
   - **Documentation**: [Pry](https://github.com/pry/pry) | [GitHub](https://github.com/pry/pry)
@@ -148,7 +148,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Performance profiling for Rack applications
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/rack_mini_profiler.rb:1` - Profiler configuration
+    - [`dashboard/config/initializers/rack_mini_profiler.rb:1`](../../dashboard/config/initializers/rack_mini_profiler.rb#L1) - Profiler configuration
   - **Necessity**: **LOW** - Performance profiling, removing would break performance monitoring
   - **Compensation if removed**: Would need to use different profiling tool
   - **Documentation**: [Rack Mini Profiler](https://github.com/MiniProfiler/rack-mini-profiler) | [GitHub](https://github.com/MiniProfiler/rack-mini-profiler)
@@ -158,7 +158,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Real-time messaging and notifications
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/pusher_service.rb:1` - Pusher service
+    - [`dashboard/app/services/pusher_service.rb:1`](../../dashboard/app/services/pusher_service.rb#L1) - Pusher service
   - **Necessity**: **MEDIUM** - Real-time messaging, removing would break real-time features
   - **Compensation if removed**: Would need to use different real-time messaging service
   - **Documentation**: [Pusher Ruby](https://github.com/pusher/pusher-http-ruby) | [GitHub](https://github.com/pusher/pusher-http-ruby)
@@ -168,7 +168,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Analytics and feature flagging
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/statsig_service.rb:1` - Statsig service
+    - [`dashboard/app/services/statsig_service.rb:1`](../../dashboard/app/services/statsig_service.rb#L1) - Statsig service
   - **Necessity**: **LOW** - Analytics, removing would break analytics tracking
   - **Compensation if removed**: Would need to use different analytics service
   - **Documentation**: [Statsig Ruby](https://github.com/statsig-io/ruby-sdk) | [GitHub](https://github.com/statsig-io/ruby-sdk)
@@ -178,7 +178,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Translation management and localization
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/crowdin_service.rb:1` - Crowdin service
+    - [`dashboard/lib/crowdin_service.rb:1`](../../dashboard/lib/crowdin_service.rb#L1) - Crowdin service
   - **Necessity**: **LOW** - Translation management, removing would break translation workflows
   - **Compensation if removed**: Would need to use different translation service
   - **Documentation**: [Crowdin API](https://github.com/crowdin/crowdin-ruby-sdk) | [GitHub](https://github.com/crowdin/crowdin-ruby-sdk)
@@ -188,7 +188,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: GitHub API integration and automation
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/github_service.rb:1` - GitHub service
+    - [`dashboard/lib/github_service.rb:1`](../../dashboard/lib/github_service.rb#L1) - GitHub service
   - **Necessity**: **MEDIUM** - GitHub integration, removing would break GitHub automation
   - **Compensation if removed**: Would need to use different GitHub client
   - **Documentation**: [Octokit](https://github.com/octokit/octokit.rb) | [GitHub](https://github.com/octokit/octokit.rb)
@@ -198,7 +198,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Email delivery service
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/email_service.rb:1` - Email service
+    - [`dashboard/app/services/email_service.rb:1`](../../dashboard/app/services/email_service.rb#L1) - Email service
   - **Necessity**: **MEDIUM** - Email delivery, removing would break email sending
   - **Compensation if removed**: Would need to use different email service
   - **Documentation**: [Mailgun Ruby](https://github.com/mailgun/mailgun-ruby) | [GitHub](https://github.com/mailgun/mailgun-ruby)
@@ -208,7 +208,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Alternative email delivery service
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/mailjet_service.rb:1` - Mailjet service
+    - [`dashboard/app/services/mailjet_service.rb:1`](../../dashboard/app/services/mailjet_service.rb#L1) - Mailjet service
   - **Necessity**: **LOW** - Email delivery, removing would break alternative email sending
   - **Compensation if removed**: Would need to use different email service
   - **Documentation**: [Mailjet Ruby](https://github.com/mailjet/mailjet-ruby) | [GitHub](https://github.com/mailjet/mailjet-ruby)
@@ -218,7 +218,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: SMS and voice communication
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/sms_service.rb:1` - SMS service
+    - [`dashboard/app/services/sms_service.rb:1`](../../dashboard/app/services/sms_service.rb#L1) - SMS service
   - **Necessity**: **LOW** - SMS service, removing would break SMS functionality
   - **Compensation if removed**: Would need to use different SMS service
   - **Documentation**: [Twilio Ruby](https://github.com/twilio/twilio-ruby) | [GitHub](https://github.com/twilio/twilio-ruby)
@@ -228,7 +228,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Speeds up Rails development by keeping application in memory
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/spring.rb:1` - Spring configuration
+    - [`dashboard/config/spring.rb:1`](../../dashboard/config/spring.rb#L1) - Spring configuration
   - **Necessity**: **LOW** - Development optimization, removing would slow down development
   - **Compensation if removed**: Would have slower Rails development startup
   - **Documentation**: [Spring](https://github.com/rails/spring) | [GitHub](https://github.com/rails/spring)
@@ -238,7 +238,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Spring integration for TestUnit
   - **Files**: Found in 1 file across the codebase
   - **Key locations**:
-    - `dashboard/config/spring.rb:3` - Spring TestUnit configuration
+    - [`dashboard/config/spring.rb:3`](../../dashboard/config/spring.rb#L3) - Spring TestUnit configuration
   - **Necessity**: **LOW** - Test optimization, removing would slow down test runs
   - **Compensation if removed**: Would have slower test execution
   - **Documentation**: [Spring TestUnit](https://github.com/rails/spring) | [GitHub](https://github.com/rails/spring)
@@ -248,7 +248,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: SSH operations and remote server management
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/ssh_utils.rb:1` - SSH utilities
+    - [`dashboard/lib/ssh_utils.rb:1`](../../dashboard/lib/ssh_utils.rb#L1) - SSH utilities
   - **Necessity**: **MEDIUM** - SSH operations, removing would break remote server management
   - **Compensation if removed**: Would need to use different SSH library
   - **Documentation**: [SSHKit](https://github.com/capistrano/sshkit) | [GitHub](https://github.com/capistrano/sshkit)
@@ -258,7 +258,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Lightweight web server for development
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/puma.rb:5` - Server configuration
+    - [`dashboard/config/puma.rb:5`](../../dashboard/config/puma.rb#L5) - Server configuration
   - **Necessity**: **LOW** - Web server, removing would break development server
   - **Compensation if removed**: Would need to use different web server
   - **Documentation**: [Thin](https://github.com/macournoyer/thin) | [GitHub](https://github.com/macournoyer/thin)
@@ -268,7 +268,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Ruby standard library web server
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:10` - Server configuration
+    - [`dashboard/config/application.rb:10`](../../dashboard/config/application.rb#L10) - Server configuration
   - **Necessity**: **LOW** - Web server, removing would break fallback server
   - **Compensation if removed**: Would need to use different web server
   - **Documentation**: [WEBrick](https://github.com/ruby/webrick) | [GitHub](https://github.com/ruby/webrick)
@@ -278,7 +278,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
   - **Usage**: Localhost development utilities
   - **Files**: Found in 1 file across the codebase
   - **Key locations**:
-    - `dashboard/lib/localhost_utils.rb:1` - Localhost utilities
+    - [`dashboard/lib/localhost_utils.rb:1`](../../dashboard/lib/localhost_utils.rb#L1) - Localhost utilities
   - **Necessity**: **LOW** - Development utilities, removing would break localhost features
   - **Compensation if removed**: Would need to use different localhost utilities
   - **Documentation**: [Localhost](https://github.com/localhost/localhost) | [GitHub](https://github.com/localhost/localhost)

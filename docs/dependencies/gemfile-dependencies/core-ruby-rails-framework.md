@@ -14,9 +14,9 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Usage**: Core web framework used throughout the application
   - **Files**: Found in 104 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:3` - Main application configuration
+    - [`dashboard/config/application.rb:3`](../../dashboard/config/application.rb#L3) - Main application configuration
     - `dashboard/bin/rails:1` - Rails executable
-    - `dashboard/config/initializers/devise.rb:3` - Devise configuration
+    - [`dashboard/config/initializers/devise.rb:3`](../../dashboard/config/initializers/devise.rb#L3) - Devise configuration
   - **Necessity**: **CRITICAL** - Core framework, removing would break entire application
   - **Compensation if removed**: Would need to rewrite entire web application using different framework
   - **Documentation**: [Rails Guides](https://guides.rubyonrails.org/) | [GitHub](https://github.com/rails/rails)
@@ -26,9 +26,9 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Usage**: Testing utilities for Rails controllers
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `dashboard/test/controllers/registrations_controller_test.rb:1` - Registration controller tests
-    - `dashboard/test/controllers/omniauth_callbacks_controller_test.rb:1` - OAuth callback tests
-    - `dashboard/test/controllers/sections_controller_test.rb:1` - Sections controller tests
+    - [`dashboard/test/controllers/registrations_controller_test.rb:1`](../../dashboard/test/controllers/registrations_controller_test.rb#L1) - Registration controller tests
+    - [`dashboard/test/controllers/omniauth_callbacks_controller_test.rb:1`](../../dashboard/test/controllers/omniauth_callbacks_controller_test.rb#L1) - OAuth callback tests
+    - [`dashboard/test/controllers/sections_controller_test.rb:1`](../../dashboard/test/controllers/sections_controller_test.rb#L1) - Sections controller tests
   - **Necessity**: **MEDIUM** - Testing utility, removing would require rewriting controller tests
   - **Compensation if removed**: Would need to rewrite controller tests using alternative testing approaches
   - **Documentation**: [Rails Controller Testing](https://github.com/rails/rails-controller-testing) | [GitHub](https://github.com/rails/rails-controller-testing)
@@ -39,9 +39,9 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Usage**: Asset compilation and serving system
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:15` - Asset pipeline configuration
-    - `dashboard/config/initializers/assets.rb:1` - Asset precompilation settings
-    - `dashboard/app/assets/config/manifest.js:1` - Asset manifest
+    - [`dashboard/config/application.rb:15`](../../dashboard/config/application.rb#L15) - Asset pipeline configuration
+    - [`dashboard/config/initializers/assets.rb:1`](../../dashboard/config/initializers/assets.rb#L1) - Asset precompilation settings
+    - [`dashboard/app/assets/config/manifest.js:1`](../../dashboard/app/assets/config/manifest.js#L1) - Asset manifest
   - **Necessity**: **HIGH** - Core asset pipeline, removing would break asset compilation
   - **Compensation if removed**: Would need to implement alternative asset pipeline or migrate to different asset system
   - **Documentation**: [Sprockets](https://github.com/rails/sprockets) | [GitHub](https://github.com/rails/sprockets)
@@ -51,9 +51,9 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Usage**: Sass/SCSS compilation for stylesheets
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:16` - Sass configuration
-    - `dashboard/app/assets/stylesheets/application.scss:1` - Main stylesheet
-    - `dashboard/app/assets/stylesheets/cdo.scss:1` - CDO specific styles
+    - [`dashboard/config/application.rb:16`](../../dashboard/config/application.rb#L16) - Sass configuration
+    - [`dashboard/app/assets/stylesheets/application.scss:1`](../../dashboard/app/assets/stylesheets/application.scss#L1) - Main stylesheet
+    - [`dashboard/app/assets/stylesheets/cdo.scss:1`](../../dashboard/app/assets/stylesheets/cdo.scss#L1) - CDO specific styles
   - **Necessity**: **HIGH** - Stylesheet compilation, removing would break CSS processing
   - **Compensation if removed**: Would need to implement alternative Sass compilation or migrate to different CSS preprocessor
   - **Documentation**: [SassC Rails](https://github.com/sass/sassc-rails) | [GitHub](https://github.com/sass/sassc-rails)
@@ -64,9 +64,9 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Usage**: Standardized response handling for controllers
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - `dashboard/app/controllers/application_controller.rb:3` - Base controller
-    - `dashboard/app/controllers/sections_controller.rb:1` - Sections controller
-    - `dashboard/app/controllers/levels_controller.rb:1` - Levels controller
+    - [`dashboard/app/controllers/application_controller.rb:3`](../../dashboard/app/controllers/application_controller.rb#L3) - Base controller
+    - [`dashboard/app/controllers/sections_controller.rb:1`](../../dashboard/app/controllers/sections_controller.rb#L1) - Sections controller
+    - [`dashboard/app/controllers/levels_controller.rb:1`](../../dashboard/app/controllers/levels_controller.rb#L1) - Levels controller
   - **Necessity**: **MEDIUM** - Response handling utility, removing would require updating controller responses
   - **Compensation if removed**: Would need to rewrite controller response handling or implement custom response logic
   - **Documentation**: [Responders](https://github.com/heartcombo/responders) | [GitHub](https://github.com/heartcombo/responders)

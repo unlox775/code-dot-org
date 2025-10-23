@@ -15,9 +15,9 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Primary authentication system used throughout the application
   - **Files**: Found in 30 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:3` - Main Devise configuration
-    - `dashboard/app/models/user.rb:1` - User model with Devise modules
-    - `dashboard/app/controllers/application_controller.rb:2` - Devise authentication
+    - [`dashboard/config/initializers/devise.rb:3`](../../dashboard/config/initializers/devise.rb#L3) - Main Devise configuration
+    - [`dashboard/app/models/user.rb:1`](../../dashboard/app/models/user.rb#L1) - User model with Devise modules
+    - [`dashboard/app/controllers/application_controller.rb:2`](../../dashboard/app/controllers/application_controller.rb#L2) - Devise authentication
   - **Necessity**: **CRITICAL** - Core authentication system, removing would break user login/logout
   - **Compensation if removed**: Would need to implement custom authentication system or migrate to different auth solution
   - **Documentation**: [Devise Wiki](https://github.com/heartcombo/devise/wiki) | [GitHub](https://github.com/heartcombo/devise)
@@ -27,8 +27,8 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Handles user invitation functionality for account creation
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/user.rb:3` - User model with invitable module
-    - `dashboard/app/controllers/invitations_controller.rb:1` - Invitation handling
+    - [`dashboard/app/models/user.rb:3`](../../dashboard/app/models/user.rb#L3) - User model with invitable module
+    - [`dashboard/app/controllers/invitations_controller.rb:1`](../../dashboard/app/controllers/invitations_controller.rb#L1) - Invitation handling
   - **Necessity**: **HIGH** - User invitation system, removing would break invite functionality
   - **Compensation if removed**: Would need to implement custom invitation system
   - **Documentation**: [Devise Invitable](https://github.com/scambra/devise_invitable) | [GitHub](https://github.com/scambra/devise_invitable)
@@ -38,8 +38,8 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Handles user permissions and authorization throughout the application
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/ability.rb:1` - Main ability definitions
-    - `dashboard/app/controllers/application_controller.rb:5` - Authorization checks
+    - [`dashboard/app/models/ability.rb:1`](../../dashboard/app/models/ability.rb#L1) - Main ability definitions
+    - [`dashboard/app/controllers/application_controller.rb:5`](../../dashboard/app/controllers/application_controller.rb#L5) - Authorization checks
   - **Necessity**: **CRITICAL** - Core authorization system, removing would break permission checks
   - **Compensation if removed**: Would need to implement custom authorization system
   - **Documentation**: [CanCanCan Wiki](https://github.com/CanCanCommunity/cancancan/wiki) | [GitHub](https://github.com/CanCanCommunity/cancancan)
@@ -51,7 +51,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Provides CSRF protection for OAuth authentication flows
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:15` - OAuth configuration
+    - [`dashboard/config/initializers/devise.rb:15`](../../dashboard/config/initializers/devise.rb#L15) - OAuth configuration
   - **Necessity**: **HIGH** - Security requirement for OAuth, removing would create security vulnerability
   - **Compensation if removed**: Would need to implement custom CSRF protection for OAuth
   - **Documentation**: [OmniAuth Rails CSRF Protection](https://github.com/cookpad/omniauth-rails_csrf_protection) | [GitHub](https://github.com/cookpad/omniauth-rails_csrf_protection)
@@ -61,7 +61,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Enables Google OAuth2 authentication for users
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:12` - Google OAuth configuration
+    - [`dashboard/config/initializers/devise.rb:12`](../../dashboard/config/initializers/devise.rb#L12) - Google OAuth configuration
   - **Necessity**: **MEDIUM** - Google login option, removing would disable Google authentication
   - **Compensation if removed**: Users would need to use email/password authentication only
   - **Documentation**: [OmniAuth Google OAuth2](https://github.com/zquestz/omniauth-google-oauth2) | [GitHub](https://github.com/zquestz/omniauth-google-oauth2)
@@ -71,7 +71,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Enables Facebook OAuth authentication for users
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:13` - Facebook OAuth configuration
+    - [`dashboard/config/initializers/devise.rb:13`](../../dashboard/config/initializers/devise.rb#L13) - Facebook OAuth configuration
   - **Necessity**: **MEDIUM** - Facebook login option, removing would disable Facebook authentication
   - **Compensation if removed**: Users would need to use email/password authentication only
   - **Documentation**: [OmniAuth Facebook](https://github.com/mkdynamic/omniauth-facebook) | [GitHub](https://github.com/mkdynamic/omniauth-facebook)
@@ -81,7 +81,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Enables Microsoft OAuth2 authentication for users
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:14` - Microsoft OAuth configuration
+    - [`dashboard/config/initializers/devise.rb:14`](../../dashboard/config/initializers/devise.rb#L14) - Microsoft OAuth configuration
   - **Necessity**: **MEDIUM** - Microsoft login option, removing would disable Microsoft authentication
   - **Compensation if removed**: Users would need to use email/password authentication only
   - **Documentation**: [OmniAuth Microsoft V2 Auth](https://github.com/KonaTeam/omniauth-microsoft_v2_auth) | [GitHub](https://github.com/KonaTeam/omniauth-microsoft_v2_auth)
@@ -91,7 +91,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Enables Clever OAuth authentication for educational users
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:16` - Clever OAuth configuration
+    - [`dashboard/config/initializers/devise.rb:16`](../../dashboard/config/initializers/devise.rb#L16) - Clever OAuth configuration
   - **Necessity**: **MEDIUM** - Clever login option, removing would disable Clever authentication
   - **Compensation if removed**: Educational users would need to use other authentication methods
   - **Documentation**: [OmniAuth Clever](https://github.com/clever/omniauth-clever) | [GitHub](https://github.com/clever/omniauth-clever)
@@ -103,7 +103,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Used by Devise for secure password hashing
   - **Files**: Found in 1 file across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/devise.rb:5` - Password hashing configuration
+    - [`dashboard/config/initializers/devise.rb:5`](../../dashboard/config/initializers/devise.rb#L5) - Password hashing configuration
   - **Necessity**: **CRITICAL** - Password security, removing would break password authentication
   - **Compensation if removed**: Would need to implement custom password hashing
   - **Documentation**: [BCrypt Ruby](https://github.com/bcrypt-ruby/bcrypt-ruby) | [GitHub](https://github.com/bcrypt-ruby/bcrypt-ruby)
@@ -113,7 +113,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Provides CSRF protection for the application
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:25` - CSRF protection configuration
+    - [`dashboard/config/application.rb:25`](../../dashboard/config/application.rb#L25) - CSRF protection configuration
   - **Necessity**: **CRITICAL** - Security requirement, removing would create CSRF vulnerability
   - **Compensation if removed**: Would need to implement custom CSRF protection
   - **Documentation**: [Rack CSRF](https://github.com/baldowl/rack_csrf) | [GitHub](https://github.com/baldowl/rack_csrf)
@@ -123,8 +123,8 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Provides CAPTCHA protection for forms and authentication
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/app/controllers/registrations_controller.rb:3` - Registration CAPTCHA
-    - `dashboard/app/views/devise/registrations/new.html.haml:15` - CAPTCHA display
+    - [`dashboard/app/controllers/registrations_controller.rb:3`](../../dashboard/app/controllers/registrations_controller.rb#L3) - Registration CAPTCHA
+    - [`dashboard/app/views/devise/registrations/new.html.haml:15`](../../dashboard/app/views/devise/registrations/new.html.haml#L15) - CAPTCHA display
   - **Necessity**: **MEDIUM** - Spam protection, removing would reduce security against bots
   - **Compensation if removed**: Would need alternative spam protection or accept higher bot risk
   - **Documentation**: [reCAPTCHA Ruby](https://github.com/ambethia/recaptcha) | [GitHub](https://github.com/ambethia/recaptcha)
@@ -137,7 +137,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
     - `dashboard/app/controllers/api/` - API authentication
-    - `dashboard/app/services/jwt_service.rb:1` - JWT token management
+    - [`dashboard/app/services/jwt_service.rb:1`](../../dashboard/app/services/jwt_service.rb#L1) - JWT token management
   - **Necessity**: **HIGH** - API authentication, removing would break JWT-based API auth
   - **Compensation if removed**: Would need to implement custom token system or use different auth method
   - **Documentation**: [JWT Ruby](https://github.com/jwt/ruby-jwt) | [GitHub](https://github.com/jwt/ruby-jwt)
@@ -147,7 +147,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: JWT token creation and verification
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/token_service.rb:1` - Token utilities
+    - [`dashboard/app/services/token_service.rb:1`](../../dashboard/app/services/token_service.rb#L1) - Token utilities
   - **Necessity**: **MEDIUM** - JWT handling, removing would break JWT operations
   - **Compensation if removed**: Would need to use different JWT library
   - **Documentation**: [JSON JWT](https://github.com/nov/json-jwt) | [GitHub](https://github.com/nov/json-jwt)
@@ -157,7 +157,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Automated SSL certificate management
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/ssl_manager.rb:1` - SSL certificate management
+    - [`dashboard/lib/ssl_manager.rb:1`](../../dashboard/lib/ssl_manager.rb#L1) - SSL certificate management
   - **Necessity**: **MEDIUM** - SSL automation, removing would break automated SSL renewal
   - **Compensation if removed**: Would need manual SSL certificate management
   - **Documentation**: [Acmesmith](https://github.com/sorah/acmesmith) | [GitHub](https://github.com/sorah/acmesmith)

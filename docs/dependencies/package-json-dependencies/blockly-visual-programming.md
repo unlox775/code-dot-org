@@ -14,9 +14,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Core Blockly library for visual programming interface
   - **Files**: Found in 260 files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/googleBlocklyWrapper.ts:5` - Google Blockly wrapper
-    - `apps/src/blockly/utils.ts:2` - Blockly utilities
-    - `apps/src/blockly/types.ts:4` - Blockly type definitions
+    - [`apps/src/blockly/googleBlocklyWrapper.ts:5`](../../apps/src/blockly/googleBlocklyWrapper.ts#L5) - Google Blockly wrapper
+    - [`apps/src/blockly/utils.ts:2`](../../apps/src/blockly/utils.ts#L2) - Blockly utilities
+    - [`apps/src/blockly/types.ts:4`](../../apps/src/blockly/types.ts#L4) - Blockly type definitions
   - **Necessity**: **CRITICAL** - Core visual programming interface, removing would break coding environment
   - **Compensation if removed**: Would need to implement alternative visual programming interface or migrate to different block-based coding system
   - **Documentation**: [Blockly Docs](https://developers.google.com/blockly) | [GitHub](https://github.com/google/blockly)
@@ -36,9 +36,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Shareable procedure blocks for Blockly
   - **Files**: Found in 20+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/customBlocks/googleBlockly/proceduresBlocks.ts:6` - Procedure blocks
-    - `apps/src/blockly/customBlocks/googleBlockly/mutators/procedureDefMutator.ts:3` - Procedure mutators
-    - `apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts:1` - Procedure callers
+    - [`apps/src/blockly/customBlocks/googleBlockly/proceduresBlocks.ts:6`](../../apps/src/blockly/customBlocks/googleBlockly/proceduresBlocks.ts#L6) - Procedure blocks
+    - [`apps/src/blockly/customBlocks/googleBlockly/mutators/procedureDefMutator.ts:3`](../../apps/src/blockly/customBlocks/googleBlockly/mutators/procedureDefMutator.ts#L3) - Procedure mutators
+    - [`apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts:1`](../../apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts#L1) - Procedure callers
   - **Necessity**: **HIGH** - Procedure functionality, removing would break procedure blocks
   - **Compensation if removed**: Would need to implement alternative procedure system or remove procedure features
   - **Documentation**: [Blockly Procedures](https://github.com/google/blockly-samples/tree/master/plugins/block-shareable-procedures) | [GitHub](https://github.com/google/blockly-samples)
@@ -48,9 +48,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Bitmap image field for Blockly blocks
   - **Files**: Found in 15+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/addons/cdoFieldBitmap.ts:2` - Bitmap field implementation
-    - `apps/src/blockly/customBlocks/googleBlockly/playlabBlocks.ts:2` - PlayLab blocks
-    - `apps/src/p5lab/spritelab/blocks.js:6` - SpriteLab blocks
+    - [`apps/src/blockly/addons/cdoFieldBitmap.ts:2`](../../apps/src/blockly/addons/cdoFieldBitmap.ts#L2) - Bitmap field implementation
+    - [`apps/src/blockly/customBlocks/googleBlockly/playlabBlocks.ts:2`](../../apps/src/blockly/customBlocks/googleBlockly/playlabBlocks.ts#L2) - PlayLab blocks
+    - [`apps/src/p5lab/spritelab/blocks.js:6`](../../apps/src/p5lab/spritelab/blocks.js#L6) - SpriteLab blocks
   - **Necessity**: **MEDIUM** - Bitmap field functionality, removing would break image blocks
   - **Compensation if removed**: Would need to implement alternative bitmap field or remove image functionality
   - **Documentation**: [Blockly Bitmap Field](https://github.com/google/blockly-samples/tree/master/plugins/field-bitmap) | [GitHub](https://github.com/google/blockly-samples)
@@ -60,9 +60,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Color picker field for Blockly blocks
   - **Files**: Found in 20+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/addons/cdoFieldColour.ts:2` - Color field implementation
-    - `apps/src/blockly/customBlocks/googleBlockly/commonBlocks.ts:8` - Common blocks
-    - `apps/src/dance/blockly/blocks.js:2` - Dance blocks
+    - [`apps/src/blockly/addons/cdoFieldColour.ts:2`](../../apps/src/blockly/addons/cdoFieldColour.ts#L2) - Color field implementation
+    - [`apps/src/blockly/customBlocks/googleBlockly/commonBlocks.ts:8`](../../apps/src/blockly/customBlocks/googleBlockly/commonBlocks.ts#L8) - Common blocks
+    - [`apps/src/dance/blockly/blocks.js:2`](../../apps/src/dance/blockly/blocks.js#L2) - Dance blocks
   - **Necessity**: **MEDIUM** - Color field functionality, removing would break color blocks
   - **Compensation if removed**: Would need to implement alternative color field or remove color functionality
   - **Documentation**: [Blockly Color Field](https://github.com/google/blockly-samples/tree/master/plugins/field-colour) | [GitHub](https://github.com/google/blockly-samples)
@@ -72,9 +72,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Grid-based dropdown field for Blockly blocks
   - **Files**: Found in 10+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/customBlocks/googleBlockly/commonBlocks.ts:8` - Common blocks
-    - `apps/src/blockly/addons/cdoFieldDropdown.ts:1` - Dropdown field implementation
-    - `apps/src/dance/blockly/blocks.js:2` - Dance blocks
+    - [`apps/src/blockly/customBlocks/googleBlockly/commonBlocks.ts:8`](../../apps/src/blockly/customBlocks/googleBlockly/commonBlocks.ts#L8) - Common blocks
+    - [`apps/src/blockly/addons/cdoFieldDropdown.ts:1`](../../apps/src/blockly/addons/cdoFieldDropdown.ts#L1) - Dropdown field implementation
+    - [`apps/src/dance/blockly/blocks.js:2`](../../apps/src/dance/blockly/blocks.js#L2) - Dance blocks
   - **Necessity**: **MEDIUM** - Grid dropdown functionality, removing would break grid-based blocks
   - **Compensation if removed**: Would need to implement alternative grid dropdown or remove grid functionality
   - **Documentation**: [Blockly Grid Dropdown](https://github.com/google/blockly-samples/tree/master/plugins/field-grid-dropdown) | [GitHub](https://github.com/google/blockly-samples)
@@ -85,9 +85,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Keyboard navigation support for Blockly
   - **Files**: Found in 15+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/addons/cdoKeyboardNavigation.ts:2` - Keyboard navigation implementation
-    - `apps/src/blockly/googleBlocklyWrapper.ts:5` - Blockly wrapper
-    - `apps/src/blockly/themes/cdoAccessibleThemes.js:1` - Accessible themes
+    - [`apps/src/blockly/addons/cdoKeyboardNavigation.ts:2`](../../apps/src/blockly/addons/cdoKeyboardNavigation.ts#L2) - Keyboard navigation implementation
+    - [`apps/src/blockly/googleBlocklyWrapper.ts:5`](../../apps/src/blockly/googleBlocklyWrapper.ts#L5) - Blockly wrapper
+    - [`apps/src/blockly/themes/cdoAccessibleThemes.js:1`](../../apps/src/blockly/themes/cdoAccessibleThemes.js#L1) - Accessible themes
   - **Necessity**: **HIGH** - Accessibility requirement, removing would break keyboard navigation
   - **Compensation if removed**: Would need to implement alternative keyboard navigation or remove accessibility features
   - **Documentation**: [Blockly Keyboard Navigation](https://github.com/google/blockly-samples/tree/master/plugins/keyboard-navigation) | [GitHub](https://github.com/google/blockly-samples)
@@ -98,9 +98,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Cross-tab copy and paste functionality for Blockly
   - **Files**: Found in 8+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/googleBlocklyWrapper.ts:5` - Blockly wrapper
-    - `apps/src/blockly/utils.ts:2` - Blockly utilities
-    - `apps/src/templates/AppView.jsx:3` - App view with cross-tab support
+    - [`apps/src/blockly/googleBlocklyWrapper.ts:5`](../../apps/src/blockly/googleBlocklyWrapper.ts#L5) - Blockly wrapper
+    - [`apps/src/blockly/utils.ts:2`](../../apps/src/blockly/utils.ts#L2) - Blockly utilities
+    - [`apps/src/templates/AppView.jsx:3`](../../apps/src/templates/AppView.jsx#L3) - App view with cross-tab support
   - **Necessity**: **MEDIUM** - Cross-tab functionality, removing would break copy/paste between tabs
   - **Compensation if removed**: Would need to implement alternative cross-tab functionality or remove copy/paste features
   - **Documentation**: [Blockly Cross-Tab Copy/Paste](https://github.com/google/blockly-samples/tree/master/plugins/cross-tab-copy-paste) | [GitHub](https://github.com/google/blockly-samples)
@@ -111,9 +111,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Scroll behavior options for Blockly workspace
   - **Files**: Found in 5+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/googleBlocklyWrapper.ts:5` - Blockly wrapper
-    - `apps/src/blockly/addons/cdoScrollbar.ts:1` - Custom scrollbar
-    - `apps/src/blockly/themes/cdoTheme.js:1` - Blockly theme
+    - [`apps/src/blockly/googleBlocklyWrapper.ts:5`](../../apps/src/blockly/googleBlocklyWrapper.ts#L5) - Blockly wrapper
+    - [`apps/src/blockly/addons/cdoScrollbar.ts:1`](../../apps/src/blockly/addons/cdoScrollbar.ts#L1) - Custom scrollbar
+    - [`apps/src/blockly/themes/cdoTheme.js:1`](../../apps/src/blockly/themes/cdoTheme.js#L1) - Blockly theme
   - **Necessity**: **LOW** - Scroll behavior, removing would require alternative scroll handling
   - **Compensation if removed**: Would need to implement alternative scroll behavior or use default scrolling
   - **Documentation**: [Blockly Scroll Options](https://github.com/google/blockly-samples/tree/master/plugins/scroll-options) | [GitHub](https://github.com/google/blockly-samples)
@@ -124,9 +124,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: Dark theme for Blockly workspace
   - **Files**: Found in 10+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/themes/cdoDark.js:2` - Dark theme implementation
-    - `apps/src/blockly/themes/cdoAccessibleDarkThemes.js:1` - Accessible dark themes
-    - `apps/src/blockly/themes/cdoHighContrastDark.js:2` - High contrast dark theme
+    - [`apps/src/blockly/themes/cdoDark.js:2`](../../apps/src/blockly/themes/cdoDark.js#L2) - Dark theme implementation
+    - [`apps/src/blockly/themes/cdoAccessibleDarkThemes.js:1`](../../apps/src/blockly/themes/cdoAccessibleDarkThemes.js#L1) - Accessible dark themes
+    - [`apps/src/blockly/themes/cdoHighContrastDark.js:2`](../../apps/src/blockly/themes/cdoHighContrastDark.js#L2) - High contrast dark theme
   - **Necessity**: **MEDIUM** - Theme support, removing would break dark theme
   - **Compensation if removed**: Would need to implement alternative dark theme or remove dark mode support
   - **Documentation**: [Blockly Dark Theme](https://github.com/google/blockly-samples/tree/master/plugins/theme-dark) | [GitHub](https://github.com/google/blockly-samples)
@@ -136,9 +136,9 @@ This document analyzes Blockly and visual programming dependencies that provide 
   - **Usage**: High contrast theme for accessibility
   - **Files**: Found in 8+ files across the codebase
   - **Key locations**:
-    - `apps/src/blockly/themes/cdoHighContrast.js:2` - High contrast theme implementation
-    - `apps/src/blockly/themes/cdoHighContrastDark.js:2` - High contrast dark theme
-    - `apps/src/blockly/themes/cdoAccessibleThemes.js:1` - Accessible themes
+    - [`apps/src/blockly/themes/cdoHighContrast.js:2`](../../apps/src/blockly/themes/cdoHighContrast.js#L2) - High contrast theme implementation
+    - [`apps/src/blockly/themes/cdoHighContrastDark.js:2`](../../apps/src/blockly/themes/cdoHighContrastDark.js#L2) - High contrast dark theme
+    - [`apps/src/blockly/themes/cdoAccessibleThemes.js:1`](../../apps/src/blockly/themes/cdoAccessibleThemes.js#L1) - Accessible themes
   - **Necessity**: **HIGH** - Accessibility requirement, removing would break high contrast theme
   - **Compensation if removed**: Would need to implement alternative high contrast theme or remove accessibility features
   - **Documentation**: [Blockly High Contrast Theme](https://github.com/google/blockly-samples/tree/master/plugins/theme-highcontrast) | [GitHub](https://github.com/google/blockly-samples)

@@ -15,7 +15,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Core asset pipeline functionality for CSS, JavaScript, and image processing
   - **Files**: Found in 25 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:15` - Sprockets configuration
+    - [`dashboard/config/application.rb:15`](../../dashboard/config/application.rb#L15) - Sprockets configuration
     - `dashboard/app/assets/` - Asset directory structure
   - **Necessity**: **CRITICAL** - Core asset pipeline, removing would break asset compilation and serving
   - **Compensation if removed**: Would need to implement custom asset pipeline or use different bundler
@@ -26,7 +26,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: SCSS/Sass compilation and processing
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:18` - SassC configuration
+    - [`dashboard/config/application.rb:18`](../../dashboard/config/application.rb#L18) - SassC configuration
     - `dashboard/app/assets/stylesheets/` - SCSS files
   - **Necessity**: **CRITICAL** - SCSS compilation, removing would break stylesheet processing
   - **Compensation if removed**: Would need to use different CSS preprocessor or compile SCSS manually
@@ -37,7 +37,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Sass/SCSS integration and compilation
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - `dashboard/config/application.rb:16` - Sass configuration
+    - [`dashboard/config/application.rb:16`](../../dashboard/config/application.rb#L16) - Sass configuration
   - **Necessity**: **HIGH** - Sass integration, removing would break SCSS processing
   - **Compensation if removed**: Would need to use different CSS preprocessor
   - **Documentation**: [Sass-Rails](https://github.com/rails/sass-rails) | [GitHub](https://github.com/rails/sass-rails)
@@ -49,7 +49,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: JavaScript execution within Ruby applications
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/javascript_service.rb:1` - JavaScript execution
+    - [`dashboard/app/services/javascript_service.rb:1`](../../dashboard/app/services/javascript_service.rb#L1) - JavaScript execution
   - **Necessity**: **MEDIUM** - JavaScript execution, removing would break JS runtime functionality
   - **Compensation if removed**: Would need to use different JavaScript runtime or external service
   - **Documentation**: [ExecJS](https://github.com/rails/execjs) | [GitHub](https://github.com/rails/execjs)
@@ -59,7 +59,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: V8 JavaScript engine for Ruby
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/mini_racer.rb:1` - V8 configuration
+    - [`dashboard/config/initializers/mini_racer.rb:1`](../../dashboard/config/initializers/mini_racer.rb#L1) - V8 configuration
   - **Necessity**: **MEDIUM** - JavaScript engine, removing would break V8 functionality
   - **Compensation if removed**: Would need to use different JavaScript engine
   - **Documentation**: [Mini Racer](https://github.com/discourse/mini_racer) | [GitHub](https://github.com/discourse/mini_racer)
@@ -71,8 +71,8 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Bootstrap CSS framework integration
   - **Files**: Found in 20 files across the codebase
   - **Key locations**:
-    - `dashboard/app/assets/stylesheets/application.scss:1` - Bootstrap imports
-    - `dashboard/app/views/layouts/application.html.haml:5` - Bootstrap classes
+    - [`dashboard/app/assets/stylesheets/application.scss:1`](../../dashboard/app/assets/stylesheets/application.scss#L1) - Bootstrap imports
+    - [`dashboard/app/views/layouts/application.html.haml:5`](../../dashboard/app/views/layouts/application.html.haml#L5) - Bootstrap classes
   - **Necessity**: **HIGH** - UI framework, removing would break Bootstrap styling
   - **Compensation if removed**: Would need to use different CSS framework or custom styling
   - **Documentation**: [Bootstrap Sass](https://github.com/twbs/bootstrap-sass) | [GitHub](https://github.com/twbs/bootstrap-sass)
@@ -84,8 +84,8 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Image processing and manipulation
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - `dashboard/app/uploaders/image_uploader.rb:3` - Image processing
-    - `dashboard/app/services/image_service.rb:1` - Image operations
+    - [`dashboard/app/uploaders/image_uploader.rb:3`](../../dashboard/app/uploaders/image_uploader.rb#L3) - Image processing
+    - [`dashboard/app/services/image_service.rb:1`](../../dashboard/app/services/image_service.rb#L1) - Image operations
   - **Necessity**: **HIGH** - Image processing, removing would break image manipulation
   - **Compensation if removed**: Would need to use different image processing library
   - **Documentation**: [MiniMagick](https://github.com/minimagick/minimagick) | [GitHub](https://github.com/minimagick/minimagick)
@@ -115,7 +115,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Rails integration for image optimization
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/image_optim.rb:1` - Image optimization config
+    - [`dashboard/config/initializers/image_optim.rb:1`](../../dashboard/config/initializers/image_optim.rb#L1) - Image optimization config
   - **Necessity**: **MEDIUM** - Rails integration, removing would break automated optimization
   - **Compensation if removed**: Would need to implement custom optimization workflow
   - **Documentation**: [Image Optim Rails](https://github.com/toy/image_optim_rails) | [GitHub](https://github.com/toy/image_optim_rails)
@@ -125,7 +125,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Image size and dimension detection
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/image_service.rb:5` - Image dimension detection
+    - [`dashboard/app/services/image_service.rb:5`](../../dashboard/app/services/image_service.rb#L5) - Image dimension detection
   - **Necessity**: **LOW** - Image metadata, removing would break dimension detection
   - **Compensation if removed**: Would need to use different image metadata library
   - **Documentation**: [Image Size](https://github.com/toy/image_size) | [GitHub](https://github.com/toy/image_size)
@@ -137,7 +137,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: jQuery JavaScript library integration
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `dashboard/app/assets/javascripts/application.js:1` - jQuery imports
+    - [`dashboard/app/assets/javascripts/application.js:1`](../../dashboard/app/assets/javascripts/application.js#L1) - jQuery imports
   - **Necessity**: **HIGH** - JavaScript library, removing would break jQuery functionality
   - **Compensation if removed**: Would need to use different JavaScript library or vanilla JS
   - **Documentation**: [jQuery Rails](https://github.com/rails/jquery-rails) | [GitHub](https://github.com/rails/jquery-rails)
@@ -147,7 +147,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: jQuery UI components and widgets
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/assets/javascripts/application.js:3` - jQuery UI imports
+    - [`dashboard/app/assets/javascripts/application.js:3`](../../dashboard/app/assets/javascripts/application.js#L3) - jQuery UI imports
   - **Necessity**: **MEDIUM** - UI components, removing would break jQuery UI widgets
   - **Compensation if removed**: Would need to use different UI component library
   - **Documentation**: [jQuery UI Rails](https://github.com/jquery-ui-rails/jquery-ui-rails) | [GitHub](https://github.com/jquery-ui-rails/jquery-ui-rails)
@@ -159,7 +159,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: JavaScript minification and compression
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/config/environments/production.rb:15` - JavaScript minification
+    - [`dashboard/config/environments/production.rb:15`](../../dashboard/config/environments/production.rb#L15) - JavaScript minification
   - **Necessity**: **MEDIUM** - Asset optimization, removing would break JavaScript minification
   - **Compensation if removed**: Would need to use different minification tool
   - **Documentation**: [Uglifier](https://github.com/lautis/uglifier) | [GitHub](https://github.com/lautis/uglifier)
@@ -193,7 +193,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Markdown to HTML conversion
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/helpers/markdown_helper.rb:1` - Markdown processing
+    - [`dashboard/app/helpers/markdown_helper.rb:1`](../../dashboard/app/helpers/markdown_helper.rb#L1) - Markdown processing
   - **Necessity**: **MEDIUM** - Markdown processing, removing would break markdown rendering
   - **Compensation if removed**: Would need to use different markdown processor
   - **Documentation**: [Redcarpet](https://github.com/vmg/redcarpet) | [GitHub](https://github.com/vmg/redcarpet)
@@ -205,8 +205,8 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: XML and HTML parsing and manipulation
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/html_parser.rb:1` - HTML parsing
-    - `dashboard/lib/xml_utils.rb:1` - XML utilities
+    - [`dashboard/app/services/html_parser.rb:1`](../../dashboard/app/services/html_parser.rb#L1) - HTML parsing
+    - [`dashboard/lib/xml_utils.rb:1`](../../dashboard/lib/xml_utils.rb#L1) - XML utilities
   - **Necessity**: **HIGH** - HTML/XML parsing, removing would break content processing
   - **Compensation if removed**: Would need to use different HTML/XML parser
   - **Documentation**: [Nokogiri](https://nokogiri.org/) | [GitHub](https://github.com/sparklemotion/nokogiri)
@@ -216,8 +216,8 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Image processing and manipulation
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/image_processor.rb:1` - Image processing
-    - `dashboard/lib/image_utils.rb:1` - Image utilities
+    - [`dashboard/app/services/image_processor.rb:1`](../../dashboard/app/services/image_processor.rb#L1) - Image processing
+    - [`dashboard/lib/image_utils.rb:1`](../../dashboard/lib/image_utils.rb#L1) - Image utilities
   - **Necessity**: **MEDIUM** - Image processing, removing would break image manipulation
   - **Compensation if removed**: Would need to use different image processing library
   - **Documentation**: [RMagick](https://github.com/rmagick/rmagick) | [GitHub](https://github.com/rmagick/rmagick)
@@ -227,7 +227,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: HTML sanitization and XSS protection
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - `dashboard/app/helpers/sanitize_helper.rb:1` - HTML sanitization
+    - [`dashboard/app/helpers/sanitize_helper.rb:1`](../../dashboard/app/helpers/sanitize_helper.rb#L1) - HTML sanitization
   - **Necessity**: **HIGH** - Security, removing would break HTML sanitization
   - **Compensation if removed**: Would need to implement custom HTML sanitization
   - **Documentation**: [Loofah](https://github.com/flavorjones/loofah) | [GitHub](https://github.com/flavorjones/loofah)
@@ -237,7 +237,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: Automatic URL and email linking
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/helpers/link_helper.rb:1` - Auto-linking utilities
+    - [`dashboard/app/helpers/link_helper.rb:1`](../../dashboard/app/helpers/link_helper.rb#L1) - Auto-linking utilities
   - **Necessity**: **MEDIUM** - Auto-linking, removing would break automatic link generation
   - **Compensation if removed**: Would need to implement custom auto-linking
   - **Documentation**: [Rinku](https://github.com/vmg/rinku) | [GitHub](https://github.com/vmg/rinku)

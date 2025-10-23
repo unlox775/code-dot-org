@@ -15,8 +15,8 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: High-performance JSON parsing and generation
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/oj.rb:1` - OJ configuration
-    - `dashboard/app/services/json_service.rb:1` - JSON processing
+    - [`dashboard/config/initializers/oj.rb:1`](../../dashboard/config/initializers/oj.rb#L1) - OJ configuration
+    - [`dashboard/app/services/json_service.rb:1`](../../dashboard/app/services/json_service.rb#L1) - JSON processing
   - **Necessity**: **HIGH** - JSON performance, removing would slow down JSON operations
   - **Compensation if removed**: Would use standard Ruby JSON library
   - **Documentation**: [OJ](https://github.com/ohler55/oj) | [GitHub](https://github.com/ohler55/oj)
@@ -26,7 +26,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: JSON Schema validation and validation
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/schema_service.rb:1` - Schema validation
+    - [`dashboard/app/services/schema_service.rb:1`](../../dashboard/app/services/schema_service.rb#L1) - Schema validation
   - **Necessity**: **MEDIUM** - Schema validation, removing would break JSON validation
   - **Compensation if removed**: Would need to use different validation library
   - **Documentation**: [JSON Schema](https://github.com/ruby-json-schema/json-schema) | [GitHub](https://github.com/ruby-json-schema/json-schema)
@@ -36,7 +36,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: CSV file reading and writing
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/csv_service.rb:1` - CSV processing
+    - [`dashboard/app/services/csv_service.rb:1`](../../dashboard/app/services/csv_service.rb#L1) - CSV processing
     - `dashboard/lib/tasks/import.rake:5` - CSV import tasks
   - **Necessity**: **MEDIUM** - CSV processing, removing would break CSV file operations
   - **Compensation if removed**: Would need to use different CSV library
@@ -49,8 +49,8 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: HTTP requests and API calls
   - **Files**: Found in 20+ files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/api_service.rb:1` - API client
-    - `dashboard/app/services/external_service.rb:1` - External API calls
+    - [`dashboard/app/services/api_service.rb:1`](../../dashboard/app/services/api_service.rb#L1) - API client
+    - [`dashboard/app/services/external_service.rb:1`](../../dashboard/app/services/external_service.rb#L1) - External API calls
   - **Necessity**: **HIGH** - HTTP client, removing would break API communications
   - **Compensation if removed**: Would need to use different HTTP client library
   - **Documentation**: [HTTParty](https://github.com/jnunemaker/httparty) | [GitHub](https://github.com/jnunemaker/httparty)
@@ -60,7 +60,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: REST API client for external services
   - **Files**: Found in 10 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/rest_service.rb:1` - REST client
+    - [`dashboard/app/services/rest_service.rb:1`](../../dashboard/app/services/rest_service.rb#L1) - REST client
   - **Necessity**: **MEDIUM** - REST client, removing would break REST API calls
   - **Compensation if removed**: Would need to use different REST client library
   - **Documentation**: [Rest Client](https://github.com/rest-client/rest-client) | [GitHub](https://github.com/rest-client/rest-client)
@@ -70,7 +70,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Modern HTTP client for API calls
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/http_service.rb:1` - HTTP client
+    - [`dashboard/app/services/http_service.rb:1`](../../dashboard/app/services/http_service.rb#L1) - HTTP client
   - **Necessity**: **MEDIUM** - HTTP client, removing would break HTTP operations
   - **Compensation if removed**: Would need to use different HTTP client library
   - **Documentation**: [HTTP](https://github.com/httprb/http) | [GitHub](https://github.com/httprb/http)
@@ -83,7 +83,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Files**: Found in 25+ files across the codebase
   - **Key locations**:
     - `dashboard/app/jobs/` - Job classes
-    - `dashboard/config/initializers/delayed_job.rb:1` - Delayed Job configuration
+    - [`dashboard/config/initializers/delayed_job.rb:1`](../../dashboard/config/initializers/delayed_job.rb#L1) - Delayed Job configuration
   - **Necessity**: **HIGH** - Background processing, removing would break background jobs
   - **Compensation if removed**: Would need to use different job processing system
   - **Documentation**: [Delayed Job](https://github.com/collectiveidea/delayed_job) | [GitHub](https://github.com/collectiveidea/delayed_job)
@@ -105,7 +105,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: ZIP file creation and extraction
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/zip_service.rb:1` - ZIP operations
+    - [`dashboard/app/services/zip_service.rb:1`](../../dashboard/app/services/zip_service.rb#L1) - ZIP operations
   - **Necessity**: **MEDIUM** - ZIP handling, removing would break ZIP file operations
   - **Compensation if removed**: Would need to use different ZIP library
   - **Documentation**: [RubyZip](https://github.com/rubyzip/rubyzip) | [GitHub](https://github.com/rubyzip/rubyzip)
@@ -115,7 +115,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: PDF file reading and text extraction
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/pdf_service.rb:1` - PDF processing
+    - [`dashboard/app/services/pdf_service.rb:1`](../../dashboard/app/services/pdf_service.rb#L1) - PDF processing
   - **Necessity**: **LOW** - PDF reading, removing would break PDF text extraction
   - **Compensation if removed**: Would need to use different PDF library
   - **Documentation**: [PDF Reader](https://github.com/yob/pdf-reader) | [GitHub](https://github.com/yob/pdf-reader)
@@ -127,7 +127,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: String manipulation and text processing
   - **Files**: Found in 10 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/concerns/string_utilities.rb:1` - String utilities
+    - [`dashboard/app/models/concerns/string_utilities.rb:1`](../../dashboard/app/models/concerns/string_utilities.rb#L1) - String utilities
   - **Necessity**: **MEDIUM** - String processing, removing would break string operations
   - **Compensation if removed**: Would need to use different string library
   - **Documentation**: [Stringex](https://github.com/rsl/stringex) | [GitHub](https://github.com/rsl/stringex)
@@ -137,7 +137,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Parse and split full names into components
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/user.rb:15` - Name parsing
+    - [`dashboard/app/models/user.rb:15`](../../dashboard/app/models/user.rb#L15) - Name parsing
   - **Necessity**: **LOW** - Name parsing, removing would break name splitting
   - **Compensation if removed**: Would need to use different name parsing library
   - **Documentation**: [Full Name Splitter](https://github.com/berk/full-name-splitter) | [GitHub](https://github.com/berk/full-name-splitter)
@@ -147,7 +147,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Alphabetical sorting of collections
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/concerns/sortable.rb:1` - Sorting utilities
+    - [`dashboard/app/models/concerns/sortable.rb:1`](../../dashboard/app/models/concerns/sortable.rb#L1) - Sorting utilities
   - **Necessity**: **LOW** - Sorting utility, removing would break alphabetical sorting
   - **Compensation if removed**: Would need to use different sorting library
   - **Documentation**: [Sort Alphabetical](https://github.com/berk/sort_alphabetical) | [GitHub](https://github.com/berk/sort_alphabetical)
@@ -159,7 +159,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: URL validation and format checking
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/concerns/url_validation.rb:1` - URL validation
+    - [`dashboard/app/models/concerns/url_validation.rb:1`](../../dashboard/app/models/concerns/url_validation.rb#L1) - URL validation
   - **Necessity**: **MEDIUM** - URL validation, removing would break URL format checking
   - **Compensation if removed**: Would need to use different URL validation library
   - **Documentation**: [Validate URL](https://github.com/perfectline/validate_url) | [GitHub](https://github.com/perfectline/validate_url)
@@ -169,7 +169,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Email format validation
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/user.rb:8` - Email validation
+    - [`dashboard/app/models/user.rb:8`](../../dashboard/app/models/user.rb#L8) - Email validation
   - **Necessity**: **MEDIUM** - Email validation, removing would break email format checking
   - **Compensation if removed**: Would need to use different email validation library
   - **Documentation**: [Validates Email Format Of](https://github.com/alexdunae/validates_email_format_of) | [GitHub](https://github.com/alexdunae/validates_email_format_of)
@@ -181,7 +181,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Language detection and identification
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/language_service.rb:1` - Language detection
+    - [`dashboard/app/services/language_service.rb:1`](../../dashboard/app/services/language_service.rb#L1) - Language detection
   - **Necessity**: **LOW** - Language detection, removing would break language identification
   - **Compensation if removed**: Would need to use different language detection library
   - **Documentation**: [CLD](https://github.com/jtoy/cld) | [GitHub](https://github.com/jtoy/cld)
@@ -191,7 +191,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Unicode processing and localization
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/localization_service.rb:1` - Localization utilities
+    - [`dashboard/app/services/localization_service.rb:1`](../../dashboard/app/services/localization_service.rb#L1) - Localization utilities
   - **Necessity**: **LOW** - Localization, removing would break Unicode processing
   - **Compensation if removed**: Would need to use different localization library
   - **Documentation**: [Twitter CLDR](https://github.com/twitter/twitter-cldr-rb) | [GitHub](https://github.com/twitter/twitter-cldr-rb)
@@ -203,7 +203,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Parse natural language dates and times
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/services/date_service.rb:1` - Date parsing
+    - [`dashboard/app/services/date_service.rb:1`](../../dashboard/app/services/date_service.rb#L1) - Date parsing
   - **Necessity**: **LOW** - Date parsing, removing would break natural language date parsing
   - **Compensation if removed**: Would need to use different date parsing library
   - **Documentation**: [Chronic](https://github.com/mojombo/chronic) | [GitHub](https://github.com/mojombo/chronic)
@@ -213,7 +213,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Human-readable time differences
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/helpers/time_helper.rb:1` - Time formatting
+    - [`dashboard/app/helpers/time_helper.rb:1`](../../dashboard/app/helpers/time_helper.rb#L1) - Time formatting
   - **Necessity**: **LOW** - Time formatting, removing would break human-readable time differences
   - **Compensation if removed**: Would need to use different time formatting library
   - **Documentation**: [DOTIW](https://github.com/radar/distance_of_time_in_words) | [GitHub](https://github.com/radar/distance_of_time_in_words)
@@ -257,7 +257,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: URI parsing and manipulation
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/uri_utils.rb:1` - URI utilities
+    - [`dashboard/lib/uri_utils.rb:1`](../../dashboard/lib/uri_utils.rb#L1) - URI utilities
   - **Necessity**: **MEDIUM** - URI handling, removing would break URI operations
   - **Compensation if removed**: Would need to use different URI library
   - **Documentation**: [Addressable](https://github.com/sporkmonger/addressable) | [GitHub](https://github.com/sporkmonger/addressable)
@@ -267,7 +267,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Address geocoding and reverse geocoding
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/location.rb:1` - Location model
+    - [`dashboard/app/models/location.rb:1`](../../dashboard/app/models/location.rb#L1) - Location model
   - **Necessity**: **MEDIUM** - Geocoding, removing would break location services
   - **Compensation if removed**: Would need to use different geocoding service
   - **Documentation**: [Geocoder](https://github.com/alexreisner/geocoder) | [GitHub](https://github.com/alexreisner/geocoder)
@@ -287,7 +287,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Emoji parsing and rendering
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/app/helpers/emoji_helper.rb:1` - Emoji utilities
+    - [`dashboard/app/helpers/emoji_helper.rb:1`](../../dashboard/app/helpers/emoji_helper.rb#L1) - Emoji utilities
   - **Necessity**: **LOW** - Emoji support, removing would break emoji rendering
   - **Compensation if removed**: Would need to use different emoji library
   - **Documentation**: [Gemoji](https://github.com/github/gemoji) | [GitHub](https://github.com/github/gemoji)
@@ -297,7 +297,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Natural sorting for strings with numbers
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/sort_utils.rb:1` - Sorting utilities
+    - [`dashboard/lib/sort_utils.rb:1`](../../dashboard/lib/sort_utils.rb#L1) - Sorting utilities
   - **Necessity**: **LOW** - Natural sorting, removing would break natural sort order
   - **Compensation if removed**: Would need to implement custom natural sorting
   - **Documentation**: [Naturally](https://github.com/dogweather/naturally) | [GitHub](https://github.com/dogweather/naturally)
@@ -307,7 +307,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Trie data structure for text processing
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/text_processor.rb:1` - Text processing
+    - [`dashboard/lib/text_processor.rb:1`](../../dashboard/lib/text_processor.rb#L1) - Text processing
   - **Necessity**: **LOW** - Text processing, removing would break trie-based operations
   - **Compensation if removed**: Would need to use different text processing approach
   - **Documentation**: [Rambling Trie](https://github.com/gonzedge/rambling-trie) | [GitHub](https://github.com/gonzedge/rambling-trie)
@@ -317,7 +317,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Automatic requiring of files
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/require_all.rb:1` - Auto-require configuration
+    - [`dashboard/config/initializers/require_all.rb:1`](../../dashboard/config/initializers/require_all.rb#L1) - Auto-require configuration
   - **Necessity**: **LOW** - Auto-require, removing would break automatic file loading
   - **Compensation if removed**: Would need to manually require files
   - **Documentation**: [Require All](https://github.com/jarmo/require_all) | [GitHub](https://github.com/jarmo/require_all)
@@ -327,7 +327,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Retry failed operations
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/retry_utils.rb:1` - Retry utilities
+    - [`dashboard/lib/retry_utils.rb:1`](../../dashboard/lib/retry_utils.rb#L1) - Retry utilities
   - **Necessity**: **MEDIUM** - Retry logic, removing would break retry functionality
   - **Compensation if removed**: Would need to implement custom retry logic
   - **Documentation**: [Retryable](https://github.com/oivoodoo/retryable) | [GitHub](https://github.com/oivoodoo/retryable)
@@ -337,7 +337,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Consistent hashing algorithm
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/hash_utils.rb:1` - Hashing utilities
+    - [`dashboard/lib/hash_utils.rb:1`](../../dashboard/lib/hash_utils.rb#L1) - Hashing utilities
   - **Necessity**: **LOW** - Consistent hashing, removing would break hash distribution
   - **Compensation if removed**: Would need to use different hashing algorithm
   - **Documentation**: [JumpHash](https://github.com/renstrom/jumphash) | [GitHub](https://github.com/renstrom/jumphash)
@@ -347,7 +347,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Fast non-cryptographic hash function
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/fast_hash.rb:1` - Fast hashing utilities
+    - [`dashboard/lib/fast_hash.rb:1`](../../dashboard/lib/fast_hash.rb#L1) - Fast hashing utilities
   - **Necessity**: **LOW** - Fast hashing, removing would break fast hash operations
   - **Compensation if removed**: Would need to use different hash function
   - **Documentation**: [XXHash](https://github.com/ksss/xxhash) | [GitHub](https://github.com/ksss/xxhash)
@@ -357,7 +357,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Unicode normalization extension
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/unicode_utils.rb:1` - Unicode utilities
+    - [`dashboard/lib/unicode_utils.rb:1`](../../dashboard/lib/unicode_utils.rb#L1) - Unicode utilities
   - **Necessity**: **LOW** - Unicode normalization, removing would break Unicode handling
   - **Compensation if removed**: Would need to use different Unicode library
   - **Documentation**: [Unf Ext](https://github.com/knu/ruby-unf_ext) | [GitHub](https://github.com/knu/ruby-unf_ext)
@@ -367,7 +367,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Automatic whitespace stripping for ActiveRecord attributes
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/app/models/concerns/strip_attributes.rb:1` - Stripping concerns
+    - [`dashboard/app/models/concerns/strip_attributes.rb:1`](../../dashboard/app/models/concerns/strip_attributes.rb#L1) - Stripping concerns
   - **Necessity**: **LOW** - Attribute stripping, removing would break automatic stripping
   - **Compensation if removed**: Would need to implement custom attribute stripping
   - **Documentation**: [Auto Strip Attributes](https://github.com/holli/auto_strip_attributes) | [GitHub](https://github.com/holli/auto_strip_attributes)
@@ -377,7 +377,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Asynchronous operation handling
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/async_utils.rb:1` - Async utilities
+    - [`dashboard/lib/async_utils.rb:1`](../../dashboard/lib/async_utils.rb#L1) - Async utilities
   - **Necessity**: **MEDIUM** - Async operations, removing would break async functionality
   - **Compensation if removed**: Would need to use different async library
   - **Documentation**: [Async](https://github.com/socketry/async) | [GitHub](https://github.com/socketry/async)
@@ -387,7 +387,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Rails boot time optimization
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/boot.rb:1` - Boot configuration
+    - [`dashboard/config/boot.rb:1`](../../dashboard/config/boot.rb#L1) - Boot configuration
   - **Necessity**: **MEDIUM** - Boot optimization, removing would slow down Rails boot
   - **Compensation if removed**: Would have slower Rails boot time
   - **Documentation**: [Bootsnap](https://github.com/Shopify/bootsnap) | [GitHub](https://github.com/Shopify/bootsnap)
@@ -397,7 +397,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Fork optimization for better memory usage
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/config/initializers/nakayoshi_fork.rb:1` - Fork configuration
+    - [`dashboard/config/initializers/nakayoshi_fork.rb:1`](../../dashboard/config/initializers/nakayoshi_fork.rb#L1) - Fork configuration
   - **Necessity**: **LOW** - Fork optimization, removing would affect memory usage
   - **Compensation if removed**: Would have higher memory usage during forks
   - **Documentation**: [Nakayoshi Fork](https://github.com/ko1/nakayoshi_fork) | [GitHub](https://github.com/ko1/nakayoshi_fork)
@@ -407,7 +407,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Parallel processing for better performance
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/parallel_utils.rb:1` - Parallel processing utilities
+    - [`dashboard/lib/parallel_utils.rb:1`](../../dashboard/lib/parallel_utils.rb#L1) - Parallel processing utilities
   - **Necessity**: **MEDIUM** - Parallel processing, removing would break parallel operations
   - **Compensation if removed**: Would need to use different parallel processing library
   - **Documentation**: [Parallel](https://github.com/grosser/parallel) | [GitHub](https://github.com/grosser/parallel)
@@ -417,7 +417,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Persistent HTTP connections for better performance
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/http_utils.rb:1` - HTTP utilities
+    - [`dashboard/lib/http_utils.rb:1`](../../dashboard/lib/http_utils.rb#L1) - HTTP utilities
   - **Necessity**: **LOW** - HTTP optimization, removing would affect HTTP performance
   - **Compensation if removed**: Would have slower HTTP requests
   - **Documentation**: [Net HTTP Persistent](https://github.com/drbrain/net-http-persistent) | [GitHub](https://github.com/drbrain/net-http-persistent)
@@ -427,7 +427,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Operating system detection and utilities
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/os_utils.rb:1` - OS utilities
+    - [`dashboard/lib/os_utils.rb:1`](../../dashboard/lib/os_utils.rb#L1) - OS utilities
   - **Necessity**: **LOW** - OS detection, removing would break OS-specific functionality
   - **Compensation if removed**: Would need to use different OS detection library
   - **Documentation**: [OS](https://github.com/rdp/os) | [GitHub](https://github.com/rdp/os)
@@ -437,7 +437,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: Enhanced redirection handling for OpenURI
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/uri_utils.rb:5` - URI utilities
+    - [`dashboard/lib/uri_utils.rb:5`](../../dashboard/lib/uri_utils.rb#L5) - URI utilities
   - **Necessity**: **LOW** - URI redirection, removing would break redirection handling
   - **Compensation if removed**: Would need to use different URI library
   - **Documentation**: [OpenURI Redirections](https://github.com/open-uri-redirections/open_uri_redirections) | [GitHub](https://github.com/open-uri-redirections/open_uri_redirections)
@@ -447,7 +447,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: User agent string parsing and analysis
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/user_agent_utils.rb:1` - User agent utilities
+    - [`dashboard/lib/user_agent_utils.rb:1`](../../dashboard/lib/user_agent_utils.rb#L1) - User agent utilities
   - **Necessity**: **LOW** - User agent parsing, removing would break user agent analysis
   - **Compensation if removed**: Would need to use different user agent library
   - **Documentation**: [User Agent Parser](https://github.com/ua-parser/uap-ruby) | [GitHub](https://github.com/ua-parser/uap-ruby)
@@ -457,7 +457,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
   - **Usage**: YouTube video downloading
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - `dashboard/lib/youtube_utils.rb:1` - YouTube utilities
+    - [`dashboard/lib/youtube_utils.rb:1`](../../dashboard/lib/youtube_utils.rb#L1) - YouTube utilities
   - **Necessity**: **LOW** - YouTube downloading, removing would break video downloading
   - **Compensation if removed**: Would need to use different video downloading solution
   - **Documentation**: [YouTube DL Ruby](https://github.com/layer8x/youtube-dl.rb) | [GitHub](https://github.com/layer8x/youtube-dl.rb)

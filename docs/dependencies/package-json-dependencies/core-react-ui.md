@@ -14,9 +14,9 @@ This document analyzes the core React and UI framework dependencies that form th
   - **Usage**: Core React library used throughout the frontend application
   - **Files**: Found in 3096 files across the codebase
   - **Key locations**:
-    - `apps/src/templates/AppView.jsx:1` - Main app view component
-    - `apps/src/weblab/WebLabView.jsx:1` - WebLab view component
-    - `apps/src/p5lab/P5LabView.jsx:1` - P5Lab view component
+    - [`apps/src/templates/AppView.jsx:1`](../../apps/src/templates/AppView.jsx#L1) - Main app view component
+    - [`apps/src/weblab/WebLabView.jsx:1`](../../apps/src/weblab/WebLabView.jsx#L1) - WebLab view component
+    - [`apps/src/p5lab/P5LabView.jsx:1`](../../apps/src/p5lab/P5LabView.jsx#L1) - P5Lab view component
   - **Necessity**: **CRITICAL** - Core frontend framework, removing would break entire frontend application
   - **Compensation if removed**: Would need to rewrite entire frontend using different framework
   - **Documentation**: [React Docs](https://react.dev/) | [GitHub](https://github.com/facebook/react)
@@ -35,9 +35,9 @@ This document analyzes the core React and UI framework dependencies that form th
   - **Usage**: TypeScript type definitions for React components
   - **Files**: Found in 500+ TypeScript files across the codebase
   - **Key locations**:
-    - `apps/src/types/redux.ts:17` - Redux type definitions
-    - `apps/src/weblab2/Weblab2View.tsx:3` - TypeScript React components
-    - `apps/src/music/views/MusicLabView.tsx:4` - Music lab TypeScript components
+    - [`apps/src/types/redux.ts:17`](../../apps/src/types/redux.ts#L17) - Redux type definitions
+    - [`apps/src/weblab2/Weblab2View.tsx:3`](../../apps/src/weblab2/Weblab2View.tsx#L3) - TypeScript React components
+    - [`apps/src/music/views/MusicLabView.tsx:4`](../../apps/src/music/views/MusicLabView.tsx#L4) - Music lab TypeScript components
   - **Necessity**: **HIGH** - TypeScript support, removing would break TypeScript compilation
   - **Compensation if removed**: Would need to remove TypeScript support or implement custom type definitions
   - **Documentation**: [React TypeScript](https://react.dev/learn/typescript) | [GitHub](https://github.com/DefinitelyTyped/DefinitelyTyped)
@@ -56,9 +56,9 @@ This document analyzes the core React and UI framework dependencies that form th
   - **Usage**: React utility functions for type checking and element validation
   - **Files**: Found in 50+ files across the codebase
   - **Key locations**:
-    - `apps/src/templates/utils/reactUtils.js:1` - React utility functions
-    - `apps/src/blockly/utils.ts:2` - Blockly React utilities
-    - `apps/test/util/testUtils.js:1` - Test utilities
+    - [`apps/src/templates/utils/reactUtils.js:1`](../../apps/src/templates/utils/reactUtils.js#L1) - React utility functions
+    - [`apps/src/blockly/utils.ts:2`](../../apps/src/blockly/utils.ts#L2) - Blockly React utilities
+    - [`apps/test/util/testUtils.js:1`](../../apps/test/util/testUtils.js#L1) - Test utilities
   - **Necessity**: **MEDIUM** - React utilities, removing would require rewriting utility functions
   - **Compensation if removed**: Would need to implement alternative React utilities or remove utility features
   - **Documentation**: [React Is](https://github.com/facebook/react/tree/main/packages/react-is) | [GitHub](https://github.com/facebook/react)
@@ -68,9 +68,9 @@ This document analyzes the core React and UI framework dependencies that form th
   - **Usage**: Runtime type checking for React component props
   - **Files**: Found in 200+ files across the codebase
   - **Key locations**:
-    - `apps/src/templates/AppView.jsx:2` - Main app component
-    - `apps/src/weblab/WebLabView.jsx:2` - WebLab component
-    - `apps/src/p5lab/P5LabView.jsx:2` - P5Lab component
+    - [`apps/src/templates/AppView.jsx:2`](../../apps/src/templates/AppView.jsx#L2) - Main app component
+    - [`apps/src/weblab/WebLabView.jsx:2`](../../apps/src/weblab/WebLabView.jsx#L2) - WebLab component
+    - [`apps/src/p5lab/P5LabView.jsx:2`](../../apps/src/p5lab/P5LabView.jsx#L2) - P5Lab component
   - **Necessity**: **MEDIUM** - Runtime validation, removing would require removing prop validation
   - **Compensation if removed**: Would need to remove prop validation or implement alternative validation
   - **Documentation**: [PropTypes](https://github.com/facebook/prop-types) | [GitHub](https://github.com/facebook/prop-types)
@@ -81,9 +81,9 @@ This document analyzes the core React and UI framework dependencies that form th
   - **Usage**: Material Design component library for UI components
   - **Files**: Found in 100+ files across the codebase
   - **Key locations**:
-    - `apps/src/templates/teacherDashboard/StatsTable.jsx:2` - Dashboard components
-    - `apps/src/templates/studioHomepages/TeacherHomepage.jsx:2` - Homepage components
-    - `apps/src/templates/sectionProgressV2/SectionProgressV2.jsx:2` - Progress components
+    - [`apps/src/templates/teacherDashboard/StatsTable.jsx:2`](../../apps/src/templates/teacherDashboard/StatsTable.jsx#L2) - Dashboard components
+    - [`apps/src/templates/studioHomepages/TeacherHomepage.jsx:2`](../../apps/src/templates/studioHomepages/TeacherHomepage.jsx#L2) - Homepage components
+    - [`apps/src/templates/sectionProgressV2/SectionProgressV2.jsx:2`](../../apps/src/templates/sectionProgressV2/SectionProgressV2.jsx#L2) - Progress components
   - **Necessity**: **HIGH** - UI component library, removing would require rewriting UI components
   - **Compensation if removed**: Would need to implement alternative UI components or migrate to different component library
   - **Documentation**: [Material-UI](https://mui.com/) | [GitHub](https://github.com/mui/material-ui)

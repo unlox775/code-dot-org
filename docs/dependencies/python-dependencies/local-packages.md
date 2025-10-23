@@ -14,9 +14,9 @@ This document analyzes local Python packages that are part of the Code.org works
   - **Usage**: Core Code.org Python functionality and utilities
   - **Files**: Found in 20+ files across the codebase
   - **Key locations**:
-    - `python/pycdo/__init__.py:1` - Package initialization
-    - `python/pycdo/utils.py:1` - Utility functions
-    - `python/pycdo/ai_helpers.py:1` - AI helper functions
+    - [`python/pycdo/__init__.py:1`](../../python/pycdo/__init__.py#L1) - Package initialization
+    - [`python/pycdo/utils.py:1`](../../python/pycdo/utils.py#L1) - Utility functions
+    - [`python/pycdo/ai_helpers.py:1`](../../python/pycdo/ai_helpers.py#L1) - AI helper functions
   - **Necessity**: **CRITICAL** - Core local package, removing would break Python functionality
   - **Compensation if removed**: Would need to implement alternative Python utilities or remove Python features
   - **Documentation**: [Local Package] | [GitHub](https://github.com/code-dot-org/code-dot-org)
@@ -26,9 +26,9 @@ This document analyzes local Python packages that are part of the Code.org works
   - **Usage**: Neighborhood-specific functionality and utilities
   - **Files**: Found in 10+ files across the codebase
   - **Key locations**:
-    - `python/neighborhood/__init__.py:1` - Package initialization
-    - `python/neighborhood/utils.py:1` - Neighborhood utilities
-    - `python/neighborhood/helpers.py:1` - Helper functions
+    - [`python/neighborhood/__init__.py:1`](../../python/neighborhood/__init__.py#L1) - Package initialization
+    - [`python/neighborhood/utils.py:1`](../../python/neighborhood/utils.py#L1) - Neighborhood utilities
+    - [`python/neighborhood/helpers.py:1`](../../python/neighborhood/helpers.py#L1) - Helper functions
   - **Necessity**: **HIGH** - Neighborhood functionality, removing would break neighborhood features
   - **Compensation if removed**: Would need to implement alternative neighborhood functionality or remove neighborhood features
   - **Documentation**: [Local Package] | [GitHub](https://github.com/code-dot-org/code-dot-org)
@@ -38,9 +38,9 @@ This document analyzes local Python packages that are part of the Code.org works
   - **Usage**: Python lab environment setup and configuration
   - **Files**: Found in 8+ files across the codebase
   - **Key locations**:
-    - `python/pythonlab_setup/__init__.py:1` - Package initialization
-    - `python/pythonlab_setup/setup.py:1` - Setup utilities
-    - `python/pythonlab_setup/config.py:1` - Configuration management
+    - [`python/pythonlab_setup/__init__.py:1`](../../python/pythonlab_setup/__init__.py#L1) - Package initialization
+    - [`python/pythonlab_setup/setup.py:1`](../../python/pythonlab_setup/setup.py#L1) - Setup utilities
+    - [`python/pythonlab_setup/config.py:1`](../../python/pythonlab_setup/config.py#L1) - Configuration management
   - **Necessity**: **HIGH** - Python lab setup, removing would break Python lab functionality
   - **Compensation if removed**: Would need to implement alternative Python lab setup or remove Python lab features
   - **Documentation**: [Local Package] | [GitHub](https://github.com/code-dot-org/code-dot-org)
@@ -50,9 +50,9 @@ This document analyzes local Python packages that are part of the Code.org works
   - **Usage**: Custom test runner for Python tests
   - **Files**: Found in 5+ files across the codebase
   - **Key locations**:
-    - `python/unittest_runner/__init__.py:1` - Package initialization
-    - `python/unittest_runner/runner.py:1` - Test runner implementation
-    - `python/unittest_runner/utils.py:1` - Test utilities
+    - [`python/unittest_runner/__init__.py:1`](../../python/unittest_runner/__init__.py#L1) - Package initialization
+    - [`python/unittest_runner/runner.py:1`](../../python/unittest_runner/runner.py#L1) - Test runner implementation
+    - [`python/unittest_runner/utils.py:1`](../../python/unittest_runner/utils.py#L1) - Test utilities
   - **Necessity**: **MEDIUM** - Test runner, removing would require alternative test execution
   - **Compensation if removed**: Would need to implement alternative test runner or use standard pytest
   - **Documentation**: [Local Package] | [GitHub](https://github.com/code-dot-org/code-dot-org)
