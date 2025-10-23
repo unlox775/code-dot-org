@@ -1,10 +1,22 @@
 #!/usr/bin/env ruby
 #
 # This dumps the configuratin settings for the current environment.
+# Modified to support security fork deployment.
 #
 require_relative '../deployment'
 
 def main
+  # Check if we're deploying from security fork
+  if ENV['SECURITY_FORK_DEPLOY'] == 'true'
+    puts "Deploying from security fork..."
+    # Use private repository for deployment
+    ENV['REPO_URL'] = 'https://github.com/code-dot-org/code-dot-org-production.git'
+  else
+    puts "Deploying from public repository..."
+    # Use public repository for deployment
+    ENV['REPO_URL'] = 'https://github.com/code-dot-org/code-dot-org.git'
+  end
+
   puts JSON.pretty_generate(CDO.to_h)
 end
 

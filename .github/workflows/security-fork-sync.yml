@@ -1,0 +1,42 @@
+name: Sync Security Fork
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+    inputs:
+      sync_direction:
+        description: 'Sync direction'
+        required: true
+        default: 'from-public'
+        type: choice
+        options:
+          - from-public
+          - to-public
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.SECURITY_FORK_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Security Fork Bot"
+          git config --global user.email "security-fork@code.org"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/code-dot-org/code-dot-org.git
+
+      - name: Sync from public
+        if: github.event.inputs.sync_direction == 'from-public' || github.event_name == 'schedule'
+        run: |
+          ruby lib/scripts/security_fork_sync.rb sync-from-public
+
+      - name: Sync to public
+        if: github.event.inputs.sync_direction == 'to-public'
+        run: |
+          ruby lib/scripts/security_fork_sync.rb sync-to-public
