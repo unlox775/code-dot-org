@@ -102,238 +102,50 @@ Code.org faces a critical security challenge: their public repository exposes ev
 
 ## Code Changes Required
 
-### 1. New Security Fork Sync Script
+### 1. Security Fork Sync Script
+**File**: [`lib/scripts/security_fork_sync.rb`](../../lib/scripts/security_fork_sync.rb)
 
-Create `lib/scripts/security_fork_sync.rb`:
-
-```ruby
-#!/usr/bin/env ruby
-require_relative '../../deployment'
-require 'cdo/chat_client'
-require 'cdo/rake_utils'
-
-class SecurityForkSyncer
-  def initialize
-    @private_repo = 'code-dot-org-production'
-    @public_repo = 'code-dot-org'
-  end
-
-  def sync_from_public_staging
-    ChatClient.log "Syncing from public staging to private production..."
-    
-    # Fetch latest from public
-    RakeUtils.system 'git fetch upstream staging'
-    
-    # Switch to production branch
-    RakeUtils.system 'git checkout production'
-    
-    # Merge staging into production
-    RakeUtils.system 'git merge upstream/staging --no-edit'
-    
-    # Push to private repo
-    RakeUtils.system 'git push origin production'
-    
-    ChatClient.log "Sync completed successfully"
-  end
-
-  def sync_to_public_production
-    ChatClient.log "Syncing private production to public..."
-    
-    # Push private production to public
-    RakeUtils.system 'git push upstream production'
-    
-    ChatClient.log "Public sync completed successfully"
-  end
-
-  def create_security_branch(branch_name)
-    ChatClient.log "Creating security branch: #{branch_name}"
-    
-    # Create and checkout security branch
-    RakeUtils.system "git checkout -b security-#{branch_name}"
-    
-    # Push to private repo
-    RakeUtils.system "git push origin security-#{branch_name}"
-    
-    ChatClient.log "Security branch created: security-#{branch_name}"
-  end
-
-  def merge_security_fix(branch_name)
-    ChatClient.log "Merging security fix: #{branch_name}"
-    
-    # Switch to production
-    RakeUtils.system 'git checkout production'
-    
-    # Merge security branch
-    RakeUtils.system "git merge security-#{branch_name} --no-edit"
-    
-    # Push to private repo
-    RakeUtils.system 'git push origin production'
-    
-    ChatClient.log "Security fix merged to production"
-  end
-end
-
-# CLI interface
-if __FILE__ == $0
-  syncer = SecurityForkSyncer.new
-  
-  case ARGV[0]
-  when 'sync-from-public'
-    syncer.sync_from_public_staging
-  when 'sync-to-public'
-    syncer.sync_to_public_production
-  when 'create-security-branch'
-    syncer.create_security_branch(ARGV[1])
-  when 'merge-security-fix'
-    syncer.merge_security_fix(ARGV[1])
-  else
-    puts "Usage: #{$0} [sync-from-public|sync-to-public|create-security-branch|merge-security-fix]"
-  end
-end
-```
+Core sync functionality with CLI interface:
+- `sync_from_public_staging()` - Pulls public staging into private production
+- `sync_to_public_production()` - Pushes private production to public
+- `create_security_branch()` - Creates isolated security fix branches
+- `merge_security_fix()` - Merges security fixes to production
 
 ### 2. Modified Deployment Script
+**File**: [`bin/deploy-config`](../../bin/deploy-config)
 
-Update `bin/deploy-config`:
-
+Added `SECURITY_FORK_DEPLOY` environment variable support:
 ```ruby
-#!/usr/bin/env ruby
-#
-# Modified to support security fork deployment
-#
-require_relative '../deployment'
-
-def main
-  # Check if we're deploying from security fork
-  if ENV['SECURITY_FORK_DEPLOY'] == 'true'
-    puts "Deploying from security fork..."
-    # Use private repository for deployment
-    ENV['REPO_URL'] = 'https://github.com/code-dot-org/code-dot-org-production.git'
-  else
-    puts "Deploying from public repository..."
-    # Use public repository for deployment
-    ENV['REPO_URL'] = 'https://github.com/code-dot-org/code-dot-org.git'
-  end
-
-  puts JSON.pretty_generate(CDO.to_h)
-end
-
-main
+# Sets REPO_URL based on deployment type
+ENV['REPO_URL'] = ENV['SECURITY_FORK_DEPLOY'] == 'true' ? 
+  'private-repo-url' : 'public-repo-url'
 ```
 
-### 3. New Security Deployment Script
+### 3. Security Deployment Script
+**File**: [`bin/deploy-security`](../../bin/deploy-security)
 
-Create `bin/deploy-security`:
+Dedicated security deployment script with validation:
+- Verifies private fork repository
+- Ensures production branch
+- Sets security deployment flags
 
-```ruby
-#!/usr/bin/env ruby
-# Deploy security fix from private fork
+### 4. Rake Tasks
+**File**: [`lib/rake/deploy.rake`](../../lib/rake/deploy.rake)
 
-ENV['RAILS_ENV'] = 'production'
-ENV['SECURITY_FORK_DEPLOY'] = 'true'
-require_relative '../deployment'
-require 'cdo/rake_utils'
-
-def main
-  puts "Starting security deployment from private fork..."
-  
-  # Verify we're on the private repository
-  unless `git remote get-url origin`.include?('code-dot-org-production')
-    puts "ERROR: Not on private security fork repository"
-    exit 1
-  end
-
-  # Verify we're on production branch
-  unless `git branch --show-current`.strip == 'production'
-    puts "ERROR: Not on production branch"
-    exit 1
-  end
-
-  # Run deployment
-  RakeUtils.rake('deploy:production')
-  
-  puts "Security deployment completed"
-end
-
-main
-```
-
-### 4. Updated Rake Tasks
-
-Add to `lib/rake/deploy.rake`:
-
-```ruby
-namespace :deploy do
-  desc 'Deploy from security fork'
-  task :security do
-    ENV['SECURITY_FORK_DEPLOY'] = 'true'
-    Rake::Task['deploy:production'].invoke
-  end
-
-  desc 'Sync security fork from public'
-  task :sync_security_fork do
-    require 'lib/scripts/security_fork_sync'
-    syncer = SecurityForkSyncer.new
-    syncer.sync_from_public_staging
-  end
-
-  desc 'Sync public from security fork'
-  task :sync_public_from_security do
-    require 'lib/scripts/security_fork_sync'
-    syncer = SecurityForkSyncer.new
-    syncer.sync_to_public_production
-  end
-end
-```
+New rake tasks for security fork operations:
+- `deploy:security` - Deploy from private fork
+- `deploy:sync_security_fork` - Sync from public
+- `deploy:sync_public_from_security` - Sync to public
+- `deploy:create_security_branch` - Create security branch
+- `deploy:merge_security_fix` - Merge security fix
 
 ### 5. GitHub Actions Workflow
+**File**: [`.github/workflows/security-fork-sync.yml`](../../.github/workflows/security-fork-sync.yml)
 
-Create `.github/workflows/security-fork-sync.yml`:
-
-```yaml
-name: Sync Security Fork
-on:
-  schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
-  workflow_dispatch:
-    inputs:
-      sync_direction:
-        description: 'Sync direction'
-        required: true
-        default: 'from-public'
-        type: choice
-        options:
-          - from-public
-          - to-public
-
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.SECURITY_FORK_TOKEN }}
-          fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "Security Fork Bot"
-          git config --global user.email "security-fork@code.org"
-
-      - name: Add upstream remote
-        run: |
-          git remote add upstream https://github.com/code-dot-org/code-dot-org.git
-
-      - name: Sync from public
-        if: github.event.inputs.sync_direction == 'from-public' || github.event_name == 'schedule'
-        run: |
-          ruby lib/scripts/security_fork_sync.rb sync-from-public
-
-      - name: Sync to public
-        if: github.event.inputs.sync_direction == 'to-public'
-        run: |
-          ruby lib/scripts/security_fork_sync.rb sync-to-public
-```
+Automated sync workflow:
+- Runs every 6 hours
+- Manual trigger with sync direction
+- Uses `SECURITY_FORK_TOKEN` for authentication
 
 ## Security Workflow
 
