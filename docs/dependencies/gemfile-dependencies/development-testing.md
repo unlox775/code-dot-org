@@ -16,7 +16,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Files**: Found in 150+ files across the codebase
   - **Key locations**:
     - `dashboard/spec/` - RSpec test files
-    - [`dashboard/spec/rails_helper.rb:1`](../../dashboard/spec/rails_helper.rb#L1) - RSpec configuration
+    - `dashboard/spec/rails_helper.rb:1` - RSpec configuration
   - **Necessity**: **CRITICAL** - Testing framework, removing would break all RSpec tests
   - **Compensation if removed**: Would need to migrate to different testing framework (Minitest, TestUnit)
   - **Documentation**: [RSpec](https://rspec.info/) | [GitHub](https://github.com/rspec/rspec)
@@ -27,7 +27,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Files**: Found in 80+ files across the codebase
   - **Key locations**:
     - `dashboard/spec/factories/` - Factory definitions
-    - [`dashboard/spec/rails_helper.rb:15`](../../dashboard/spec/rails_helper.rb#L15) - Factory Bot configuration
+    - `dashboard/spec/rails_helper.rb:15` - Factory Bot configuration
   - **Necessity**: **CRITICAL** - Test data generation, removing would break test data creation
   - **Compensation if removed**: Would need to use different factory library or manual test data creation
   - **Documentation**: [Factory Bot Rails](https://github.com/thoughtbot/factory_bot_rails) | [GitHub](https://github.com/thoughtbot/factory_bot_rails)
@@ -38,7 +38,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Files**: Found in 25 files across the codebase
   - **Key locations**:
     - `dashboard/features/` - Cucumber feature files
-    - [`dashboard/support/env.rb:1`](../../dashboard/support/env.rb#L1) - Cucumber configuration
+    - [`dashboard/support/env.rb:1`](../../apps/src/sites/studio/pages/programming_environments#L1) - Cucumber configuration
   - **Necessity**: **HIGH** - BDD testing, removing would break acceptance tests
   - **Compensation if removed**: Would need to use different BDD framework or convert to RSpec
   - **Documentation**: [Cucumber](https://cucumber.io/) | [GitHub](https://github.com/cucumber/cucumber-ruby)
@@ -50,8 +50,8 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Generate fake data for testing
   - **Files**: Found in 30+ files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/factories/user.rb:5`](../../dashboard/spec/factories/user.rb#L5) - Fake user data
-    - [`dashboard/spec/factories/course.rb:3`](../../dashboard/spec/factories/course.rb#L3) - Fake course data
+    - [`dashboard/spec/factories/user.rb:5`](../../apps/src/userHeaderEventLogger#L5) - Fake user data
+    - [`dashboard/spec/factories/course.rb:3`](../../apps/src/courseExplorer#L3) - Fake course data
   - **Necessity**: **HIGH** - Test data generation, removing would break fake data creation
   - **Compensation if removed**: Would need to use different fake data library or manual data creation
   - **Documentation**: [Faker](https://github.com/faker-ruby/faker) | [GitHub](https://github.com/faker-ruby/faker)
@@ -61,7 +61,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Mock filesystem operations in tests
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/support/fakefs.rb:1`](../../dashboard/spec/support/fakefs.rb#L1) - FakeFS configuration
+    - `dashboard/spec/support/fakefs.rb:1` - FakeFS configuration
   - **Necessity**: **MEDIUM** - Filesystem mocking, removing would break file operation tests
   - **Compensation if removed**: Would need to use different filesystem mocking library
   - **Documentation**: [FakeFS](https://github.com/fakefs/fakefs) | [GitHub](https://github.com/fakefs/fakefs)
@@ -71,7 +71,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Mock Redis operations in tests
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/support/fakeredis.rb:1`](../../dashboard/spec/support/fakeredis.rb#L1) - FakeRedis configuration
+    - `dashboard/spec/support/fakeredis.rb:1` - FakeRedis configuration
   - **Necessity**: **MEDIUM** - Redis mocking, removing would break Redis operation tests
   - **Compensation if removed**: Would need to use different Redis mocking library
   - **Documentation**: [FakeRedis](https://github.com/guilleiguaran/fakeredis) | [GitHub](https://github.com/guilleiguaran/fakeredis)
@@ -83,7 +83,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Test coverage reporting and analysis
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/rails_helper.rb:8`](../../dashboard/spec/rails_helper.rb#L8) - SimpleCov configuration
+    - `dashboard/spec/rails_helper.rb:8` - SimpleCov configuration
   - **Necessity**: **MEDIUM** - Coverage reporting, removing would break coverage analysis
   - **Compensation if removed**: Would need to use different coverage tool
   - **Documentation**: [SimpleCov](https://github.com/simplecov-ruby/simplecov) | [GitHub](https://github.com/simplecov-ruby/simplecov)
@@ -93,7 +93,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Clean database between tests
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/rails_helper.rb:20`](../../dashboard/spec/rails_helper.rb#L20) - Database cleaner configuration
+    - `dashboard/spec/rails_helper.rb:20` - Database cleaner configuration
   - **Necessity**: **HIGH** - Test isolation, removing would break test database cleaning
   - **Compensation if removed**: Would need to implement custom database cleaning
   - **Documentation**: [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) | [GitHub](https://github.com/DatabaseCleaner/database_cleaner)
@@ -105,7 +105,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Code style enforcement and static analysis
   - **Files**: Found in 10 files across the codebase
   - **Key locations**:
-    - [`dashboard/.rubocop.yml:1`](../../dashboard/.rubocop.yml#L1) - RuboCop configuration
+    - [`dashboard/.rubocop.yml:1`](../../apps/src#L1) - RuboCop configuration
     - `dashboard/lib/tasks/rubocop.rake:1` - RuboCop tasks
   - **Necessity**: **HIGH** - Code quality, removing would break code style enforcement
   - **Compensation if removed**: Would need to use different linting tool or manual code review
@@ -116,7 +116,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Factory Bot specific linting rules
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/.rubocop.yml:15`](../../dashboard/.rubocop.yml#L15) - Factory Bot rules
+    - [`dashboard/.rubocop.yml:15`](../../apps/src#L15) - Factory Bot rules
   - **Necessity**: **LOW** - Factory Bot linting, removing would break Factory Bot specific rules
   - **Compensation if removed**: Would lose Factory Bot specific linting
   - **Documentation**: [RuboCop Factory Bot](https://github.com/rubocop/rubocop-factory_bot) | [GitHub](https://github.com/rubocop/rubocop-factory_bot)
@@ -126,7 +126,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Performance-focused linting rules
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/.rubocop.yml:20`](../../dashboard/.rubocop.yml#L20) - Performance rules
+    - [`dashboard/.rubocop.yml:20`](../../apps/src#L20) - Performance rules
   - **Necessity**: **LOW** - Performance linting, removing would break performance rules
   - **Compensation if removed**: Would lose performance-specific linting
   - **Documentation**: [RuboCop Performance](https://github.com/rubocop/rubocop-performance) | [GitHub](https://github.com/rubocop/rubocop-performance)
@@ -136,7 +136,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Rails-specific linting rules
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/.rubocop.yml:25`](../../dashboard/.rubocop.yml#L25) - Rails rules
+    - [`dashboard/.rubocop.yml:25`](../../apps/src#L25) - Rails rules
   - **Necessity**: **MEDIUM** - Rails linting, removing would break Rails specific rules
   - **Compensation if removed**: Would lose Rails-specific linting
   - **Documentation**: [RuboCop Rails](https://github.com/rubocop/rubocop-rails) | [GitHub](https://github.com/rubocop/rubocop-rails)
@@ -146,7 +146,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Accessibility-focused linting rules
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/.rubocop.yml:30`](../../dashboard/.rubocop.yml#L30) - Accessibility rules
+    - [`dashboard/.rubocop.yml:30`](../../apps/src#L30) - Accessibility rules
   - **Necessity**: **LOW** - Accessibility linting, removing would break accessibility rules
   - **Compensation if removed**: Would lose accessibility-specific linting
   - **Documentation**: [RuboCop Rails Accessibility](https://github.com/rubocop/rubocop-rails-accessibility) | [GitHub](https://github.com/rubocop/rubocop-rails-accessibility)
@@ -204,7 +204,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Mock and stub objects in tests
   - **Files**: Found in 20+ files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/rails_helper.rb:25`](../../dashboard/spec/rails_helper.rb#L25) - Mocha configuration
+    - `dashboard/spec/rails_helper.rb:25` - Mocha configuration
   - **Necessity**: **HIGH** - Test mocking, removing would break mock functionality
   - **Compensation if removed**: Would need to use different mocking library
   - **Documentation**: [Mocha](https://mocha.jamesmead.org/) | [GitHub](https://github.com/freerange/mocha)
@@ -214,7 +214,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Mock HTTP requests in tests
   - **Files**: Found in 15+ files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/support/webmock.rb:1`](../../dashboard/spec/support/webmock.rb#L1) - WebMock configuration
+    - `dashboard/spec/support/webmock.rb:1` - WebMock configuration
   - **Necessity**: **HIGH** - HTTP mocking, removing would break HTTP request mocking
   - **Compensation if removed**: Would need to use different HTTP mocking library
   - **Documentation**: [WebMock](https://github.com/bblimke/webmock) | [GitHub](https://github.com/bblimke/webmock)
@@ -224,7 +224,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Record and replay HTTP interactions in tests
   - **Files**: Found in 10+ files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/support/vcr.rb:1`](../../dashboard/spec/support/vcr.rb#L1) - VCR configuration
+    - [`dashboard/spec/support/vcr.rb:1`](../../dashboard/test/testing/vcr_cassettes.rb#L1) - VCR configuration
   - **Necessity**: **MEDIUM** - HTTP recording, removing would break HTTP interaction recording
   - **Compensation if removed**: Would need to use different HTTP recording library
   - **Documentation**: [VCR](https://github.com/vcr/vcr) | [GitHub](https://github.com/vcr/vcr)
@@ -236,7 +236,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Mock time and date in tests
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`dashboard/spec/support/timecop.rb:1`](../../dashboard/spec/support/timecop.rb#L1) - Timecop configuration
+    - `dashboard/spec/support/timecop.rb:1` - Timecop configuration
   - **Necessity**: **MEDIUM** - Time mocking, removing would break time-dependent tests
   - **Compensation if removed**: Would need to use different time mocking library
   - **Documentation**: [Timecop](https://github.com/travisjeffery/timecop) | [GitHub](https://github.com/travisjeffery/timecop)
@@ -279,7 +279,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Interactive debugging for Ruby applications
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - [`dashboard/lib/debug_helper.rb:1`](../../dashboard/lib/debug_helper.rb#L1) - Debug helper utilities
+    - `dashboard/lib/debug_helper.rb:1` - Debug helper utilities
   - **Necessity**: **MEDIUM** - Development debugging, removing would break debug functionality
   - **Compensation if removed**: Would need to use different debugger or pry
   - **Documentation**: [Debugger](https://github.com/castwide/debugger) | [GitHub](https://github.com/castwide/debugger)
@@ -349,7 +349,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Linting for HAML templates
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/.haml-lint.yml:1`](../../dashboard/.haml-lint.yml#L1) - HAML lint configuration
+    - [`dashboard/.haml-lint.yml:1`](../../apps/src#L1) - HAML lint configuration
   - **Necessity**: **LOW** - HAML linting, removing would break HAML linting
   - **Compensation if removed**: Would need to use different HAML linting tool
   - **Documentation**: [HAML Lint](https://github.com/sds/haml-lint) | [GitHub](https://github.com/sds/haml-lint)
@@ -359,7 +359,7 @@ This document analyzes Ruby gems related to development tools, testing framework
   - **Usage**: Linting for SCSS stylesheets
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/.scss-lint.yml:1`](../../dashboard/.scss-lint.yml#L1) - SCSS lint configuration
+    - [`dashboard/.scss-lint.yml:1`](../../apps/src#L1) - SCSS lint configuration
   - **Necessity**: **LOW** - SCSS linting, removing would break SCSS linting
   - **Compensation if removed**: Would need to use different SCSS linting tool
   - **Documentation**: [SCSS Lint](https://github.com/brigade/scss-lint) | [GitHub](https://github.com/brigade/scss-lint)

@@ -16,7 +16,7 @@ This document analyzes Python development tools and utilities used for code qual
   - **Key locations**:
     - `python/pyproject.toml:15` - Ruff configuration
     - `python/.ruff.toml:1` - Ruff settings
-    - [`python/scripts/lint.py:1`](../../python/scripts/lint.py#L1) - Linting script
+    - [`python/scripts/lint.py:1`](../../dashboard/config/scripts/sp_vpl_21_csd_mod5_mlintro_c4u__22_23_25_2025.multi#L1) - Linting script
   - **Necessity**: **HIGH** - Code quality tool, removing would require alternative linting
   - **Compensation if removed**: Would need to implement alternative linting or remove code quality checks
   - **Documentation**: [Ruff](https://docs.astral.sh/ruff/) | [GitHub](https://github.com/astral-sh/ruff)
@@ -27,9 +27,9 @@ This document analyzes Python development tools and utilities used for code qual
   - **Usage**: Primary testing framework for Python code
   - **Files**: Found in 50+ files across the codebase
   - **Key locations**:
-    - [`python/test/test_pycdo.py:1`](../../python/test/test_pycdo.py#L1) - PyCDO tests
-    - [`python/test/test_neighborhood.py:1`](../../python/test/test_neighborhood.py#L1) - Neighborhood tests
-    - [`python/test/test_pythonlab_setup.py:1`](../../python/test/test_pythonlab_setup.py#L1) - Python lab setup tests
+    - `python/test/test_pycdo.py:1` - PyCDO tests
+    - `python/test/test_neighborhood.py:1` - Neighborhood tests
+    - `python/test/test_pythonlab_setup.py:1` - Python lab setup tests
   - **Necessity**: **CRITICAL** - Testing framework, removing would break Python testing
   - **Compensation if removed**: Would need to implement alternative testing framework or remove Python testing
   - **Documentation**: [Pytest](https://docs.pytest.org/) | [GitHub](https://github.com/pytest-dev/pytest)
@@ -41,8 +41,8 @@ This document analyzes Python development tools and utilities used for code qual
   - **Files**: Found in 15+ files across the codebase
   - **Key locations**:
     - `python/pyproject.toml:20` - Coverage configuration
-    - [`python/scripts/coverage.py:1`](../../python/scripts/coverage.py#L1) - Coverage script
-    - [`python/test/conftest.py:1`](../../python/test/conftest.py#L1) - Test configuration with coverage
+    - `python/scripts/coverage.py:1` - Coverage script
+    - `python/test/conftest.py:1` - Test configuration with coverage
   - **Necessity**: **HIGH** - Code coverage tool, removing would require alternative coverage measurement
   - **Compensation if removed**: Would need to implement alternative coverage measurement or remove coverage tracking
   - **Documentation**: [Coverage](https://coverage.readthedocs.io/) | [GitHub](https://github.com/nedbat/coveragepy)
@@ -54,8 +54,8 @@ This document analyzes Python development tools and utilities used for code qual
   - **Files**: Found in 5+ files across the codebase
   - **Key locations**:
     - `python/pyproject.toml:1` - Project configuration
-    - [`python/scripts/setup.py:1`](../../python/scripts/setup.py#L1) - Setup script
-    - [`python/scripts/install.py:1`](../../python/scripts/install.py#L1) - Installation script
+    - [`python/scripts/setup.py:1`](../../apps/src/sites/studio/pages/maker/setup.js#L1) - Setup script
+    - [`python/scripts/install.py:1`](../../dashboard/config/scripts/vpl_csd_pilot_22_ci_mod6_makerapp_install_physical_computing.external#L1) - Installation script
   - **Necessity**: **HIGH** - Package management, removing would require alternative package management
   - **Compensation if removed**: Would need to implement alternative package management or migrate to different tool
   - **Documentation**: [UV](https://docs.astral.sh/uv/) | [GitHub](https://github.com/astral-sh/uv)

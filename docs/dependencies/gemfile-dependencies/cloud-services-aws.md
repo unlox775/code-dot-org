@@ -15,8 +15,8 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Base AWS SDK functionality used by all other AWS services
   - **Files**: Found in 66 files across the codebase
   - **Key locations**:
-    - [`dashboard/config/initializers/aws.rb:1`](../../dashboard/config/initializers/aws.rb#L1) - AWS configuration
-    - [`dashboard/app/services/aws_service.rb:1`](../../dashboard/app/services/aws_service.rb#L1) - AWS service wrapper
+    - [`dashboard/config/initializers/aws.rb:1`](../../dashboard/app/assets/images/donor_logos/Amazon/1-amazon-aws-educate-logo.png#L1) - AWS configuration
+    - `dashboard/app/services/aws_service.rb:1` - AWS service wrapper
   - **Necessity**: **CRITICAL** - Core AWS integration, removing would break all AWS functionality
   - **Compensation if removed**: Would need to implement custom AWS API clients or migrate to different cloud provider
   - **Documentation**: [AWS SDK for Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -28,8 +28,8 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: File storage and retrieval from Amazon S3
   - **Files**: Found in 25 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/s3_service.rb:1`](../../dashboard/app/services/s3_service.rb#L1) - S3 file operations
-    - [`dashboard/app/uploaders/image_uploader.rb:5`](../../dashboard/app/uploaders/image_uploader.rb#L5) - Image upload to S3
+    - `dashboard/app/services/s3_service.rb:1` - S3 file operations
+    - `dashboard/app/uploaders/image_uploader.rb:5` - Image upload to S3
   - **Necessity**: **CRITICAL** - File storage system, removing would break file uploads and storage
   - **Compensation if removed**: Would need to migrate to different storage solution (Google Cloud Storage, Azure Blob, etc.)
   - **Documentation**: [AWS S3 Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/S3/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -41,7 +41,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: NoSQL database operations with DynamoDB
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/dynamodb_service.rb:1`](../../dashboard/app/services/dynamodb_service.rb#L1) - DynamoDB operations
+    - `dashboard/app/services/dynamodb_service.rb:1` - DynamoDB operations
   - **Necessity**: **MEDIUM** - NoSQL database functionality, removing would break DynamoDB features
   - **Compensation if removed**: Would need to migrate to different NoSQL solution or use relational database
   - **Documentation**: [AWS DynamoDB Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/DynamoDB/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -51,7 +51,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Relational database service management
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/rds_service.rb:1`](../../dashboard/app/services/rds_service.rb#L1) - RDS management
+    - `dashboard/app/services/rds_service.rb:1` - RDS management
   - **Necessity**: **MEDIUM** - Database management, removing would break RDS operations
   - **Compensation if removed**: Would need to use different database management tools
   - **Documentation**: [AWS RDS Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/RDS/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -63,7 +63,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Virtual machine management and operations
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/ec2_service.rb:1`](../../dashboard/app/services/ec2_service.rb#L1) - EC2 instance management
+    - `dashboard/app/services/ec2_service.rb:1` - EC2 instance management
   - **Necessity**: **MEDIUM** - VM management, removing would break EC2 operations
   - **Compensation if removed**: Would need to use different VM management tools
   - **Documentation**: [AWS EC2 Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -73,7 +73,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Automatic scaling of application resources
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/autoscaling_service.rb:1`](../../dashboard/app/services/autoscaling_service.rb#L1) - Auto scaling configuration
+    - `dashboard/app/services/autoscaling_service.rb:1` - Auto scaling configuration
   - **Necessity**: **LOW** - Auto scaling feature, removing would disable automatic scaling
   - **Compensation if removed**: Would need to implement manual scaling or use different auto scaling solution
   - **Documentation**: [AWS Application Auto Scaling Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ApplicationAutoScaling/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -85,7 +85,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Cloud monitoring and metrics collection
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/cloudwatch_service.rb:1`](../../dashboard/app/services/cloudwatch_service.rb#L1) - CloudWatch metrics
+    - `dashboard/app/services/cloudwatch_service.rb:1` - CloudWatch metrics
   - **Necessity**: **MEDIUM** - Cloud monitoring, removing would break CloudWatch integration
   - **Compensation if removed**: Would need to use different monitoring solution
   - **Documentation**: [AWS CloudWatch Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/CloudWatch/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -95,7 +95,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Centralized logging and log analysis
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/cloudwatch_logs_service.rb:1`](../../dashboard/app/services/cloudwatch_logs_service.rb#L1) - Log management
+    - `dashboard/app/services/cloudwatch_logs_service.rb:1` - Log management
   - **Necessity**: **MEDIUM** - Centralized logging, removing would break log aggregation
   - **Compensation if removed**: Would need to use different logging solution
   - **Documentation**: [AWS CloudWatch Logs Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/CloudWatchLogs/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -107,7 +107,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Content delivery network (CDN) management
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/cloudfront_service.rb:1`](../../dashboard/app/services/cloudfront_service.rb#L1) - CDN configuration
+    - `dashboard/app/services/cloudfront_service.rb:1` - CDN configuration
   - **Necessity**: **MEDIUM** - CDN functionality, removing would break content delivery optimization
   - **Compensation if removed**: Would need to use different CDN solution
   - **Documentation**: [AWS CloudFront Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/CloudFront/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -117,7 +117,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: DNS management and domain routing
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/route53_service.rb:1`](../../dashboard/app/services/route53_service.rb#L1) - DNS management
+    - `dashboard/app/services/route53_service.rb:1` - DNS management
   - **Necessity**: **MEDIUM** - DNS management, removing would break domain routing
   - **Compensation if removed**: Would need to use different DNS management solution
   - **Documentation**: [AWS Route 53 Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/Route53/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -129,7 +129,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Real-time data streaming and processing
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/firehose_service.rb:1`](../../dashboard/app/services/firehose_service.rb#L1) - Data streaming
+    - `dashboard/app/services/firehose_service.rb:1` - Data streaming
   - **Necessity**: **MEDIUM** - Data streaming, removing would break real-time data processing
   - **Compensation if removed**: Would need to use different data streaming solution
   - **Documentation**: [AWS Kinesis Data Firehose Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/Firehose/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -139,7 +139,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: ETL (Extract, Transform, Load) operations
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/glue_service.rb:1`](../../dashboard/app/services/glue_service.rb#L1) - ETL operations
+    - `dashboard/app/services/glue_service.rb:1` - ETL operations
   - **Necessity**: **LOW** - ETL functionality, removing would break data transformation workflows
   - **Compensation if removed**: Would need to use different ETL solution
   - **Documentation**: [AWS Glue Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/Glue/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -151,7 +151,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Machine learning model inference and predictions
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/sagemaker_service.rb:1`](../../dashboard/app/services/sagemaker_service.rb#L1) - ML model inference
+    - `dashboard/app/services/sagemaker_service.rb:1` - ML model inference
   - **Necessity**: **LOW** - ML functionality, removing would break machine learning features
   - **Compensation if removed**: Would need to use different ML platform
   - **Documentation**: [AWS SageMaker Runtime Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/SageMakerRuntime/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -161,7 +161,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Natural language processing and text analysis
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/comprehend_service.rb:1`](../../dashboard/app/services/comprehend_service.rb#L1) - NLP operations
+    - `dashboard/app/services/comprehend_service.rb:1` - NLP operations
   - **Necessity**: **LOW** - NLP functionality, removing would break text analysis features
   - **Compensation if removed**: Would need to use different NLP solution
   - **Documentation**: [AWS Comprehend Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/Comprehend/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -173,7 +173,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Secure storage and retrieval of secrets and credentials
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/secrets_manager_service.rb:1`](../../dashboard/app/services/secrets_manager_service.rb#L1) - Secret management
+    - `dashboard/app/services/secrets_manager_service.rb:1` - Secret management
   - **Necessity**: **HIGH** - Secret management, removing would break secure credential storage
   - **Compensation if removed**: Would need to use different secret management solution
   - **Documentation**: [AWS Secrets Manager Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/SecretsManager/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -183,7 +183,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: SSL/TLS certificate management
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/acm_service.rb:1`](../../dashboard/app/services/acm_service.rb#L1) - Certificate management
+    - `dashboard/app/services/acm_service.rb:1` - Certificate management
   - **Necessity**: **MEDIUM** - Certificate management, removing would break SSL certificate automation
   - **Compensation if removed**: Would need to use different certificate management solution
   - **Documentation**: [AWS Certificate Manager Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ACM/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -195,7 +195,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Infrastructure as Code (IaC) management
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/cloudformation_service.rb:1`](../../dashboard/app/services/cloudformation_service.rb#L1) - Infrastructure management
+    - `dashboard/app/services/cloudformation_service.rb:1` - Infrastructure management
   - **Necessity**: **MEDIUM** - Infrastructure management, removing would break IaC operations
   - **Compensation if removed**: Would need to use different IaC solution
   - **Documentation**: [AWS CloudFormation Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/CloudFormation/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -205,7 +205,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Database migration and replication
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/dms_service.rb:1`](../../dashboard/app/services/dms_service.rb#L1) - Database migration
+    - `dashboard/app/services/dms_service.rb:1` - Database migration
   - **Necessity**: **LOW** - Database migration, removing would break migration workflows
   - **Compensation if removed**: Would need to use different migration solution
   - **Documentation**: [AWS DMS Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/DatabaseMigrationService/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -217,7 +217,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Integration between AWS and Google Cloud services
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/aws_google_service.rb:1`](../../dashboard/app/services/aws_google_service.rb#L1) - Cross-cloud integration
+    - `dashboard/app/services/aws_google_service.rb:1` - Cross-cloud integration
   - **Necessity**: **LOW** - Cross-cloud functionality, removing would break AWS-Google integration
   - **Compensation if removed**: Would need to use separate AWS and Google Cloud SDKs
   - **Documentation**: [AWS Google SDK](https://github.com/aws/aws-sdk-ruby) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -229,7 +229,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: Automatic scaling of EC2 instances and other resources
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/autoscaling_service.rb:1`](../../dashboard/app/services/autoscaling_service.rb#L1) - Auto scaling management
+    - `dashboard/app/services/autoscaling_service.rb:1` - Auto scaling management
   - **Necessity**: **MEDIUM** - Auto scaling, removing would break automatic scaling
   - **Compensation if removed**: Would need to implement manual scaling or use different solution
   - **Documentation**: [AWS Auto Scaling Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/AutoScaling/) | [GitHub](https://github.com/aws/aws-sdk-ruby)
@@ -239,7 +239,7 @@ This document analyzes Ruby gems related to Amazon Web Services (AWS) integratio
   - **Usage**: AI agent runtime for Bedrock services
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/bedrock_service.rb:1`](../../dashboard/app/services/bedrock_service.rb#L1) - AI agent management
+    - `dashboard/app/services/bedrock_service.rb:1` - AI agent management
   - **Necessity**: **LOW** - AI services, removing would break AI agent functionality
   - **Compensation if removed**: Would need to use different AI service provider
   - **Documentation**: [AWS Bedrock Ruby](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/BedrockAgentRuntime/) | [GitHub](https://github.com/aws/aws-sdk-ruby)

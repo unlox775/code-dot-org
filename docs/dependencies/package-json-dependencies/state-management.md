@@ -38,7 +38,7 @@ This document analyzes state management dependencies that handle application sta
   - **Key locations**:
     - [`apps/src/redux/commonReducers.js:1`](../../apps/src/redux/commonReducers.js#L1) - Common Redux reducers
     - [`apps/src/weblab2/redux.ts:2`](../../apps/src/weblab2/redux.ts#L2) - WebLab Redux store
-    - [`apps/src/p5lab/redux/spritelabInputTest.js:1`](../../apps/src/p5lab/redux/spritelabInputTest.js#L1) - P5Lab Redux tests
+    - `apps/src/p5lab/redux/spritelabInputTest.js:1` - P5Lab Redux tests
   - **Necessity**: **HIGH** - Redux development utilities, removing would require rewriting Redux code
   - **Compensation if removed**: Would need to rewrite Redux code using vanilla Redux or migrate to different state solution
   - **Documentation**: [Redux Toolkit](https://redux-toolkit.js.org/) | [GitHub](https://github.com/reduxjs/redux-toolkit)
@@ -48,7 +48,7 @@ This document analyzes state management dependencies that handle application sta
   - **Usage**: Redux middleware for logging state changes
   - **Files**: Found in 10+ files across the codebase
   - **Key locations**:
-    - [`apps/src/redux/store.js:1`](../../apps/src/redux/store.js#L1) - Redux store configuration
+    - [`apps/src/redux/store.js:1`](../../apps/src/applab/designElements/RestoreThemeDefaultsButton.jsx#L1) - Redux store configuration
     - [`apps/test/util/redux.js:2`](../../apps/test/util/redux.js#L2) - Redux testing utilities
     - [`apps/src/util/reduxHooks.ts:3`](../../apps/src/util/reduxHooks.ts#L3) - Redux hooks with logging
   - **Necessity**: **LOW** - Development utility, removing would require alternative debugging
@@ -60,9 +60,9 @@ This document analyzes state management dependencies that handle application sta
   - **Usage**: Redux middleware for handling async actions
   - **Files**: Found in 50+ files across the codebase
   - **Key locations**:
-    - [`apps/src/redux/actions.js:1`](../../apps/src/redux/actions.js#L1) - Redux actions
+    - [`apps/src/redux/actions.js:1`](../../apps/src/userLevelInteractionsLogger#L1) - Redux actions
     - [`apps/src/weblab/actions.js:1`](../../apps/src/weblab/actions.js#L1) - WebLab actions
-    - [`apps/src/p5lab/redux/applabTest.js:2`](../../apps/src/p5lab/redux/applabTest.js#L2) - P5Lab Redux tests
+    - `apps/src/p5lab/redux/applabTest.js:2` - P5Lab Redux tests
   - **Necessity**: **HIGH** - Async action handling, removing would require rewriting async logic
   - **Compensation if removed**: Would need to implement alternative async handling or migrate to different state solution
   - **Documentation**: [Redux Thunk](https://github.com/reduxjs/redux-thunk) | [GitHub](https://github.com/reduxjs/redux-thunk)
@@ -85,7 +85,7 @@ This document analyzes state management dependencies that handle application sta
   - **Usage**: Redux state persistence to localStorage/sessionStorage
   - **Files**: Found in 20+ files across the codebase
   - **Key locations**:
-    - [`apps/src/redux/store.js:5`](../../apps/src/redux/store.js#L5) - Redux store with persistence
+    - [`apps/src/redux/store.js:5`](../../apps/src/applab/designElements/RestoreThemeDefaultsButton.jsx#L5) - Redux store with persistence
     - [`apps/src/util/reduxHooks.ts:3`](../../apps/src/util/reduxHooks.ts#L3) - Redux hooks with persistence
     - [`apps/src/templates/AppView.jsx:3`](../../apps/src/templates/AppView.jsx#L3) - App view with persisted state
   - **Necessity**: **MEDIUM** - State persistence, removing would require alternative persistence
@@ -99,8 +99,8 @@ This document analyzes state management dependencies that handle application sta
   - **Files**: Found in 30+ files across the codebase
   - **Key locations**:
     - [`apps/src/redux/selectors.js:1`](../../apps/src/redux/selectors.js#L1) - Redux selectors
-    - [`apps/src/weblab/selectors.js:1`](../../apps/src/weblab/selectors.js#L1) - WebLab selectors
-    - [`apps/src/p5lab/redux/spritelabInputTest.js:1`](../../apps/src/p5lab/redux/spritelabInputTest.js#L1) - P5Lab selectors
+    - [`apps/src/weblab/selectors.js:1`](../../apps/src/redux/selectors.js#L1) - WebLab selectors
+    - `apps/src/p5lab/redux/spritelabInputTest.js:1` - P5Lab selectors
   - **Necessity**: **MEDIUM** - State optimization, removing would require alternative optimization
   - **Compensation if removed**: Would need to implement alternative state optimization or remove memoization
   - **Documentation**: [Reselect](https://github.com/reduxjs/reselect) | [GitHub](https://github.com/reduxjs/reselect)

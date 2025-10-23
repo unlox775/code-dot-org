@@ -16,7 +16,7 @@ This document analyzes database and caching dependencies that handle data persis
   - **Key locations**:
     - [`dashboard/config/initializers/mysql_check_index_used.rb:1`](../../dashboard/config/initializers/mysql_check_index_used.rb#L1) - MySQL index checking
     - [`dashboard/config/database.yml:1`](../../dashboard/config/database.yml#L1) - Database configuration
-    - [`lib/cdo/database_utils.rb:1`](../../lib/cdo/database_utils.rb#L1) - Database utilities
+    - `lib/cdo/database_utils.rb:1` - Database utilities
   - **Necessity**: **CRITICAL** - Primary database adapter, removing would break database connectivity
   - **Compensation if removed**: Would need to migrate to different database or implement alternative database adapter
   - **Documentation**: [MySQL2](https://github.com/brianmario/mysql2) | [GitHub](https://github.com/brianmario/mysql2)
@@ -27,7 +27,7 @@ This document analyzes database and caching dependencies that handle data persis
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
     - [`dashboard/config/database.yml:15`](../../dashboard/config/database.yml#L15) - PostgreSQL configuration
-    - [`lib/cdo/postgres_utils.rb:1`](../../lib/cdo/postgres_utils.rb#L1) - PostgreSQL utilities
+    - `lib/cdo/postgres_utils.rb:1` - PostgreSQL utilities
   - **Necessity**: **LOW** - Secondary database adapter, removing would require migrating PostgreSQL features
   - **Compensation if removed**: Would need to migrate PostgreSQL-specific features to MySQL or remove them
   - **Documentation**: [PG](https://github.com/ged/ruby-pg) | [GitHub](https://github.com/ged/ruby-pg)
@@ -40,7 +40,7 @@ This document analyzes database and caching dependencies that handle data persis
   - **Key locations**:
     - [`lib/cdo/geocoder.rb:1`](../../lib/cdo/geocoder.rb#L1) - Geocoding cache
     - [`dashboard/legacy/middleware/helpers/sharded_redis_factory.rb:1`](../../dashboard/legacy/middleware/helpers/sharded_redis_factory.rb#L1) - Redis factory
-    - [`lib/cdo/redis_utils.rb:1`](../../lib/cdo/redis_utils.rb#L1) - Redis utilities
+    - `lib/cdo/redis_utils.rb:1` - Redis utilities
   - **Necessity**: **HIGH** - Primary caching system, removing would require alternative caching strategy
   - **Compensation if removed**: Would need to implement alternative caching system or migrate to different cache store
   - **Documentation**: [Redis](https://github.com/redis/redis-rb) | [GitHub](https://github.com/redis/redis-rb)
@@ -51,7 +51,7 @@ This document analyzes database and caching dependencies that handle data persis
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
     - [`dashboard/config/initializers/session_store.rb:1`](../../dashboard/config/initializers/session_store.rb#L1) - Session store configuration
-    - [`lib/cdo/session_management.rb:1`](../../lib/cdo/session_management.rb#L1) - Session management utilities
+    - `lib/cdo/session_management.rb:1` - Session management utilities
     - [`dashboard/config/application.rb:40`](../../dashboard/config/application.rb#L40) - Session configuration
   - **Necessity**: **HIGH** - Session storage, removing would require alternative session management
   - **Compensation if removed**: Would need to implement alternative session storage or migrate to different session store
@@ -62,9 +62,9 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Read from Redis slave for read-heavy operations
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/redis_cluster.rb:1`](../../lib/cdo/redis_cluster.rb#L1) - Redis cluster management
-    - [`dashboard/config/initializers/redis.rb:1`](../../dashboard/config/initializers/redis.rb#L1) - Redis configuration
-    - [`lib/cdo/read_replica_utils.rb:1`](../../lib/cdo/read_replica_utils.rb#L1) - Read replica utilities
+    - `lib/cdo/redis_cluster.rb:1` - Redis cluster management
+    - [`dashboard/config/initializers/redis.rb:1`](../../dashboard/test/lib/middlewares/redis_session_store_test.rb#L1) - Redis configuration
+    - `lib/cdo/read_replica_utils.rb:1` - Read replica utilities
   - **Necessity**: **MEDIUM** - Read optimization, removing would require alternative read optimization
   - **Compensation if removed**: Would need to implement alternative read optimization or remove read replica functionality
   - **Documentation**: [Redis Slave Read](https://github.com/redis-store/redis-slave-read) | [GitHub](https://github.com/redis-store/redis-slave-read)
@@ -74,9 +74,9 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Memcached client for distributed caching
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/memcached_utils.rb:1`](../../lib/cdo/memcached_utils.rb#L1) - Memcached utilities
-    - [`dashboard/config/initializers/cache_store.rb:1`](../../dashboard/config/initializers/cache_store.rb#L1) - Cache store configuration
-    - [`lib/cdo/distributed_cache.rb:1`](../../lib/cdo/distributed_cache.rb#L1) - Distributed caching
+    - `lib/cdo/memcached_utils.rb:1` - Memcached utilities
+    - `dashboard/config/initializers/cache_store.rb:1` - Cache store configuration
+    - `lib/cdo/distributed_cache.rb:1` - Distributed caching
   - **Necessity**: **MEDIUM** - Memcached caching, removing would require alternative caching strategy
   - **Compensation if removed**: Would need to implement alternative distributed caching or migrate to Redis-only
   - **Documentation**: [Dalli](https://github.com/petergoldstein/dalli) | [GitHub](https://github.com/petergoldstein/dalli)
@@ -86,8 +86,8 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: AWS ElastiCache support for Memcached
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/elasticache_utils.rb:1`](../../lib/cdo/elasticache_utils.rb#L1) - ElastiCache utilities
-    - [`dashboard/config/initializers/elasticache.rb:1`](../../dashboard/config/initializers/elasticache.rb#L1) - ElastiCache configuration
+    - `lib/cdo/elasticache_utils.rb:1` - ElastiCache utilities
+    - `dashboard/config/initializers/elasticache.rb:1` - ElastiCache configuration
   - **Necessity**: **LOW** - AWS ElastiCache integration, removing would require alternative AWS caching
   - **Compensation if removed**: Would need to implement alternative AWS caching or migrate to Redis
   - **Documentation**: [Dalli ElastiCache](https://github.com/ktheory/dalli-elasticache) | [GitHub](https://github.com/ktheory/dalli-elasticache)
@@ -98,9 +98,9 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Alternative ORM for specific database operations
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/sequel_utils.rb:1`](../../lib/cdo/sequel_utils.rb#L1) - Sequel utilities
-    - [`dashboard/app/models/sequel_models.rb:1`](../../dashboard/app/models/sequel_models.rb#L1) - Sequel models
-    - [`lib/cdo/data_migration.rb:1`](../../lib/cdo/data_migration.rb#L1) - Data migration utilities
+    - `lib/cdo/sequel_utils.rb:1` - Sequel utilities
+    - `dashboard/app/models/sequel_models.rb:1` - Sequel models
+    - `lib/cdo/data_migration.rb:1` - Data migration utilities
   - **Necessity**: **MEDIUM** - Alternative ORM, removing would require migrating Sequel operations
   - **Compensation if removed**: Would need to migrate Sequel operations to ActiveRecord or implement custom database access
   - **Documentation**: [Sequel](https://sequel.jeremyevans.net/) | [GitHub](https://github.com/jeremyevans/sequel)
@@ -110,9 +110,9 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Support for composite primary keys in ActiveRecord
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/models/concerns/composite_key.rb:1`](../../dashboard/app/models/concerns/composite_key.rb#L1) - Composite key concerns
-    - [`lib/cdo/composite_key_utils.rb:1`](../../lib/cdo/composite_key_utils.rb#L1) - Composite key utilities
-    - [`dashboard/app/models/level_group.rb:1`](../../dashboard/app/models/level_group.rb#L1) - Level group model
+    - `dashboard/app/models/concerns/composite_key.rb:1` - Composite key concerns
+    - `lib/cdo/composite_key_utils.rb:1` - Composite key utilities
+    - [`dashboard/app/models/level_group.rb:1`](../../apps/src/sites/studio/pages/levels/_level_group.js#L1) - Level group model
   - **Necessity**: **MEDIUM** - Composite key support, removing would require schema changes
   - **Compensation if removed**: Would need to redesign database schema or implement alternative composite key handling
   - **Documentation**: [Composite Primary Keys](https://github.com/composite-primary-keys/composite_primary_keys) | [GitHub](https://github.com/composite-primary-keys/composite_primary_keys)
@@ -122,9 +122,9 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Bulk import operations for ActiveRecord models
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/bulk_import_utils.rb:1`](../../lib/cdo/bulk_import_utils.rb#L1) - Bulk import utilities
-    - [`dashboard/app/models/concerns/bulk_import.rb:1`](../../dashboard/app/models/concerns/bulk_import.rb#L1) - Bulk import concerns
-    - [`lib/cdo/data_processing.rb:1`](../../lib/cdo/data_processing.rb#L1) - Data processing utilities
+    - `lib/cdo/bulk_import_utils.rb:1` - Bulk import utilities
+    - `dashboard/app/models/concerns/bulk_import.rb:1` - Bulk import concerns
+    - `lib/cdo/data_processing.rb:1` - Data processing utilities
   - **Necessity**: **MEDIUM** - Bulk import optimization, removing would require alternative bulk operations
   - **Compensation if removed**: Would need to implement alternative bulk import or use individual record creation
   - **Documentation**: [ActiveRecord Import](https://github.com/zdennis/activerecord-import) | [GitHub](https://github.com/zdennis/activerecord-import)
@@ -134,9 +134,9 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Union query support for ActiveRecord
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/union_query_utils.rb:1`](../../lib/cdo/union_query_utils.rb#L1) - Union query utilities
-    - [`dashboard/app/models/concerns/union_queries.rb:1`](../../dashboard/app/models/concerns/union_queries.rb#L1) - Union query concerns
-    - [`lib/cdo/query_optimization.rb:1`](../../lib/cdo/query_optimization.rb#L1) - Query optimization utilities
+    - `lib/cdo/union_query_utils.rb:1` - Union query utilities
+    - `dashboard/app/models/concerns/union_queries.rb:1` - Union query concerns
+    - `lib/cdo/query_optimization.rb:1` - Query optimization utilities
   - **Necessity**: **LOW** - Union query support, removing would require alternative query approaches
   - **Compensation if removed**: Would need to implement alternative query approaches or remove union functionality
   - **Documentation**: [ActiveRecord Union](https://github.com/brianmario/active_record_union) | [GitHub](https://github.com/brianmario/active_record_union)
@@ -146,8 +146,8 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Database view support for ActiveRecord
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/database_views.rb:1`](../../lib/cdo/database_views.rb#L1) - Database view utilities
-    - [`dashboard/app/models/concerns/database_view.rb:1`](../../dashboard/app/models/concerns/database_view.rb#L1) - Database view concerns
+    - `lib/cdo/database_views.rb:1` - Database view utilities
+    - `dashboard/app/models/concerns/database_view.rb:1` - Database view concerns
   - **Necessity**: **LOW** - Database view support, removing would require alternative view approaches
   - **Compensation if removed**: Would need to implement alternative database views or remove view functionality
   - **Documentation**: [Scenic](https://github.com/thoughtbot/scenic) | [GitHub](https://github.com/thoughtbot/scenic)
@@ -157,7 +157,7 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: MySQL-specific adapter for Scenic database views
   - **Files**: Found in 1 file across the codebase
   - **Key locations**:
-    - [`lib/cdo/mysql_views.rb:1`](../../lib/cdo/mysql_views.rb#L1) - MySQL view utilities
+    - `lib/cdo/mysql_views.rb:1` - MySQL view utilities
   - **Necessity**: **LOW** - MySQL view support, removing would require alternative MySQL view approaches
   - **Compensation if removed**: Would need to implement alternative MySQL views or remove MySQL view functionality
   - **Documentation**: [Scenic MySQL Adapter](https://github.com/thoughtbot/scenic) | [GitHub](https://github.com/thoughtbot/scenic)
@@ -167,8 +167,8 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Soft delete functionality for ActiveRecord models
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/models/concerns/soft_delete.rb:1`](../../dashboard/app/models/concerns/soft_delete.rb#L1) - Soft delete concerns
-    - [`lib/cdo/soft_delete_utils.rb:1`](../../lib/cdo/soft_delete_utils.rb#L1) - Soft delete utilities
+    - [`dashboard/app/models/concerns/soft_delete.rb:1`](../../dashboard/app/views/inactive_user_purge_mailer/teacher_inactivity_soft_delete_warning_email.html.haml#L1) - Soft delete concerns
+    - `lib/cdo/soft_delete_utils.rb:1` - Soft delete utilities
     - [`dashboard/app/models/user.rb:1`](../../dashboard/app/models/user.rb#L1) - User model with soft delete
   - **Necessity**: **HIGH** - Soft delete functionality, removing would require data migration
   - **Compensation if removed**: Would need to implement alternative soft delete or migrate to hard delete
@@ -192,7 +192,7 @@ This document analyzes database and caching dependencies that handle data persis
   - **Usage**: Development tool for tracing ActiveRecord queries
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`dashboard/config/initializers/active_record_query_trace.rb:1`](../../dashboard/config/initializers/active_record_query_trace.rb#L1) - Query trace configuration
+    - `dashboard/config/initializers/active_record_query_trace.rb:1` - Query trace configuration
   - **Necessity**: **LOW** - Development tool, removing would break query tracing
   - **Compensation if removed**: Would need to use different query analysis tool
   - **Documentation**: [ActiveRecord Query Trace](https://github.com/ruckus/active-record-query-trace) | [GitHub](https://github.com/ruckus/active-record-query-trace)

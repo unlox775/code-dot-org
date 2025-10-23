@@ -56,7 +56,7 @@ This document analyzes the core React and UI framework dependencies that form th
   - **Usage**: React utility functions for type checking and element validation
   - **Files**: Found in 50+ files across the codebase
   - **Key locations**:
-    - [`apps/src/templates/utils/reactUtils.js:1`](../../apps/src/templates/utils/reactUtils.js#L1) - React utility functions
+    - `apps/src/templates/utils/reactUtils.js:1` - React utility functions
     - [`apps/src/blockly/utils.ts:2`](../../apps/src/blockly/utils.ts#L2) - Blockly React utilities
     - [`apps/test/util/testUtils.js:1`](../../apps/test/util/testUtils.js#L1) - Test utilities
   - **Necessity**: **MEDIUM** - React utilities, removing would require rewriting utility functions

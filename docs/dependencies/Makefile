@@ -37,8 +37,18 @@ check-format:
 	done
 	@echo "✅ Format check complete!"
 
+# Check links in documentation
+check-links:
+	@echo "🔍 Checking links in documentation..."
+	@python3 link_validator.py
+
+# Fix broken links
+fix-links:
+	@echo "🔧 Fixing broken links..."
+	@python3 fix_remaining_links.py
+
 # Run all checks
-check-all: check-dependencies check-format
+check-all: check-dependencies check-format check-links
 	@echo "✅ All checks completed!"
 
 # Clean up temporary files

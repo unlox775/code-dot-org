@@ -28,7 +28,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
     - [`dashboard/app/models/user.rb:3`](../../dashboard/app/models/user.rb#L3) - User model with invitable module
-    - [`dashboard/app/controllers/invitations_controller.rb:1`](../../dashboard/app/controllers/invitations_controller.rb#L1) - Invitation handling
+    - `dashboard/app/controllers/invitations_controller.rb:1` - Invitation handling
   - **Necessity**: **HIGH** - User invitation system, removing would break invite functionality
   - **Compensation if removed**: Would need to implement custom invitation system
   - **Documentation**: [Devise Invitable](https://github.com/scambra/devise_invitable) | [GitHub](https://github.com/scambra/devise_invitable)
@@ -124,7 +124,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
     - [`dashboard/app/controllers/registrations_controller.rb:3`](../../dashboard/app/controllers/registrations_controller.rb#L3) - Registration CAPTCHA
-    - [`dashboard/app/views/devise/registrations/new.html.haml:15`](../../dashboard/app/views/devise/registrations/new.html.haml#L15) - CAPTCHA display
+    - [`dashboard/app/views/devise/registrations/new.html.haml:15`](../../apps/src/p5lab/AnimationTab/new-list-item.module.scss#L15) - CAPTCHA display
   - **Necessity**: **MEDIUM** - Spam protection, removing would reduce security against bots
   - **Compensation if removed**: Would need alternative spam protection or accept higher bot risk
   - **Documentation**: [reCAPTCHA Ruby](https://github.com/ambethia/recaptcha) | [GitHub](https://github.com/ambethia/recaptcha)
@@ -137,7 +137,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
     - `dashboard/app/controllers/api/` - API authentication
-    - [`dashboard/app/services/jwt_service.rb:1`](../../dashboard/app/services/jwt_service.rb#L1) - JWT token management
+    - `dashboard/app/services/jwt_service.rb:1` - JWT token management
   - **Necessity**: **HIGH** - API authentication, removing would break JWT-based API auth
   - **Compensation if removed**: Would need to implement custom token system or use different auth method
   - **Documentation**: [JWT Ruby](https://github.com/jwt/ruby-jwt) | [GitHub](https://github.com/jwt/ruby-jwt)
@@ -147,7 +147,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: JWT token creation and verification
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/token_service.rb:1`](../../dashboard/app/services/token_service.rb#L1) - Token utilities
+    - `dashboard/app/services/token_service.rb:1` - Token utilities
   - **Necessity**: **MEDIUM** - JWT handling, removing would break JWT operations
   - **Compensation if removed**: Would need to use different JWT library
   - **Documentation**: [JSON JWT](https://github.com/nov/json-jwt) | [GitHub](https://github.com/nov/json-jwt)
@@ -157,7 +157,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
   - **Usage**: Automated SSL certificate management
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
-    - [`dashboard/lib/ssl_manager.rb:1`](../../dashboard/lib/ssl_manager.rb#L1) - SSL certificate management
+    - `dashboard/lib/ssl_manager.rb:1` - SSL certificate management
   - **Necessity**: **MEDIUM** - SSL automation, removing would break automated SSL renewal
   - **Compensation if removed**: Would need manual SSL certificate management
   - **Documentation**: [Acmesmith](https://github.com/sorah/acmesmith) | [GitHub](https://github.com/sorah/acmesmith)

@@ -41,7 +41,7 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Key locations**:
     - [`dashboard/config/application.rb:15`](../../dashboard/config/application.rb#L15) - Asset pipeline configuration
     - [`dashboard/config/initializers/assets.rb:1`](../../dashboard/config/initializers/assets.rb#L1) - Asset precompilation settings
-    - [`dashboard/app/assets/config/manifest.js:1`](../../dashboard/app/assets/config/manifest.js#L1) - Asset manifest
+    - [`dashboard/app/assets/config/manifest.js:1`](../../apps/src/sites/studio/pages/datasets/edit_manifest.js#L1) - Asset manifest
   - **Necessity**: **HIGH** - Core asset pipeline, removing would break asset compilation
   - **Compensation if removed**: Would need to implement alternative asset pipeline or migrate to different asset system
   - **Documentation**: [Sprockets](https://github.com/rails/sprockets) | [GitHub](https://github.com/rails/sprockets)
@@ -53,7 +53,7 @@ This document analyzes the core Ruby and Rails framework dependencies that form 
   - **Key locations**:
     - [`dashboard/config/application.rb:16`](../../dashboard/config/application.rb#L16) - Sass configuration
     - [`dashboard/app/assets/stylesheets/application.scss:1`](../../dashboard/app/assets/stylesheets/application.scss#L1) - Main stylesheet
-    - [`dashboard/app/assets/stylesheets/cdo.scss:1`](../../dashboard/app/assets/stylesheets/cdo.scss#L1) - CDO specific styles
+    - [`dashboard/app/assets/stylesheets/cdo.scss:1`](../../apps/src/dcdo.js#L1) - CDO specific styles
   - **Necessity**: **HIGH** - Stylesheet compilation, removing would break CSS processing
   - **Compensation if removed**: Would need to implement alternative Sass compilation or migrate to different CSS preprocessor
   - **Documentation**: [SassC Rails](https://github.com/sass/sassc-rails) | [GitHub](https://github.com/sass/sassc-rails)

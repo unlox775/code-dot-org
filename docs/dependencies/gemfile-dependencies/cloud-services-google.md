@@ -15,8 +15,8 @@ This document analyzes Ruby gems related to Google Cloud Platform (GCP) integrat
   - **Usage**: Base functionality for all Google API integrations
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - [`dashboard/config/initializers/google_apis.rb:1`](../../dashboard/config/initializers/google_apis.rb#L1) - Google APIs configuration
-    - [`dashboard/app/services/google_service.rb:1`](../../dashboard/app/services/google_service.rb#L1) - Google service wrapper
+    - `dashboard/config/initializers/google_apis.rb:1` - Google APIs configuration
+    - `dashboard/app/services/google_service.rb:1` - Google service wrapper
   - **Necessity**: **CRITICAL** - Core Google integration, removing would break all Google services
   - **Compensation if removed**: Would need to implement custom Google API clients or migrate to different service provider
   - **Documentation**: [Google APIs Ruby Client](https://github.com/googleapis/google-api-ruby-client) | [GitHub](https://github.com/googleapis/google-api-ruby-client)
@@ -28,8 +28,8 @@ This document analyzes Ruby gems related to Google Cloud Platform (GCP) integrat
   - **Usage**: Google Analytics data retrieval and reporting
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/analytics_service.rb:1`](../../dashboard/app/services/analytics_service.rb#L1) - Analytics data processing
-    - [`dashboard/app/controllers/analytics_controller.rb:3`](../../dashboard/app/controllers/analytics_controller.rb#L3) - Analytics reporting
+    - `dashboard/app/services/analytics_service.rb:1` - Analytics data processing
+    - `dashboard/app/controllers/analytics_controller.rb:3` - Analytics reporting
   - **Necessity**: **HIGH** - Analytics functionality, removing would break user analytics and reporting
   - **Compensation if removed**: Would need to use different analytics platform or implement custom analytics
   - **Documentation**: [Google Analytics API](https://developers.google.com/analytics/devguides/reporting/core/v3) | [GitHub](https://github.com/googleapis/google-api-ruby-client)
@@ -41,8 +41,8 @@ This document analyzes Ruby gems related to Google Cloud Platform (GCP) integrat
   - **Usage**: Google Classroom integration for educational features
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/classroom_service.rb:1`](../../dashboard/app/services/classroom_service.rb#L1) - Classroom operations
-    - [`dashboard/app/controllers/classroom_controller.rb:2`](../../dashboard/app/controllers/classroom_controller.rb#L2) - Classroom management
+    - `dashboard/app/services/classroom_service.rb:1` - Classroom operations
+    - `dashboard/app/controllers/classroom_controller.rb:2` - Classroom management
   - **Necessity**: **HIGH** - Educational functionality, removing would break Google Classroom integration
   - **Compensation if removed**: Would need to use different classroom management system or implement custom solution
   - **Documentation**: [Google Classroom API](https://developers.google.com/classroom) | [GitHub](https://github.com/googleapis/google-api-ruby-client)
@@ -54,8 +54,8 @@ This document analyzes Ruby gems related to Google Cloud Platform (GCP) integrat
   - **Usage**: YouTube video integration and management
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/youtube_service.rb:1`](../../dashboard/app/services/youtube_service.rb#L1) - YouTube operations
-    - [`dashboard/app/controllers/video_controller.rb:3`](../../dashboard/app/controllers/video_controller.rb#L3) - Video management
+    - `dashboard/app/services/youtube_service.rb:1` - YouTube operations
+    - `dashboard/app/controllers/video_controller.rb:3` - Video management
   - **Necessity**: **MEDIUM** - Video functionality, removing would break YouTube integration
   - **Compensation if removed**: Would need to use different video platform or implement custom video solution
   - **Documentation**: [YouTube Data API](https://developers.google.com/youtube/v3) | [GitHub](https://github.com/googleapis/google-api-ruby-client)
@@ -67,8 +67,8 @@ This document analyzes Ruby gems related to Google Cloud Platform (GCP) integrat
   - **Usage**: Google Drive file storage and management
   - **Files**: Found in 10 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/services/google_drive_service.rb:1`](../../dashboard/app/services/google_drive_service.rb#L1) - Drive operations
-    - [`dashboard/app/controllers/files_controller.rb:2`](../../dashboard/app/controllers/files_controller.rb#L2) - File management
+    - `dashboard/app/services/google_drive_service.rb:1` - Drive operations
+    - `dashboard/app/controllers/files_controller.rb:2` - File management
   - **Necessity**: **MEDIUM** - File storage, removing would break Google Drive integration
   - **Compensation if removed**: Would need to use different file storage solution
   - **Documentation**: [Google Drive API](https://developers.google.com/drive/api) | [GitHub](https://github.com/gimite/google-drive-ruby)

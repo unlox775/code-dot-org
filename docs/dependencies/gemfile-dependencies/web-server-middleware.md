@@ -15,7 +15,7 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
     - [`pegasus/router.rb:1`](../../pegasus/router.rb#L1) - Main routing system
-    - [`pegasus/app.rb:1`](../../pegasus/app.rb#L1) - Sinatra application setup
+    - [`pegasus/app.rb:1`](../../apps/src/flappy#L1) - Sinatra application setup
     - [`pegasus/helpers.rb:1`](../../pegasus/helpers.rb#L1) - Sinatra helper methods
   - **Necessity**: **HIGH** - Core web framework for Pegasus, removing would break routing system
   - **Compensation if removed**: Would need to rewrite Pegasus routing system or migrate to different web framework
@@ -28,7 +28,7 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Key locations**:
     - [`dashboard/config/puma.rb:1`](../../dashboard/config/puma.rb#L1) - Puma configuration
     - [`dashboard/config/application.rb:20`](../../dashboard/config/application.rb#L20) - Server configuration
-    - [`lib/cdo/server_config.rb:1`](../../lib/cdo/server_config.rb#L1) - Server configuration utilities
+    - `lib/cdo/server_config.rb:1` - Server configuration utilities
   - **Necessity**: **CRITICAL** - Primary web server, removing would break application serving
   - **Compensation if removed**: Would need to configure alternative web server (Unicorn, Passenger, etc.)
   - **Documentation**: [Puma](https://puma.io/) | [GitHub](https://github.com/puma/puma)
@@ -39,8 +39,8 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Files**: Found in 3 files across the codebase
   - **Key locations**:
     - [`dashboard/config/puma.rb:15`](../../dashboard/config/puma.rb#L15) - Worker killer configuration
-    - [`lib/cdo/server_monitoring.rb:1`](../../lib/cdo/server_monitoring.rb#L1) - Server monitoring utilities
-    - [`dashboard/config/initializers/puma.rb:1`](../../dashboard/config/initializers/puma.rb#L1) - Puma initialization
+    - `lib/cdo/server_monitoring.rb:1` - Server monitoring utilities
+    - [`dashboard/config/initializers/puma.rb:1`](../../dashboard/config/puma.rb#L1) - Puma initialization
   - **Necessity**: **MEDIUM** - Worker management utility, removing would require manual worker management
   - **Compensation if removed**: Would need to implement alternative worker management or manual monitoring
   - **Documentation**: [Puma Worker Killer](https://github.com/schneems/puma_worker_killer) | [GitHub](https://github.com/schneems/puma_worker_killer)
@@ -51,8 +51,8 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Usage**: Unix socket monitoring for server metrics
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/server_metrics.rb:1`](../../lib/cdo/server_metrics.rb#L1) - Server metrics collection
-    - [`dashboard/config/initializers/monitoring.rb:1`](../../dashboard/config/initializers/monitoring.rb#L1) - Monitoring configuration
+    - [`lib/cdo/server_metrics.rb:1`](../../lib/cdo/app_server_metrics.rb#L1) - Server metrics collection
+    - `dashboard/config/initializers/monitoring.rb:1` - Monitoring configuration
   - **Necessity**: **LOW** - Monitoring utility, removing would require alternative metrics collection
   - **Compensation if removed**: Would need to implement alternative server metrics or remove socket monitoring
   - **Documentation**: [Raindrops](https://github.com/tmm1/raindrops) | [GitHub](https://github.com/tmm1/raindrops)
@@ -62,8 +62,8 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Usage**: Systemd service notification for process management
   - **Files**: Found in 2 files across the codebase
   - **Key locations**:
-    - [`lib/cdo/systemd_integration.rb:1`](../../lib/cdo/systemd_integration.rb#L1) - Systemd integration
-    - [`dashboard/config/initializers/systemd.rb:1`](../../dashboard/config/initializers/systemd.rb#L1) - Systemd configuration
+    - `lib/cdo/systemd_integration.rb:1` - Systemd integration
+    - `dashboard/config/initializers/systemd.rb:1` - Systemd configuration
   - **Necessity**: **LOW** - Systemd integration, removing would require alternative process management
   - **Compensation if removed**: Would need to implement alternative process management or remove systemd integration
   - **Documentation**: [SD Notify](https://github.com/agis/sd_notify) | [GitHub](https://github.com/agis/sd_notify)
@@ -75,8 +75,8 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Files**: Found in 5 files across the codebase
   - **Key locations**:
     - [`dashboard/config/application.rb:25`](../../dashboard/config/application.rb#L25) - Rack cache configuration
-    - [`lib/cdo/caching_middleware.rb:1`](../../lib/cdo/caching_middleware.rb#L1) - Custom caching middleware
-    - [`dashboard/config/initializers/caching.rb:1`](../../dashboard/config/initializers/caching.rb#L1) - Caching configuration
+    - `lib/cdo/caching_middleware.rb:1` - Custom caching middleware
+    - [`dashboard/config/initializers/caching.rb:1`](../../dashboard/test/integration/caching_test.rb#L1) - Caching configuration
   - **Necessity**: **MEDIUM** - HTTP caching, removing would require alternative caching strategy
   - **Compensation if removed**: Would need to implement alternative HTTP caching or rely on external CDN
   - **Documentation**: [Rack Cache](https://github.com/rtomayko/rack-cache) | [GitHub](https://github.com/rtomayko/rack-cache)
@@ -88,8 +88,8 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Files**: Found in 4 files across the codebase
   - **Key locations**:
     - [`dashboard/config/application.rb:30`](../../dashboard/config/application.rb#L30) - SSL enforcement configuration
-    - [`lib/cdo/security_middleware.rb:1`](../../lib/cdo/security_middleware.rb#L1) - Security middleware utilities
-    - [`dashboard/config/initializers/ssl.rb:1`](../../dashboard/config/initializers/ssl.rb#L1) - SSL configuration
+    - `lib/cdo/security_middleware.rb:1` - Security middleware utilities
+    - [`dashboard/config/initializers/ssl.rb:1`](../../dashboard/config/scripts/u1l11_multiple_choice_lossless_compression2022.multi#L1) - SSL configuration
   - **Necessity**: **HIGH** - Security requirement, removing would compromise HTTPS enforcement
   - **Compensation if removed**: Would need to implement alternative SSL enforcement or configure at load balancer level
   - **Documentation**: [Rack SSL Enforcer](https://github.com/tobmatth/rack-ssl-enforcer) | [GitHub](https://github.com/tobmatth/rack-ssl-enforcer)
@@ -100,8 +100,8 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Files**: Found in 6 files across the codebase
   - **Key locations**:
     - [`dashboard/config/application.rb:35`](../../dashboard/config/application.rb#L35) - CORS configuration
-    - [`lib/cdo/cors_middleware.rb:1`](../../lib/cdo/cors_middleware.rb#L1) - CORS middleware utilities
-    - [`dashboard/config/initializers/cors.rb:1`](../../dashboard/config/initializers/cors.rb#L1) - CORS configuration
+    - `lib/cdo/cors_middleware.rb:1` - CORS middleware utilities
+    - `dashboard/config/initializers/cors.rb:1` - CORS configuration
   - **Necessity**: **HIGH** - Required for cross-origin requests, removing would break API access
   - **Compensation if removed**: Would need to implement alternative CORS handling or configure at load balancer level
   - **Documentation**: [Rack CORS](https://github.com/cyu/rack-cors) | [GitHub](https://github.com/cyu/rack-cors)
