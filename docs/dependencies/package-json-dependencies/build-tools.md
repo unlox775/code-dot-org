@@ -223,4 +223,4 @@ This document analyzes JavaScript packages related to build tools, bundlers, tra
 
 ## Navigation
 
-[← Back to JavaScript Dependencies Overview](README.md) | [Next: Testing Frameworks →](testing-frameworks.md)
+[← Back to JavaScript Dependencies Overview](README.md) | Next: Testing Frameworks →

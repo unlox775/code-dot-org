@@ -41,10 +41,10 @@ This document analyzes Ruby version compatibility dependencies that provide comp
   - **Key locations**:
     - `lib/cdo/data_structures.rb:1` - Data structure utilities
     - `lib/cdo/sorting_helpers.rb:1` - Sorting utilities
-    - [`dashboard/app/models/level.rb:1`](../../apps/src/levelbuilder#L1) - Level model sorting
+    - [`dashboard/app/models/level.rb:1`](../../apps/src/levelbuilder/AllVocabulariesEditor.jsx#L1) - Level model sorting
   - **Necessity**: **LOW** - Data structure utility, removing would require rewriting sorting logic
   - **Compensation if removed**: Would need to implement alternative sorting or migrate to different data structures
-  - **Documentation**: [Sorted Set](https://github.com/ruby/sorted_set) | [GitHub](https://github.com/ruby/sorted_set)
+  - **Documentation**: Sorted Set | GitHub
   - **Current version**: 0.1.0 | **Latest stable**: 0.1.0 | **Upgrade path**: Stable, no major updates expected
 
 ### Mutex & Synchronization

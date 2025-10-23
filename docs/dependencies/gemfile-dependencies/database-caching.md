@@ -67,7 +67,7 @@ This document analyzes database and caching dependencies that handle data persis
     - `lib/cdo/read_replica_utils.rb:1` - Read replica utilities
   - **Necessity**: **MEDIUM** - Read optimization, removing would require alternative read optimization
   - **Compensation if removed**: Would need to implement alternative read optimization or remove read replica functionality
-  - **Documentation**: [Redis Slave Read](https://github.com/redis-store/redis-slave-read) | [GitHub](https://github.com/redis-store/redis-slave-read)
+  - **Documentation**: Redis Slave Read | GitHub
   - **Current version**: 1.3.0 | **Latest stable**: 1.3.0 | **Upgrade path**: Stable, no major updates expected
 
 - [x] **dalli** (3.2.1) - Memcached client
@@ -139,7 +139,7 @@ This document analyzes database and caching dependencies that handle data persis
     - `lib/cdo/query_optimization.rb:1` - Query optimization utilities
   - **Necessity**: **LOW** - Union query support, removing would require alternative query approaches
   - **Compensation if removed**: Would need to implement alternative query approaches or remove union functionality
-  - **Documentation**: [ActiveRecord Union](https://github.com/brianmario/active_record_union) | [GitHub](https://github.com/brianmario/active_record_union)
+  - **Documentation**: ActiveRecord Union | GitHub
   - **Current version**: 1.2.1 | **Latest stable**: 1.2.1 | **Upgrade path**: Stable, no major updates expected
 
 - [x] **scenic** (1.5.1) - Database views for ActiveRecord
@@ -172,7 +172,7 @@ This document analyzes database and caching dependencies that handle data persis
     - [`dashboard/app/models/user.rb:1`](../../dashboard/app/models/user.rb#L1) - User model with soft delete
   - **Necessity**: **HIGH** - Soft delete functionality, removing would require data migration
   - **Compensation if removed**: Would need to implement alternative soft delete or migrate to hard delete
-  - **Documentation**: [Paranoia](https://github.com/benmorgan/paranoia) | [GitHub](https://github.com/benmorgan/paranoia)
+  - **Documentation**: Paranoia | GitHub
   - **Current version**: 2.6.0 | **Latest stable**: 2.6.0 | **Upgrade path**: Stable, no major updates expected
 
 ### Additional Database & Caching

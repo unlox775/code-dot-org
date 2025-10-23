@@ -28,7 +28,7 @@ This document analyzes local Python packages that are part of the Code.org works
   - **Key locations**:
     - `python/neighborhood/__init__.py:1` - Package initialization
     - [`python/neighborhood/utils.py:1`](../../apps/src/block_utils.js#L1) - Neighborhood utilities
-    - [`python/neighborhood/helpers.py:1`](../../apps/src/weblab2/helpers#L1) - Helper functions
+    - [`python/neighborhood/helpers.py:1`](../../apps/src/weblab2/helpers/aiTutorHelper.ts#L1) - Helper functions
   - **Necessity**: **HIGH** - Neighborhood functionality, removing would break neighborhood features
   - **Compensation if removed**: Would need to implement alternative neighborhood functionality or remove neighborhood features
   - **Documentation**: [Local Package] | [GitHub](https://github.com/code-dot-org/code-dot-org)
@@ -40,7 +40,7 @@ This document analyzes local Python packages that are part of the Code.org works
   - **Key locations**:
     - `python/pythonlab_setup/__init__.py:1` - Package initialization
     - [`python/pythonlab_setup/setup.py:1`](../../apps/src/sites/studio/pages/maker/setup.js#L1) - Setup utilities
-    - [`python/pythonlab_setup/config.py:1`](../../dashboard/config#L1) - Configuration management
+    - [`python/pythonlab_setup/config.py:1`](../../dashboard/config/secret_words.csv#L1) - Configuration management
   - **Necessity**: **HIGH** - Python lab setup, removing would break Python lab functionality
   - **Compensation if removed**: Would need to implement alternative Python lab setup or remove Python lab features
   - **Documentation**: [Local Package] | [GitHub](https://github.com/code-dot-org/code-dot-org)

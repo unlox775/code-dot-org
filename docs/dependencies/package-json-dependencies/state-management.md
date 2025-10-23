@@ -60,7 +60,7 @@ This document analyzes state management dependencies that handle application sta
   - **Usage**: Redux middleware for handling async actions
   - **Files**: Found in 50+ files across the codebase
   - **Key locations**:
-    - [`apps/src/redux/actions.js:1`](../../apps/src/userLevelInteractionsLogger#L1) - Redux actions
+    - [`apps/src/redux/actions.js:1`](../../apps/src/userLevelInteractionsLogger/README.md#L1) - Redux actions
     - [`apps/src/weblab/actions.js:1`](../../apps/src/weblab/actions.js#L1) - WebLab actions
     - `apps/src/p5lab/redux/applabTest.js:2` - P5Lab Redux tests
   - **Necessity**: **HIGH** - Async action handling, removing would require rewriting async logic

@@ -140,7 +140,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
     - [`dashboard/app/models/user.rb:15`](../../dashboard/app/models/user.rb#L15) - Name parsing
   - **Necessity**: **LOW** - Name parsing, removing would break name splitting
   - **Compensation if removed**: Would need to use different name parsing library
-  - **Documentation**: [Full Name Splitter](https://github.com/berk/full-name-splitter) | [GitHub](https://github.com/berk/full-name-splitter)
+  - **Documentation**: Full Name Splitter | GitHub
   - **Current version**: 0.1.x | **Latest stable**: 0.1.x | **Upgrade path**: Stable, no major changes needed
 
 - [x] **sort_alphabetical** (~> 1.3) - Alphabetical sorting utility
@@ -150,7 +150,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
     - [`dashboard/app/models/concerns/sortable.rb:1`](../../apps/src/templates/tables/wrapped_sortable.js#L1) - Sorting utilities
   - **Necessity**: **LOW** - Sorting utility, removing would break alphabetical sorting
   - **Compensation if removed**: Would need to use different sorting library
-  - **Documentation**: [Sort Alphabetical](https://github.com/berk/sort_alphabetical) | [GitHub](https://github.com/berk/sort_alphabetical)
+  - **Documentation**: Sort Alphabetical | GitHub
   - **Current version**: 1.3.x | **Latest stable**: 1.3.x | **Upgrade path**: Stable, no major changes needed
 
 ### Validation & Formatting
@@ -162,7 +162,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
     - `dashboard/app/models/concerns/url_validation.rb:1` - URL validation
   - **Necessity**: **MEDIUM** - URL validation, removing would break URL format checking
   - **Compensation if removed**: Would need to use different URL validation library
-  - **Documentation**: [Validate URL](https://github.com/perfectline/validate_url) | [GitHub](https://github.com/perfectline/validate_url)
+  - **Documentation**: Validate URL | GitHub
   - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, no major changes needed
 
 - [x] **validates_email_format_of** (~> 1.6) - Email validation utility
@@ -330,7 +330,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
     - `dashboard/lib/retry_utils.rb:1` - Retry utilities
   - **Necessity**: **MEDIUM** - Retry logic, removing would break retry functionality
   - **Compensation if removed**: Would need to implement custom retry logic
-  - **Documentation**: [Retryable](https://github.com/oivoodoo/retryable) | [GitHub](https://github.com/oivoodoo/retryable)
+  - **Documentation**: Retryable | GitHub
   - **Current version**: 3.0.x | **Latest stable**: 3.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **jumphash** (~> 1.0) - Consistent hashing
@@ -340,7 +340,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
     - [`dashboard/lib/hash_utils.rb:1`](../../lib/cdo/hash_utils.rb#L1) - Hashing utilities
   - **Necessity**: **LOW** - Consistent hashing, removing would break hash distribution
   - **Compensation if removed**: Would need to use different hashing algorithm
-  - **Documentation**: [JumpHash](https://github.com/renstrom/jumphash) | [GitHub](https://github.com/renstrom/jumphash)
+  - **Documentation**: JumpHash | GitHub
   - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, no major changes needed
 
 - [x] **xxhash** (~> 0.4) - Fast hashing
@@ -350,7 +350,7 @@ This document analyzes Ruby gems that don't fit into other categories but provid
     - `dashboard/lib/fast_hash.rb:1` - Fast hashing utilities
   - **Necessity**: **LOW** - Fast hashing, removing would break fast hash operations
   - **Compensation if removed**: Would need to use different hash function
-  - **Documentation**: [XXHash](https://github.com/ksss/xxhash) | [GitHub](https://github.com/ksss/xxhash)
+  - **Documentation**: XXHash | GitHub
   - **Current version**: 0.4.x | **Latest stable**: 0.4.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **unf_ext** (~> 0.0) - Unicode normalization

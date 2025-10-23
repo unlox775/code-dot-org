@@ -84,7 +84,7 @@ This document analyzes Ruby gems related to authentication, authorization, and u
     - [`dashboard/config/initializers/devise.rb:14`](../../dashboard/config/initializers/devise.rb#L14) - Microsoft OAuth configuration
   - **Necessity**: **MEDIUM** - Microsoft login option, removing would disable Microsoft authentication
   - **Compensation if removed**: Users would need to use email/password authentication only
-  - **Documentation**: [OmniAuth Microsoft V2 Auth](https://github.com/KonaTeam/omniauth-microsoft_v2_auth) | [GitHub](https://github.com/KonaTeam/omniauth-microsoft_v2_auth)
+  - **Documentation**: OmniAuth Microsoft V2 Auth | GitHub
   - **Current version**: 0.4.x | **Latest stable**: 0.4.x | **Upgrade path**: Stable, no major changes needed
 
 - [x] **omniauth-clever** (~> 3.0) - Clever OAuth strategy for OmniAuth

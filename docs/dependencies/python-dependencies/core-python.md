@@ -58,7 +58,7 @@ This document analyzes the core Python dependencies that form the foundation of 
     - `python/test/conftest.py:1` - Test configuration with coverage
   - **Necessity**: **HIGH** - Code coverage tool, removing would require alternative coverage measurement
   - **Compensation if removed**: Would need to implement alternative coverage measurement or remove coverage tracking
-  - **Documentation**: [Coverage](https://coverage.readthedocs.io/) | [GitHub](https://github.com/nedbat/coveragepy)
+  - **Documentation**: [Coverage](https://coverage.readthedocs.io/en/latest/) | [GitHub](https://github.com/nedbat/coveragepy)
   - **Current version**: 7.3.2 | **Latest stable**: 7.x | **Upgrade path**: Minor version updates available
 
 ### Package Management

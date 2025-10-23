@@ -112,7 +112,7 @@ The following files were processed and fixed:
 ### 3. Make Links Clickable (`make_links_clickable.py`)
 - **Purpose**: Converts file paths to clickable markdown links
 - **Features**:
-  - Converts `file.js:123` to `[file.js:123](../../path/to/file.js#L123)`
+  - Converts `file.js:123` to `file.js:123`
   - Handles line number ranges
   - Processes all markdown files
 

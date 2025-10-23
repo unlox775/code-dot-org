@@ -41,7 +41,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts:1`](../../apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts#L1) - Procedure callers
   - **Necessity**: **HIGH** - Procedure functionality, removing would break procedure blocks
   - **Compensation if removed**: Would need to implement alternative procedure system or remove procedure features
-  - **Documentation**: [Blockly Procedures](https://github.com/google/blockly-samples/tree/main/plugins/block-shareable-procedures) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Procedures](https://github.com/google/blockly-samples/tree/main/plugins/procedures) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^6.0.0 | **Latest stable**: 6.x | **Upgrade path**: Minor version updates available
 
 - [x] **@blockly/field-bitmap** (^6.0.0) - Blockly bitmap field

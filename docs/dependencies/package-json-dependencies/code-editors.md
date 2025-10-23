@@ -29,7 +29,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:5` - Autocomplete integration
   - **Necessity**: **HIGH** - Autocomplete feature, removing would break code completion
   - **Compensation if removed**: Would need to implement custom autocomplete or use different solution
-  - **Documentation**: [CodeMirror Autocomplete](https://codemirror.net/docs/ref/#autocomplete) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Autocomplete](https://codemirror.net/docs/ref/#autocomplete) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/commands** (~> 6.0) - CodeMirror 6 commands
@@ -39,7 +39,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:7` - Command integration
   - **Necessity**: **HIGH** - Editor commands, removing would break keyboard shortcuts
   - **Compensation if removed**: Would need to implement custom command system
-  - **Documentation**: [CodeMirror Commands](https://codemirror.net/docs/ref/#commands) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Commands](https://codemirror.net/docs/ref/#commands) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/language** (~> 6.0) - CodeMirror 6 language support
@@ -49,7 +49,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:9` - Language support
   - **Necessity**: **CRITICAL** - Language support, removing would break syntax highlighting
   - **Compensation if removed**: Would need to implement custom language parsing
-  - **Documentation**: [CodeMirror Language](https://codemirror.net/docs/ref/#language) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Language](https://codemirror.net/docs/ref/#language) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/lint** (~> 6.0) - CodeMirror 6 linting
@@ -59,7 +59,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:11` - Linting integration
   - **Necessity**: **HIGH** - Code linting, removing would break real-time error checking
   - **Compensation if removed**: Would need to implement custom linting system
-  - **Documentation**: [CodeMirror Lint](https://codemirror.net/docs/ref/#lint) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Lint](https://codemirror.net/docs/ref/#lint) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/search** (~> 6.0) - CodeMirror 6 search
@@ -69,7 +69,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:13` - Search integration
   - **Necessity**: **MEDIUM** - Search functionality, removing would break find/replace
   - **Compensation if removed**: Would need to implement custom search functionality
-  - **Documentation**: [CodeMirror Search](https://codemirror.net/docs/ref/#search) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Search](https://codemirror.net/docs/ref/#search) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/state** (~> 6.0) - CodeMirror 6 state management
@@ -79,7 +79,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:15` - State management
   - **Necessity**: **CRITICAL** - State management, removing would break editor state
   - **Compensation if removed**: Would need to implement custom state management
-  - **Documentation**: [CodeMirror State](https://codemirror.net/docs/ref/#state) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror State](https://codemirror.net/docs/ref/#state) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/view** (~> 6.0) - CodeMirror 6 view layer
@@ -89,7 +89,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:17` - View integration
   - **Necessity**: **CRITICAL** - Editor rendering, removing would break editor display
   - **Compensation if removed**: Would need to implement custom editor rendering
-  - **Documentation**: [CodeMirror View](https://codemirror.net/docs/ref/#view) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror View](https://codemirror.net/docs/ref/#view) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 ### Language Support
@@ -101,7 +101,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:19` - CSS language support
   - **Necessity**: **MEDIUM** - CSS editing, removing would break CSS syntax highlighting
   - **Compensation if removed**: Would need to implement custom CSS parsing
-  - **Documentation**: [CodeMirror CSS](https://codemirror.net/docs/ref/#lang-css) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror CSS](https://codemirror.net/docs/ref/#lang-css) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/lang-html** (~> 6.0) - HTML language support
@@ -111,7 +111,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:21` - HTML language support
   - **Necessity**: **MEDIUM** - HTML editing, removing would break HTML syntax highlighting
   - **Compensation if removed**: Would need to implement custom HTML parsing
-  - **Documentation**: [CodeMirror HTML](https://codemirror.net/docs/ref/#lang-html) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror HTML](https://codemirror.net/docs/ref/#lang-html) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/lang-java** (~> 6.0) - Java language support
@@ -121,7 +121,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:23` - Java language support
   - **Necessity**: **LOW** - Java editing, removing would break Java syntax highlighting
   - **Compensation if removed**: Would need to implement custom Java parsing
-  - **Documentation**: [CodeMirror Java](https://codemirror.net/docs/ref/#lang-java) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Java](https://codemirror.net/docs/ref/#lang-java) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/lang-javascript** (~> 6.0) - JavaScript language support
@@ -131,7 +131,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:25` - JavaScript language support
   - **Necessity**: **HIGH** - JavaScript editing, removing would break JS syntax highlighting
   - **Compensation if removed**: Would need to implement custom JavaScript parsing
-  - **Documentation**: [CodeMirror JavaScript](https://codemirror.net/docs/ref/#lang-javascript) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror JavaScript](https://codemirror.net/docs/ref/#lang-javascript) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/lang-markdown** (~> 6.0) - Markdown language support
@@ -141,7 +141,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:27` - Markdown language support
   - **Necessity**: **MEDIUM** - Markdown editing, removing would break Markdown syntax highlighting
   - **Compensation if removed**: Would need to implement custom Markdown parsing
-  - **Documentation**: [CodeMirror Markdown](https://codemirror.net/docs/ref/#lang-markdown) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Markdown](https://codemirror.net/docs/ref/#lang-markdown) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **@codemirror/lang-python** (~> 6.0) - Python language support
@@ -151,7 +151,7 @@ This document analyzes JavaScript packages related to code editing, syntax highl
     - `apps/src/code-studio/CodeMirrorEditor.jsx:29` - Python language support
   - **Necessity**: **HIGH** - Python editing, removing would break Python syntax highlighting
   - **Compensation if removed**: Would need to implement custom Python parsing
-  - **Documentation**: [CodeMirror Python](https://codemirror.net/docs/ref/#lang-python) | [GitHub](https://github.com/codemirror/codemirror6)
+  - **Documentation**: [CodeMirror Python](https://codemirror.net/docs/ref/#lang-python) | [GitHub](https://github.com/codemirror/codemirror)
   - **Current version**: 6.0.x | **Latest stable**: 6.0.x | **Upgrade path**: Stable, regular updates available
 
 ### Editor Extensions

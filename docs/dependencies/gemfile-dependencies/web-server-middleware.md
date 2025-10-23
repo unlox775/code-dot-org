@@ -15,7 +15,7 @@ This document analyzes web server and middleware dependencies that handle HTTP r
   - **Files**: Found in 12 files across the codebase
   - **Key locations**:
     - [`pegasus/router.rb:1`](../../pegasus/router.rb#L1) - Main routing system
-    - [`pegasus/app.rb:1`](../../apps/src/flappy#L1) - Sinatra application setup
+    - [`pegasus/app.rb:1`](../../apps/src/flappy/api.js#L1) - Sinatra application setup
     - [`pegasus/helpers.rb:1`](../../pegasus/helpers.rb#L1) - Sinatra helper methods
   - **Necessity**: **HIGH** - Core web framework for Pegasus, removing would break routing system
   - **Compensation if removed**: Would need to rewrite Pegasus routing system or migrate to different web framework
@@ -66,7 +66,7 @@ This document analyzes web server and middleware dependencies that handle HTTP r
     - `dashboard/config/initializers/systemd.rb:1` - Systemd configuration
   - **Necessity**: **LOW** - Systemd integration, removing would require alternative process management
   - **Compensation if removed**: Would need to implement alternative process management or remove systemd integration
-  - **Documentation**: [SD Notify](https://github.com/agis/sd_notify) | [GitHub](https://github.com/agis/sd_notify)
+  - **Documentation**: SD Notify | GitHub
   - **Current version**: 0.1.0 | **Latest stable**: 0.1.0 | **Upgrade path**: Stable, no major updates expected
 
 ### Caching Middleware

@@ -137,7 +137,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: jQuery JavaScript library integration
   - **Files**: Found in 15 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/assets/javascripts/application.js:1`](../../apps/src/sites/studio/pages/pd/application#L1) - jQuery imports
+    - `dashboard/app/assets/javascripts/application.js:1` - jQuery imports
   - **Necessity**: **HIGH** - JavaScript library, removing would break jQuery functionality
   - **Compensation if removed**: Would need to use different JavaScript library or vanilla JS
   - **Documentation**: [jQuery Rails](https://github.com/rails/jquery-rails) | [GitHub](https://github.com/rails/jquery-rails)
@@ -147,7 +147,7 @@ This document analyzes Ruby gems related to frontend asset management, CSS proce
   - **Usage**: jQuery UI components and widgets
   - **Files**: Found in 8 files across the codebase
   - **Key locations**:
-    - [`dashboard/app/assets/javascripts/application.js:3`](../../apps/src/sites/studio/pages/pd/application#L3) - jQuery UI imports
+    - `dashboard/app/assets/javascripts/application.js:3` - jQuery UI imports
   - **Necessity**: **MEDIUM** - UI components, removing would break jQuery UI widgets
   - **Compensation if removed**: Would need to use different UI component library
   - **Documentation**: [jQuery UI Rails](https://github.com/jquery-ui-rails/jquery-ui-rails) | [GitHub](https://github.com/jquery-ui-rails/jquery-ui-rails)
