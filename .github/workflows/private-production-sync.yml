@@ -1,42 +1,21 @@
-name: Sync Private Production Deploy
+name: Trigger Private Production Sync
 on:
-  schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
+  push:
+    branches:
+      - production
   workflow_dispatch:
-    inputs:
-      sync_direction:
-        description: 'Sync direction'
-        required: true
-        default: 'from-public'
-        type: choice
-        options:
-          - from-public
-          - to-public
 
 jobs:
-  sync:
+  trigger-sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PRIVATE_PRODUCTION_TOKEN }}
-          fetch-depth: 0
-
-      - name: Configure Git
+      - name: Trigger Private Production Sync
         run: |
-          git config --global user.name "Private Production Bot"
-          git config --global user.email "private-production@code.org"
-
-      - name: Add upstream remote
-        run: |
-          git remote add upstream https://github.com/code-dot-org/code-dot-org.git
-
-      - name: Sync from public
-        if: github.event.inputs.sync_direction == 'from-public' || github.event_name == 'schedule'
-        run: |
-          ruby lib/scripts/private_production_sync.rb sync-from-public
-
-      - name: Sync to public
-        if: github.event.inputs.sync_direction == 'to-public'
-        run: |
-          ruby lib/scripts/private_production_sync.rb sync-to-public
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.PRIVATE_PRODUCTION_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Event: push" \
+            -H "X-GitHub-Delivery: ${{ github.run_id }}" \
+            -H "X-Hub-Signature: sha1=${{ secrets.PRIVATE_PRODUCTION_WEBHOOK_SECRET }}" \
+            -d '{"ref":"refs/heads/production","repository":{"full_name":"code-dot-org/code-dot-org"}}' \
+            ${{ secrets.PRIVATE_PRODUCTION_LAMBDA_URL }}

@@ -1,0 +1,180 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Private Production Deploy - Lambda sync function and API Gateway'
+
+Parameters:
+  GitHubTokenSecretId:
+    Type: String
+    Description: 'Secrets Manager secret ID containing GitHub token'
+    Default: 'github/private-production-deploy/token'
+  
+  WebhookSecretId:
+    Type: String
+    Description: 'Secrets Manager secret ID containing webhook secret'
+    Default: 'github/private-production-deploy/webhook-secret'
+
+Resources:
+  # Lambda function for syncing public to private
+  PrivateProductionSyncFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: private-production-sync
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          // This will be replaced with actual code during deployment
+          exports.handler = async (event) => {
+            return { statusCode: 200, body: 'Hello World' };
+          };
+      Role: !GetAtt PrivateProductionSyncRole.Arn
+      Environment:
+        Variables:
+          GITHUB_TOKEN_SECRET_ID: !Ref GitHubTokenSecretId
+          WEBHOOK_SECRET_ID: !Ref WebhookSecretId
+      Timeout: 300
+      MemorySize: 256
+
+  # IAM role for Lambda function
+  PrivateProductionSyncRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: private-production-sync-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: SecretsManagerAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource:
+                  - !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${GitHubTokenSecretId}*'
+                  - !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${WebhookSecretId}*'
+
+  # API Gateway for Lambda
+  PrivateProductionApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: private-production-sync-api
+      Description: 'API Gateway for private production sync Lambda'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  # API Gateway resource
+  SyncResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref PrivateProductionApi
+      ParentId: !GetAtt PrivateProductionApi.RootResourceId
+      PathPart: sync
+
+  # API Gateway method
+  SyncMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref PrivateProductionApi
+      ResourceId: !Ref SyncResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      RequestParameters:
+        method.request.header.X-Hub-Signature: true
+        method.request.header.X-GitHub-Event: true
+        method.request.header.X-GitHub-Delivery: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PrivateProductionSyncFunction.Arn}/invocations'
+
+  # Lambda permission for API Gateway
+  ApiGatewayInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref PrivateProductionSyncFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${PrivateProductionApi}/*/*'
+
+  # API Gateway deployment
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: SyncMethod
+    Properties:
+      RestApiId: !Ref PrivateProductionApi
+      StageName: prod
+
+  # CloudWatch Events rule for daily warning
+  DailyWarningRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: private-production-daily-warning
+      Description: 'Daily warning about uncommitted private changes'
+      ScheduleExpression: 'cron(0 2 * * ? *)'  # 2 AM daily
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt DailyWarningFunction.Arn
+          Id: DailyWarningTarget
+
+  # Lambda function for daily warning
+  DailyWarningFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: private-production-daily-warning
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            console.log('Daily warning check - checking for uncommitted private changes');
+            // This would check for uncommitted changes and post to Slack
+            return { statusCode: 200, body: 'Daily warning check completed' };
+          };
+      Role: !GetAtt DailyWarningRole.Arn
+      Timeout: 60
+      MemorySize: 128
+
+  # IAM role for daily warning Lambda
+  DailyWarningRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: private-production-daily-warning-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  # Permission for CloudWatch Events to invoke daily warning Lambda
+  DailyWarningInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DailyWarningFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt DailyWarningRule.Arn
+
+Outputs:
+  ApiGatewayUrl:
+    Description: 'API Gateway URL for triggering sync'
+    Value: !Sub 'https://${PrivateProductionApi}.execute-api.${AWS::Region}.amazonaws.com/prod/sync'
+    Export:
+      Name: PrivateProductionSyncApiUrl
+  
+  LambdaFunctionArn:
+    Description: 'Lambda function ARN'
+    Value: !GetAtt PrivateProductionSyncFunction.Arn
+    Export:
+      Name: PrivateProductionSyncLambdaArn

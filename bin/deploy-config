@@ -1,22 +1,10 @@
 #!/usr/bin/env ruby
 #
 # This dumps the configuratin settings for the current environment.
-# Modified to support private production deploy.
 #
 require_relative '../deployment'
 
 def main
-  # Check if we're deploying from private production repo
-  if ENV['PRIVATE_PRODUCTION_DEPLOY'] == 'true'
-    puts "Deploying from private production repo..."
-    # Use private repository for deployment
-    ENV['REPO_URL'] = 'https://github.com/code-dot-org/code-dot-org-production.git'
-  else
-    puts "Deploying from public repository..."
-    # Use public repository for deployment
-    ENV['REPO_URL'] = 'https://github.com/code-dot-org/code-dot-org.git'
-  end
-
   puts JSON.pretty_generate(CDO.to_h)
 end
 

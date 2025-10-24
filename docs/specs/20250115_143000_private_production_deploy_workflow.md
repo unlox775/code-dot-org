@@ -82,32 +82,40 @@ Code.org faces a critical security challenge: their public repository exposes ev
 ## Code Changes Required
 
 ### 1. Private Production Deploy CloudFormation Stack
-**File**: [`infrastructure/aws/private-production-deploy-stack.yml`](../../infrastructure/aws/private-production-deploy-stack.yml)
+**File**: [`infrastructure/aws/private-production-deploy/cloudformation.yml`](../../infrastructure/aws/private-production-deploy/cloudformation.yml)
 
-**Purpose**: Complete infrastructure setup for private production deploy
+**Purpose**: Complete AWS infrastructure for private production deploy
 **Includes**: 
-- AWS Lambda sync function (syncs public → private on every push)
-- Daily warning Lambda (Slack alerts about uncommitted changes)
-- IAM roles and Secrets Manager for GitHub access
-- CloudWatch Events for scheduling
+- **API Gateway**: REST API endpoint for GitHub webhook
+- **Lambda Function**: Syncs public → private on every production push
+- **IAM Roles**: Least privilege access for Lambda functions
+- **Secrets Manager**: Secure storage for GitHub tokens and webhook secrets
+- **CloudWatch Events**: Daily warning about uncommitted private changes
 
-The sync Lambda handles:
-```javascript
-// 1. Verify webhook signature
-// 2. Fetch latest from public production  
-// 3. Check for merge conflicts
-// 4. Merge to private production
-// 5. Notify on success/failure
-```
+**Security Features**:
+- GitHub webhook signature verification (like marketing site deploy)
+- API key authentication via GitHub secrets
+- Repository verification (only accepts from `code-dot-org/code-dot-org`)
+- Branch verification (only processes `production` branch pushes)
 
-### 2. Modified AMI Builder Configuration
+### 2. GitHub Actions Workflow
+**File**: [`.github/workflows/private-production-sync.yml`](../../.github/workflows/private-production-sync.yml)
+
+**Purpose**: Triggers Lambda function when production branch is pushed
+**What it does**:
+- Triggers on every push to `production` branch
+- Calls Lambda API endpoint with GitHub webhook signature
+- Passes API key for authentication
+- No direct Git operations (all handled by Lambda)
+
+### 3. Modified AMI Builder Configuration
 **File**: [`aws/ci_build`](../../aws/ci_build)
 
 **Phase 1 Changes**: Add verification logic
 ```ruby
 # Phase 1: Monitor mode - verify private matches public
 if ENV['PRIVATE_DEPLOY_MONITOR'] == 'true'
-  sleep(300) # Wait 5 minutes for sync
+  sleep(300) # Wait 5 minutes for sync Lambda to complete
   verify_private_matches_public()
 end
 
@@ -115,13 +123,10 @@ end
 REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 ```
 
-### 3. Daily Warning Job
-**File**: [`infrastructure/aws/private-production-deploy-stack.yml`](../../infrastructure/aws/private-production-deploy-stack.yml) (part of stack)
-
-**Purpose**: Daily warning about uncommitted private changes
-**Schedule**: CloudWatch Events (daily at 2 AM)
-**Notification**: Slack alert to infrastructure channel
-**Reason**: No automatic back-sync to allow verification period
+**What AMI Builder does**:
+- **Phase 1**: Monitors private repo, verifies it matches public repo
+- **Phase 2**: Actually watches private repo for deployments
+- **Verification**: Ensures sync Lambda completed before checking for changes
 
 ### 4. Manual Back-Sync Script
 **File**: [`infrastructure/scripts/private_production_sync.py`](../../infrastructure/scripts/private_production_sync.py)
@@ -164,13 +169,25 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 - **AMI Builder**: Read-only access via GitHub app/token (TBD - separate from current `deploy-code-org` bot)
 - **Sync Lambda**: Write access via GitHub app/token (TBD - separate from current `deploy-code-org` bot)
 
-### GitHub Access Setup (TBD)
-We need to figure out the exact GitHub access mechanism. Current `deploy-code-org` bot is used everywhere and has broad access, so we want separate access for this.
+### GitHub Access Setup
+**Current Bot**: `deploy-code-org` bot is used everywhere and has broad access, so we want separate access for this.
 
 **Proposal**: Create new GitHub app or access tokens under a dedicated admin user:
 - **Read Bot**: For AMI Builder to pull from private repo
 - **Write Bot**: For Sync Lambda to push to private repo
 - **Admin User**: GitHub admin user to create these tokens/apps
+
+### AWS Security Architecture
+**Webhook Signature Verification**: Uses same pattern as marketing site deploy
+- **GitHub Webhook Secret**: Stored in AWS Secrets Manager
+- **Signature Verification**: HMAC-SHA1 signature verification (like `verify_signature` in `pegasus/helpers.rb`)
+- **Repository Verification**: Only accepts webhooks from `code-dot-org/code-dot-org`
+- **Branch Verification**: Only processes `production` branch pushes
+
+**API Gateway Security**:
+- **API Key**: Stored in GitHub secrets, passed in Authorization header
+- **Signature Verification**: GitHub webhook signature in `X-Hub-Signature` header
+- **Event Verification**: GitHub event type in `X-GitHub-Event` header
 
 ### AWS Security Architecture
 - **GitHub Tokens**: Stored in AWS Secrets Manager (not GitHub Actions)
