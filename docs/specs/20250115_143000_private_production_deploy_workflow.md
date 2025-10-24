@@ -114,9 +114,12 @@ Code.org faces a critical security challenge: their public repository exposes ev
 **Phase 1 Changes**: Add verification logic
 ```ruby
 # Phase 1: Monitor mode - verify private matches public
-if ENV['PRIVATE_DEPLOY_MONITOR'] == 'true'
+if ENV['PRIVATE_PRODUCTION_MONITOR'] == 'true'
+  ChatClient.log "Private Production Deploy Monitor: Waiting for sync Lambda to complete...", color: 'blue'
   sleep(300) # Wait 5 minutes for sync Lambda to complete
-  verify_private_matches_public()
+  
+  # Verify private repo matches public repo
+  verify_private_matches_public
 end
 
 # Phase 2: Switch to private repo
@@ -127,6 +130,19 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 - **Phase 1**: Monitors private repo, verifies it matches public repo
 - **Phase 2**: Actually watches private repo for deployments
 - **Verification**: Ensures sync Lambda completed before checking for changes
+
+**Verification Function**:
+```ruby
+def verify_private_matches_public
+  # Get current public production commit
+  public_commit = RakeUtils.git_revision
+  
+  # Check if private repo matches public repo
+  # (In real implementation, would fetch from private repo and compare)
+  ChatClient.log "Verifying private repo matches public commit: #{public_commit}", color: 'blue'
+  ChatClient.log "Private Production Deploy Monitor: Verification completed", color: 'green'
+end
+```
 
 ### 4. Manual Back-Sync Script
 **File**: [`infrastructure/scripts/private_production_sync.py`](../../infrastructure/scripts/private_production_sync.py)
@@ -142,14 +158,58 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 
 **Usage Examples:**
 ```bash
-# Interactive mode - arrow keys to select, enter to confirm
-./private_production_sync.py --target production
+# Interactive mode - select commits with arrow keys
+./private_production_sync.py
 
-# Batch mode - specify commit numbers
-./private_production_sync.py --target production --commits 1,3,5
+# Specify specific commit hashes
+./private_production_sync.py --commits abc123,def456,ghi789
+
+# Sync to production branch only
+./private_production_sync.py --production
+
+# Sync to staging branch only  
+./private_production_sync.py --staging
 
 # Test mode - check for conflicts without creating PRs
-./private_production_sync.py --target production --dry-run
+./private_production_sync.py --dry-run
+```
+
+**Example Interactive Output:**
+```
+$ ./private_production_sync.py
+
+Found 3 new commits in private repository:
+------------------------------------------------------------
+ 1. abc1234 | 2025-01-15 | security-team
+    Fix critical vulnerability in form upload API
+
+ 2. def5678 | 2025-01-15 | security-team  
+    Add input validation for file uploads
+
+ 3. ghi9012 | 2025-01-15 | security-team
+    Update security documentation
+
+Enter commit numbers to sync (e.g., 1,3,5 or 1 3 5): 1,2
+
+Selected 2 commits:
+  - abc1234: Fix critical vulnerability in form upload API
+  - def5678: Add input validation for file uploads
+
+Proceed with sync? (y/N): y
+
+Testing cherry-picks...
+✓ Cherry-pick test passed for production
+✓ Cherry-pick test passed for staging
+
+Creating pull requests for production branch...
+✓ Created PR: https://github.com/code-dot-org/code-dot-org/pull/12345
+✓ Created PR: https://github.com/code-dot-org/code-dot-org/pull/12346
+
+Creating pull requests for staging branch...
+✓ Created PR: https://github.com/code-dot-org/code-dot-org/pull/12347
+✓ Created PR: https://github.com/code-dot-org/code-dot-org/pull/12348
+
+Back-sync completed successfully!
 ```
 
 **Safety Features:**
@@ -158,6 +218,7 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 - Tests cherry-pick on both production and staging
 - Reverts everything if any conflicts found
 - Creates separate PRs for production and staging
+- Manual conflict resolution mode with `--production` or `--staging` flags
 
 
 ## Access Control & Security

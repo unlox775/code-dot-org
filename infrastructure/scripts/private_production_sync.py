@@ -7,9 +7,20 @@ back to the public repository by allowing you to select which commits to
 cherry-pick and creating pull requests for them.
 
 Usage:
-    ./private_production_sync.py --target production
-    ./private_production_sync.py --target production --commits 1,3,5
-    ./private_production_sync.py --target production --dry-run
+    # Interactive mode - select commits with arrow keys
+    ./private_production_sync.py
+    
+    # Specify specific commit hashes
+    ./private_production_sync.py --commits abc123,def456,ghi789
+    
+    # Sync to production branch only
+    ./private_production_sync.py --production
+    
+    # Sync to staging branch only  
+    ./private_production_sync.py --staging
+    
+    # Test mode - check for conflicts without creating PRs
+    ./private_production_sync.py --dry-run
 """
 
 import argparse
@@ -181,9 +192,9 @@ class PrivateProductionSyncer:
             print(f"ERROR: Failed to create PR: {e.stderr}")
             return None
     
-    def sync_commits(self, target: str, commit_indices: Optional[List[int]] = None, dry_run: bool = False) -> None:
+    def sync_commits(self, target_branches: List[str], commit_hashes: Optional[List[str]] = None, dry_run: bool = False) -> None:
         """Main sync function."""
-        print(f"Starting back-sync to {target} branch...")
+        print(f"Starting back-sync to {', '.join(target_branches)} branch(es)...")
         
         # Safety checks
         self._ensure_clean_working_directory()
@@ -195,18 +206,22 @@ class PrivateProductionSyncer:
             print("No new commits to sync")
             return
         
-        self._display_commits(commits)
-        
-        # Get user selection
-        if commit_indices is None:
+        # If specific commit hashes provided, filter commits
+        if commit_hashes:
+            selected_commits = [c for c in commits if c['hash'] in commit_hashes]
+            if not selected_commits:
+                print("ERROR: None of the specified commit hashes found in private repo")
+                return
+        else:
+            # Interactive selection
+            self._display_commits(commits)
             commit_indices = self._get_user_selection(commits)
-        
-        if not commit_indices:
-            print("No commits selected")
-            return
+            if not commit_indices:
+                print("No commits selected")
+                return
+            selected_commits = [commits[i-1] for i in commit_indices]
         
         # Confirm selection
-        selected_commits = [commits[i-1] for i in commit_indices]
         print(f"\nSelected {len(selected_commits)} commits:")
         for commit in selected_commits:
             print(f"  - {commit['hash'][:8]}: {commit['message']}")
@@ -216,15 +231,14 @@ class PrivateProductionSyncer:
             print("Sync cancelled")
             return
         
-        # Test cherry-picks
+        # Test cherry-picks on all target branches
         print("\nTesting cherry-picks...")
         all_tests_passed = True
         
         for commit in selected_commits:
-            if not self._test_cherry_pick(commit['hash'], target):
-                all_tests_passed = False
-            if not self._test_cherry_pick(commit['hash'], 'staging'):
-                all_tests_passed = False
+            for target in target_branches:
+                if not self._test_cherry_pick(commit['hash'], target):
+                    all_tests_passed = False
         
         if not all_tests_passed:
             print("\nERROR: Some cherry-pick tests failed")
@@ -235,19 +249,22 @@ class PrivateProductionSyncer:
             print("\nDry run completed - all tests passed")
             return
         
-        # Create pull requests
-        print(f"\nCreating pull requests for {target} branch...")
-        for commit in selected_commits:
-            self._create_pull_request(commit['hash'], target, commit['message'])
+        # Create pull requests for each target branch
+        for target in target_branches:
+            print(f"\nCreating pull requests for {target} branch...")
+            for commit in selected_commits:
+                self._create_pull_request(commit['hash'], target, commit['message'])
         
         print("\nBack-sync completed successfully!")
 
 def main():
     parser = argparse.ArgumentParser(description='Sync private production changes to public repo')
-    parser.add_argument('--target', choices=['production', 'staging'], required=True,
-                       help='Target branch for sync')
     parser.add_argument('--commits', type=str,
-                       help='Comma-separated list of commit numbers to sync')
+                       help='Specific commit hashes to sync (comma-separated)')
+    parser.add_argument('--production', action='store_true',
+                       help='Sync to production branch only')
+    parser.add_argument('--staging', action='store_true',
+                       help='Sync to staging branch only')
     parser.add_argument('--dry-run', action='store_true',
                        help='Test cherry-picks without creating PRs')
     parser.add_argument('--public-repo', default='.',
@@ -268,18 +285,25 @@ def main():
             print("Please specify --private-repo path")
             sys.exit(1)
     
-    # Parse commit indices
-    commit_indices = None
+    # Determine target branches
+    if args.production and args.staging:
+        print("ERROR: Cannot specify both --production and --staging")
+        sys.exit(1)
+    elif args.production:
+        target_branches = ['production']
+    elif args.staging:
+        target_branches = ['staging']
+    else:
+        target_branches = ['production', 'staging']
+    
+    # Parse commit hashes if provided
+    commit_hashes = None
     if args.commits:
-        try:
-            commit_indices = [int(x.strip()) for x in args.commits.split(',')]
-        except ValueError:
-            print("ERROR: Invalid commit numbers format")
-            sys.exit(1)
+        commit_hashes = [x.strip() for x in args.commits.split(',')]
     
     # Run sync
     syncer = PrivateProductionSyncer(args.public_repo, str(private_repo_path))
-    syncer.sync_commits(args.target, commit_indices, args.dry_run)
+    syncer.sync_commits(target_branches, commit_hashes, args.dry_run)
 
 if __name__ == '__main__':
     main()
