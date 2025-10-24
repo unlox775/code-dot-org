@@ -1,4 +1,4 @@
-# Private Security Fork Workflow Specification
+# Private Production Deploy Workflow Specification
 
 **Date**: January 15, 2025  
 **Author**: AI Assistant  
@@ -14,40 +14,9 @@ Code.org faces a critical security challenge: their public repository exposes ev
 3. **Public transparency** is valued but creates security exposure
 4. **Current workflow** requires public commits before production deployment
 
-## Current Architecture Analysis
+## Design Trade-offs Considered
 
-### Current Deployment Process
-**Current Flow**: `staging` → `production` (public) → AMI Builder → Production Deployment
-
-1. **Code Push**: Changes pushed to `production` branch on public repo
-2. **AMI Builder**: [`aws/ci_build`](../../aws/ci_build) polls for changes every minute
-3. **Build Process**: Runs `infra:ci` rake task to build AMI
-4. **Deployment**: AMI deployed to production servers (`production-console`, `production-daemon`)
-
-### Key Components Identified
-- **AMI Builder**: [`aws/ci_build`](../../aws/ci_build) - Polls public `production` branch every minute
-- **AMI Manager**: [`aws/cloudformation/ami-manager.js`](../../aws/cloudformation/ami-manager.js) - Lambda for AMI creation
-- **Build Process**: `lib/rake/ci.rake` and `lib/rake/build.rake` - CI testing and build
-- **Production Servers**: `production-console`, `production-daemon` - Target deployment servers
-
-## Proposed Solution: Private Security Fork
-
-### Architecture Design
-
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Public Repo   │    │  Private Security │    │   Production    │
-│  (code-dot-org) │    │      Fork         │    │   Deployment    │
-│                 │    │ (code-dot-org-   │    │                 │
-│ staging branch  │───▶│  production)     │───▶│   AWS/Cloud     │
-│ production      │    │                  │    │                 │
-│                 │    │ security fixes   │    │                 │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-```
-
-### Design Trade-offs Considered
-
-#### Option 1: Private Security Fork (Selected)
+#### Option 1: Private Production Deploy (Selected)
 **Pros:**
 - Maintains public repo transparency
 - Allows private security development
@@ -79,41 +48,76 @@ Code.org faces a critical security challenge: their public repository exposes ev
 - Doesn't solve the core problem
 - Limited security benefit
 
-**Decision**: Option 1 (Private Security Fork) provides the best balance of security and transparency.
+**Decision**: Option 1 (Private Production Deploy) provides the best balance of security and transparency.
+
+## Current Architecture Analysis
+
+### Current Deployment Process
+**Current Flow**: `staging` → `production` (public) → AMI Builder → Production Deployment
+
+1. **Code Push**: Changes pushed to `production` branch on public repo
+2. **AMI Builder**: [`aws/ci_build`](../../aws/ci_build) polls for changes every minute
+3. **Build Process**: Runs `infra:ci` rake task to build AMI
+4. **Deployment**: AMI deployed to production servers (`production-console`, `production-daemon`)
+
+### Review of Key Components
+- **AMI Builder**: [`aws/ci_build`](../../aws/ci_build) - Polls public `production` branch every minute
+- **AMI Manager**: [`aws/cloudformation/ami-manager.js`](../../aws/cloudformation/ami-manager.js) - Lambda for AMI creation
+- **Build Process**: `lib/rake/ci.rake` and `lib/rake/build.rake` - CI testing and build
+- **Production Servers**: `production-console`, `production-daemon` - Target deployment servers
+
+## Proposed Solution: Private Production Deploy
+
+### Architecture Design
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Public Repo   │    │  Private Production │  │   Production    │
+│  (code-dot-org) │    │      Deploy       │    │   Deployment    │
+│                 │    │ (code-dot-org-   │    │                 │
+│ staging branch  │───▶│  production)     │───▶│   AWS/Cloud     │
+│ production      │    │                  │    │                 │
+│                 │    │ security fixes   │    │                 │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+```
 
 ## Implementation Plan
 
-### Phase 1: Switch to Private Fork (New Normal)
-**Goal**: Everything works exactly the same, but AMI Builder watches private repo instead of public
+### Phase 1: Set Up and Monitor (Verification Phase)
+**Goal**: Set up private repo sync but don't use it yet - just monitor and verify
 
 1. **Create Private Fork**: `code-dot-org-production` repository
 2. **Set Up Auto-Sync**: Lambda function that syncs public `production` → private `production` on every push
-3. **Switch AMI Builder**: Point [`aws/ci_build`](../../aws/ci_build) to watch private repo instead of public
-4. **Test Normal Flow**: Verify normal deployments work identically
+3. **Add Verification**: AMI Builder sleeps 5 minutes, then verifies private change matches public change
+4. **Monitor for Weeks**: Verify sync is working correctly before switching
+5. **Security Verification**: Ensure private repo access is properly restricted
 
 **Current Flow**: `staging` → `production` (public) → AMI Builder → Production
+**Phase 1 Flow**: `staging` → `production` (public) → **Sync Lambda** → `production` (private) → **AMI Builder (monitor only)** → Production
+
+### Phase 2: Switch to Private Deploy
+**Goal**: Actually switch AMI Builder to watch private repo instead of public
+
+1. **Switch AMI Builder**: Point [`aws/ci_build`](../../aws/ci_build) to watch private repo
+2. **Add Reverse Check**: Verify private and public repos are in sync, alert if different
+3. **Test Normal Flow**: Verify normal deployments work identically
+4. **Add Daily Warning**: Slack notification about uncommitted private changes
+
 **New Flow**: `staging` → `production` (public) → **Sync Lambda** → `production` (private) → AMI Builder → Production
 
-### Phase 2: Test Security Workflow
-**Goal**: Test ability to push security fixes directly to private repo
+### Phase 3: Test Security Workflow
+**Goal**: Test complete security fix workflow
 
-1. **Test Minor Fix**: Push small change directly to private `production` branch
+1. **Test Security Fix**: Push security fix directly to private `production` branch
 2. **Verify Deployment**: Ensure AMI Builder picks up and deploys the change
-3. **Add Back-Sync**: Daily job to sync private changes back to public repo
+3. **Test Back-Sync**: Manual back-sync after verification period
 4. **Create Security Scripts**: Tools for easier security fix management
-
-### Phase 3: Security Fix Procedures
-**Goal**: Full security fix workflow with private development
-
-1. **Security Branch Workflow**: Create and merge security branches in private repo
-2. **Emergency Procedures**: Rapid deployment process for P1 issues
-3. **Public Disclosure**: Coordinated disclosure after deployment
-4. **Team Training**: Train security team on new procedures
+5. **Team Training**: Train security team on new procedures
 
 ## Code Changes Required
 
 ### 1. AWS Lambda Sync Function
-**File**: [`aws/cloudformation/lambdas/security-fork-sync/index.js`](../../aws/cloudformation/lambdas/security-fork-sync/index.js)
+**File**: [`aws/cloudformation/lambdas/private-production-sync/index.js`](../../aws/cloudformation/lambdas/private-production-sync/index.js)
 
 **Purpose**: Syncs public `production` → private `production` on every push
 **Security**: Uses AWS Secrets Manager for GitHub token (not GitHub Actions)
@@ -133,37 +137,43 @@ exports.handler = async (event) => {
 ### 2. Modified AMI Builder Configuration
 **File**: [`aws/ci_build`](../../aws/ci_build)
 
-**Change**: Point to private repository instead of public
+**Phase 1 Changes**: Add verification logic
 ```ruby
-# Current: Watches public repo
-# New: Watch private repo with read-only access
+# Phase 1: Monitor mode - verify private matches public
+if ENV['PRIVATE_DEPLOY_MONITOR'] == 'true'
+  sleep(300) # Wait 5 minutes for sync
+  verify_private_matches_public()
+end
+
+# Phase 2: Switch to private repo
 REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 ```
 
-### 3. Back-Sync Daily Job
-**File**: [`aws/cloudformation/lambdas/back-sync/index.js`](../../aws/cloudformation/lambdas/back-sync/index.js)
+### 3. Daily Warning Job
+**File**: [`aws/cloudformation/lambdas/daily-warning/index.js`](../../aws/cloudformation/lambdas/daily-warning/index.js)
 
-**Purpose**: Daily job to sync private changes back to public repo
+**Purpose**: Daily warning about uncommitted private changes
 **Schedule**: CloudWatch Events (daily at 2 AM)
-**Notification**: Slack alert if changes need manual review
+**Notification**: Slack alert to infrastructure channel
+**Reason**: No automatic back-sync to allow verification period
 
-### 4. Security Fix Scripts
-**File**: [`lib/scripts/security_fork_sync.rb`](../../lib/scripts/security_fork_sync.rb)
+### 4. Manual Back-Sync Script
+**File**: [`lib/scripts/private_production_sync.rb`](../../lib/scripts/private_production_sync.rb)
 
-**Purpose**: CLI tools for security team to manage private repo
+**Purpose**: Human-initiated back-sync from private to public
+- `sync_to_public()` - Manual sync to public repo
 - `create_security_branch()` - Create isolated security fix branches
 - `merge_security_fix()` - Merge security fixes to production
-- `sync_to_public()` - Manual sync to public repo
 
 ### 5. CloudFormation Stack
-**File**: [`aws/cloudformation/security-fork-stack.yml`](../../aws/cloudformation/security-fork-stack.yml)
+**File**: [`infrastructure/aws/private-production-deploy-stack.yml`](../../infrastructure/aws/private-production-deploy-stack.yml)
 
-**Purpose**: Infrastructure for sync Lambda and back-sync job
+**Purpose**: Infrastructure for sync Lambda and warning job
 **Includes**: IAM roles, Secrets Manager, CloudWatch Events, Lambda functions
 
 ## Security Workflow
 
-### Normal Development Flow (Phase 1)
+### Normal Development Flow (Phase 2+)
 1. **Public Development**: All normal development happens in public repo
 2. **Auto-Sync**: Lambda syncs public `production` → private `production` on every push
 3. **AMI Builder**: Watches private `production` branch (instead of public)
@@ -174,29 +184,32 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 2. **Private Review**: Security team reviews in private fork
 3. **Private Testing**: Security fix tested in private staging environment
 4. **Private Deployment**: Security fix merged to private `production` and deployed
-5. **Back-Sync**: Daily job syncs private changes back to public repo
-6. **Public Disclosure**: Coordinated disclosure after deployment
+5. **Verification Period**: Wait 2-3 days to verify fix is complete
+6. **Manual Back-Sync**: Human-initiated sync to public repo after verification
+7. **Public Disclosure**: Coordinated disclosure after deployment
 
 ### Emergency P1 Fix Flow
 1. **Direct Push**: Security fix pushed directly to private `production` branch
 2. **Immediate Deployment**: AMI Builder picks up change and deploys
-3. **Back-Sync**: Changes synced to public repo within 24 hours
-4. **Public Disclosure**: Coordinated disclosure after deployment
+3. **Verification Period**: Wait 2-3 days to verify fix is complete
+4. **Manual Back-Sync**: Human-initiated sync to public repo after verification
+5. **Public Disclosure**: Coordinated disclosure after deployment
 
 ## Access Control & Security
 
 ### Repository Access Levels
-- **Security Team Leads**: Full admin access to private fork
+- **Security Team Leads**: Full admin access to private production repo
 - **Senior Engineers**: Write access for security fix development  
-- **AMI Builder**: Read-only access to private fork (via AWS IAM)
-- **Sync Lambda**: Write access to private fork (via AWS Secrets Manager)
-- **All Others**: No access to private fork
+- **AMI Builder**: Read-only access to private production repo (via AWS IAM)
+- **Sync Lambda**: Write access to private production repo (via AWS Secrets Manager)
+- **All Others**: No access to private production repo
 
 ### AWS Security Architecture
 - **GitHub Token**: Stored in AWS Secrets Manager (not GitHub Actions)
 - **IAM Roles**: Least privilege access for Lambda functions
 - **VPC**: Sync Lambda runs in private VPC
 - **Encryption**: All secrets encrypted at rest and in transit
+- **No Automatic Back-Sync**: Prevents premature exposure of security fixes
 
 ### Security Procedures
 - **P1 Issues**: Direct push to private `production`, immediate deployment
@@ -261,6 +274,12 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 
 ## Conclusion
 
-The private security fork workflow provides a robust solution to Code.org's security challenges while maintaining the benefits of open source development. The implementation plan balances security needs with operational efficiency, and the monitoring and maintenance procedures ensure long-term success.
+The private production deploy workflow provides a robust solution to Code.org's security challenges while maintaining the benefits of open source development. The three-phase implementation plan allows for careful verification before switching, ensuring the sync mechanism works correctly before relying on it for production deployments.
+
+Key advantages of this approach:
+- **Verification Phase**: Allows monitoring of sync accuracy before switching
+- **No Automatic Back-Sync**: Prevents premature exposure of security fixes
+- **Human-Controlled Disclosure**: Security team controls when fixes become public
+- **Minimal Disruption**: Normal development workflow remains unchanged
 
 This approach has been successfully used by other large open source projects and provides a proven pattern for handling security fixes in public repositories. The phased implementation approach minimizes risk while ensuring a smooth transition to the new workflow.
