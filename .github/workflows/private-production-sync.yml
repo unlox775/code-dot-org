@@ -1,4 +1,4 @@
-name: Sync Security Fork
+name: Sync Private Production Deploy
 on:
   schedule:
     - cron: '0 */6 * * *'  # Every 6 hours
@@ -19,13 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.SECURITY_FORK_TOKEN }}
+          token: ${{ secrets.PRIVATE_PRODUCTION_TOKEN }}
           fetch-depth: 0
 
       - name: Configure Git
         run: |
-          git config --global user.name "Security Fork Bot"
-          git config --global user.email "security-fork@code.org"
+          git config --global user.name "Private Production Bot"
+          git config --global user.email "private-production@code.org"
 
       - name: Add upstream remote
         run: |
@@ -34,9 +34,9 @@ jobs:
       - name: Sync from public
         if: github.event.inputs.sync_direction == 'from-public' || github.event_name == 'schedule'
         run: |
-          ruby lib/scripts/security_fork_sync.rb sync-from-public
+          ruby lib/scripts/private_production_sync.rb sync-from-public
 
       - name: Sync to public
         if: github.event.inputs.sync_direction == 'to-public'
         run: |
-          ruby lib/scripts/security_fork_sync.rb sync-to-public
+          ruby lib/scripts/private_production_sync.rb sync-to-public

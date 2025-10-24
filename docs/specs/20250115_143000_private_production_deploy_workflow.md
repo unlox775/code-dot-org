@@ -124,12 +124,35 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 **Reason**: No automatic back-sync to allow verification period
 
 ### 4. Manual Back-Sync Script
-**File**: [`infrastructure/scripts/private_production_sync.rb`](../../infrastructure/scripts/private_production_sync.rb)
+**File**: [`infrastructure/scripts/private_production_sync.py`](../../infrastructure/scripts/private_production_sync.py)
 
-**Purpose**: Human-initiated back-sync from private to public
-- `sync_to_public()` - Manual sync to public repo
-- `create_security_branch()` - Create isolated security fix branches
-- `merge_security_fix()` - Merge security fixes to production
+**Purpose**: Interactive tool to cherry-pick private changes back to public repo
+
+**How it works:**
+1. **Detect Changes**: Scans private repo for commits not in public repo
+2. **Interactive Selection**: Shows you available changes, lets you select which ones to sync
+3. **Conflict Checking**: Tests cherry-pick on both production and staging branches
+4. **Create PRs**: Uses `gh` CLI to create pull requests for selected changes
+5. **Safety Checks**: Ensures your local public repo is clean and up-to-date
+
+**Usage Examples:**
+```bash
+# Interactive mode - arrow keys to select, enter to confirm
+./private_production_sync.py --target production
+
+# Batch mode - specify commit numbers
+./private_production_sync.py --target production --commits 1,3,5
+
+# Test mode - check for conflicts without creating PRs
+./private_production_sync.py --target production --dry-run
+```
+
+**Safety Features:**
+- Requires clean working directory in public repo
+- Auto-updates public repo before starting
+- Tests cherry-pick on both production and staging
+- Reverts everything if any conflicts found
+- Creates separate PRs for production and staging
 
 
 ## Access Control & Security
