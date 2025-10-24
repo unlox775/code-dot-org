@@ -14,41 +14,6 @@ Code.org faces a critical security challenge: their public repository exposes ev
 3. **Public transparency** is valued but creates security exposure
 4. **Current workflow** requires public commits before production deployment
 
-## Design Trade-offs Considered
-
-#### Option 1: Private Production Deploy (Selected)
-**Pros:**
-- Maintains public repo transparency
-- Allows private security development
-- Proven pattern used by other projects
-- Minimal disruption to current workflow
-
-**Cons:**
-- Additional repository to maintain
-- Sync complexity between repos
-- Requires access control management
-
-#### Option 2: Private Repository with Public Mirror
-**Pros:**
-- Single source of truth
-- Simpler access control
-
-**Cons:**
-- Loses public development transparency
-- Major workflow disruption
-- Community engagement impact
-
-#### Option 3: Delayed Public Disclosure
-**Pros:**
-- Simpler implementation
-- No additional infrastructure
-
-**Cons:**
-- Still exposes fixes during development
-- Doesn't solve the core problem
-- Limited security benefit
-
-**Decision**: Option 1 (Private Production Deploy) provides the best balance of security and transparency.
 
 ## Current Architecture Analysis
 
@@ -116,22 +81,23 @@ Code.org faces a critical security challenge: their public repository exposes ev
 
 ## Code Changes Required
 
-### 1. AWS Lambda Sync Function
-**File**: [`aws/cloudformation/lambdas/private-production-sync/index.js`](../../aws/cloudformation/lambdas/private-production-sync/index.js)
+### 1. Private Production Deploy CloudFormation Stack
+**File**: [`infrastructure/aws/private-production-deploy-stack.yml`](../../infrastructure/aws/private-production-deploy-stack.yml)
 
-**Purpose**: Syncs public `production` → private `production` on every push
-**Security**: Uses AWS Secrets Manager for GitHub token (not GitHub Actions)
-**Trigger**: GitHub webhook on `production` branch push
+**Purpose**: Complete infrastructure setup for private production deploy
+**Includes**: 
+- AWS Lambda sync function (syncs public → private on every push)
+- Daily warning Lambda (Slack alerts about uncommitted changes)
+- IAM roles and Secrets Manager for GitHub access
+- CloudWatch Events for scheduling
 
+The sync Lambda handles:
 ```javascript
-// Pseudocode: Fetch from public, merge to private, handle conflicts
-exports.handler = async (event) => {
-  // 1. Verify webhook signature
-  // 2. Fetch latest from public production
-  // 3. Check for merge conflicts
-  // 4. Merge to private production
-  // 5. Notify on success/failure
-}
+// 1. Verify webhook signature
+// 2. Fetch latest from public production  
+// 3. Check for merge conflicts
+// 4. Merge to private production
+// 5. Notify on success/failure
 ```
 
 ### 2. Modified AMI Builder Configuration
@@ -150,7 +116,7 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 ```
 
 ### 3. Daily Warning Job
-**File**: [`aws/cloudformation/lambdas/daily-warning/index.js`](../../aws/cloudformation/lambdas/daily-warning/index.js)
+**File**: [`infrastructure/aws/private-production-deploy-stack.yml`](../../infrastructure/aws/private-production-deploy-stack.yml) (part of stack)
 
 **Purpose**: Daily warning about uncommitted private changes
 **Schedule**: CloudWatch Events (daily at 2 AM)
@@ -158,77 +124,77 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 **Reason**: No automatic back-sync to allow verification period
 
 ### 4. Manual Back-Sync Script
-**File**: [`lib/scripts/private_production_sync.rb`](../../lib/scripts/private_production_sync.rb)
+**File**: [`infrastructure/scripts/private_production_sync.rb`](../../infrastructure/scripts/private_production_sync.rb)
 
 **Purpose**: Human-initiated back-sync from private to public
 - `sync_to_public()` - Manual sync to public repo
 - `create_security_branch()` - Create isolated security fix branches
 - `merge_security_fix()` - Merge security fixes to production
 
-### 5. CloudFormation Stack
-**File**: [`infrastructure/aws/private-production-deploy-stack.yml`](../../infrastructure/aws/private-production-deploy-stack.yml)
-
-**Purpose**: Infrastructure for sync Lambda and warning job
-**Includes**: IAM roles, Secrets Manager, CloudWatch Events, Lambda functions
-
-## Security Workflow
-
-### Normal Development Flow (Phase 2+)
-1. **Public Development**: All normal development happens in public repo
-2. **Auto-Sync**: Lambda syncs public `production` → private `production` on every push
-3. **AMI Builder**: Watches private `production` branch (instead of public)
-4. **Deployment**: Normal deployment process continues unchanged
-
-### Security Fix Flow (Phase 3)
-1. **Private Branch**: Security fix developed in private fork (`security-*` branch)
-2. **Private Review**: Security team reviews in private fork
-3. **Private Testing**: Security fix tested in private staging environment
-4. **Private Deployment**: Security fix merged to private `production` and deployed
-5. **Verification Period**: Wait 2-3 days to verify fix is complete
-6. **Manual Back-Sync**: Human-initiated sync to public repo after verification
-7. **Public Disclosure**: Coordinated disclosure after deployment
-
-### Emergency P1 Fix Flow
-1. **Direct Push**: Security fix pushed directly to private `production` branch
-2. **Immediate Deployment**: AMI Builder picks up change and deploys
-3. **Verification Period**: Wait 2-3 days to verify fix is complete
-4. **Manual Back-Sync**: Human-initiated sync to public repo after verification
-5. **Public Disclosure**: Coordinated disclosure after deployment
 
 ## Access Control & Security
 
 ### Repository Access Levels
-- **Security Team Leads**: Full admin access to private production repo
-- **Senior Engineers**: Write access for security fix development  
-- **AMI Builder**: Read-only access to private production repo (via AWS IAM)
-- **Sync Lambda**: Write access to private production repo (via AWS Secrets Manager)
-- **All Others**: No access to private production repo
+- **Infrastructure Team**: Full admin access to private production repo
+- **Engineering Managers**: Full admin access to private production repo
+- **All Engineers**: Read access to private production repo (can review PRs, look at code)
+- **AMI Builder**: Read-only access via GitHub app/token (TBD - separate from current `deploy-code-org` bot)
+- **Sync Lambda**: Write access via GitHub app/token (TBD - separate from current `deploy-code-org` bot)
+
+### GitHub Access Setup (TBD)
+We need to figure out the exact GitHub access mechanism. Current `deploy-code-org` bot is used everywhere and has broad access, so we want separate access for this.
+
+**Proposal**: Create new GitHub app or access tokens under a dedicated admin user:
+- **Read Bot**: For AMI Builder to pull from private repo
+- **Write Bot**: For Sync Lambda to push to private repo
+- **Admin User**: GitHub admin user to create these tokens/apps
 
 ### AWS Security Architecture
-- **GitHub Token**: Stored in AWS Secrets Manager (not GitHub Actions)
+- **GitHub Tokens**: Stored in AWS Secrets Manager (not GitHub Actions)
 - **IAM Roles**: Least privilege access for Lambda functions
-- **VPC**: Sync Lambda runs in private VPC
 - **Encryption**: All secrets encrypted at rest and in transit
 - **No Automatic Back-Sync**: Prevents premature exposure of security fixes
 
 ### Security Procedures
 - **P1 Issues**: Direct push to private `production`, immediate deployment
-- **P2 Issues**: Security branch workflow, deployment within 24 hours
+- **P2 Issues**: Security branch workflow, deployment within 24 hours  
 - **P3 Issues**: Normal workflow, next scheduled deployment
 
-## Monitoring and Maintenance
+## Design Trade-offs Considered
 
-### Automated Monitoring
-- **Sync Status**: Monitor sync between public and private repos
-- **Deployment Status**: Monitor deployment success and performance
-- **Access Logs**: Monitor access to private fork
-- **Security Alerts**: Monitor for security-related changes
+#### Option 1: Private Production Deploy (Selected)
+**Pros:**
+- Maintains public repo transparency
+- Allows private security development
+- Proven pattern used by other projects
+- Minimal disruption to current workflow
 
-### Regular Maintenance
-- **Weekly Sync Review**: Ensure sync is working correctly
-- **Monthly Access Review**: Review and update access permissions
-- **Quarterly Process Review**: Review and improve security workflow
-- **Annual Security Audit**: Comprehensive security review
+**Cons:**
+- Additional repository to maintain
+- Sync complexity between repos
+- Requires access control management
+
+#### Option 2: Private Repository with Public Mirror
+**Pros:**
+- Single source of truth
+- Simpler access control
+
+**Cons:**
+- Loses public development transparency
+- Major workflow disruption
+- Community engagement impact
+
+#### Option 3: Delayed Public Disclosure
+**Pros:**
+- Simpler implementation
+- No additional infrastructure
+
+**Cons:**
+- Still exposes fixes during development
+- Doesn't solve the core problem
+- Limited security benefit
+
+**Decision**: Option 1 (Private Production Deploy) provides the best balance of security and transparency.
 
 ## Benefits
 
@@ -243,43 +209,3 @@ REPO_URL = 'https://github.com/code-dot-org/code-dot-org-production.git'
 - **Flexible Workflow**: Can handle both normal and security development
 - **Audit Trail**: Complete audit trail of all changes
 - **Team Collaboration**: Security team can work privately when needed
-
-## Risks and Mitigations
-
-### Technical Risks
-- **Sync Failures**: Automated monitoring and manual fallback procedures
-- **Deployment Issues**: Comprehensive testing and rollback procedures
-- **Access Control**: Regular access reviews and audit logging
-- **Data Loss**: Regular backups and version control
-
-### Operational Risks
-- **Process Complexity**: Comprehensive documentation and training
-- **Team Confusion**: Clear communication and role definitions
-- **Maintenance Overhead**: Automated monitoring and maintenance
-- **Single Point of Failure**: Redundant systems and procedures
-
-## Implementation Timeline
-
-- **Week 1-2**: Repository setup and sync configuration
-- **Week 3-4**: CI/CD integration and deployment modifications
-- **Week 5-6**: Security workflow implementation and testing
-- **Week 7-8**: Training, documentation, and production deployment
-
-## Success Metrics
-
-- **Time to Deploy**: Security fixes deployed within 24 hours
-- **Exposure Window**: Zero public exposure before deployment
-- **Sync Reliability**: 99.9% sync success rate
-- **Deployment Success**: 99.5% deployment success rate
-
-## Conclusion
-
-The private production deploy workflow provides a robust solution to Code.org's security challenges while maintaining the benefits of open source development. The three-phase implementation plan allows for careful verification before switching, ensuring the sync mechanism works correctly before relying on it for production deployments.
-
-Key advantages of this approach:
-- **Verification Phase**: Allows monitoring of sync accuracy before switching
-- **No Automatic Back-Sync**: Prevents premature exposure of security fixes
-- **Human-Controlled Disclosure**: Security team controls when fixes become public
-- **Minimal Disruption**: Normal development workflow remains unchanged
-
-This approach has been successfully used by other large open source projects and provides a proven pattern for handling security fixes in public repositories. The phased implementation approach minimizes risk while ensuring a smooth transition to the new workflow.
