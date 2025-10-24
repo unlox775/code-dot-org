@@ -66,7 +66,7 @@ This document analyzes web server and middleware dependencies that handle HTTP r
     - `dashboard/config/initializers/systemd.rb:1` - Systemd configuration
   - **Necessity**: **LOW** - Systemd integration, removing would require alternative process management
   - **Compensation if removed**: Would need to implement alternative process management or remove systemd integration
-  - **Documentation**: SD Notify | GitHub
+  - **Documentation**: [SD Notify](https://rubygems.org/gems/sd_notify) | [GitHub](https://rubygems.org/gems/sd_notify)
   - **Current version**: 0.1.0 | **Latest stable**: 0.1.0 | **Upgrade path**: Stable, no major updates expected
 
 ### Caching Middleware

@@ -107,7 +107,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
     - `dashboard/config/initializers/sd_notify.rb:1` - Systemd notification
   - **Necessity**: **LOW** - System integration, removing would break systemd integration
   - **Compensation if removed**: Would need to use different system integration approach
-  - **Documentation**: SD Notify | GitHub
+  - **Documentation**: [SD Notify](https://rubygems.org/gems/sd_notify) | [GitHub](https://rubygems.org/gems/sd_notify)
   - **Current version**: 0.1.x | **Latest stable**: 0.1.x | **Upgrade path**: Stable, no major changes needed
 
 ### Development & Debugging
@@ -181,7 +181,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
     - `dashboard/lib/crowdin_service.rb:1` - Crowdin service
   - **Necessity**: **LOW** - Translation management, removing would break translation workflows
   - **Compensation if removed**: Would need to use different translation service
-  - **Documentation**: Crowdin API | GitHub
+  - **Documentation**: [Crowdin API](https://rubygems.org/gems/crowdin-api) | [GitHub](https://rubygems.org/gems/crowdin-api)
   - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **octokit** (~> 6.0) - GitHub API client
@@ -211,7 +211,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
     - `dashboard/app/services/mailjet_service.rb:1` - Mailjet service
   - **Necessity**: **LOW** - Email delivery, removing would break alternative email sending
   - **Compensation if removed**: Would need to use different email service
-  - **Documentation**: Mailjet Ruby | GitHub
+  - **Documentation**: [Mailjet Ruby](https://rubygems.org/gems/mailjet) | [GitHub](https://rubygems.org/gems/mailjet)
   - **Current version**: 1.0.x | **Latest stable**: 1.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **twilio-ruby** (~> 6.0) - Twilio SMS service
@@ -281,7 +281,7 @@ This document analyzes Ruby gems related to monitoring, logging, error tracking,
     - `dashboard/lib/localhost_utils.rb:1` - Localhost utilities
   - **Necessity**: **LOW** - Development utilities, removing would break localhost features
   - **Compensation if removed**: Would need to use different localhost utilities
-  - **Documentation**: Localhost | GitHub
+  - **Documentation**: [Localhost](https://rubygems.org/gems/localhost) | [GitHub](https://rubygems.org/gems/localhost)
   - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, no major changes needed
 
 ## Summary

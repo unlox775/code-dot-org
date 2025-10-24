@@ -67,7 +67,7 @@ This document analyzes database and caching dependencies that handle data persis
     - `lib/cdo/read_replica_utils.rb:1` - Read replica utilities
   - **Necessity**: **MEDIUM** - Read optimization, removing would require alternative read optimization
   - **Compensation if removed**: Would need to implement alternative read optimization or remove read replica functionality
-  - **Documentation**: Redis Slave Read | GitHub
+  - **Documentation**: [Redis Slave Read](https://rubygems.org/gems/redis-slave-read) | [GitHub](https://rubygems.org/gems/redis-slave-read)
   - **Current version**: 1.3.0 | **Latest stable**: 1.3.0 | **Upgrade path**: Stable, no major updates expected
 
 - [x] **dalli** (3.2.1) - Memcached client
@@ -172,7 +172,7 @@ This document analyzes database and caching dependencies that handle data persis
     - [`dashboard/app/models/user.rb:1`](../../dashboard/app/models/user.rb#L1) - User model with soft delete
   - **Necessity**: **HIGH** - Soft delete functionality, removing would require data migration
   - **Compensation if removed**: Would need to implement alternative soft delete or migrate to hard delete
-  - **Documentation**: Paranoia | GitHub
+  - **Documentation**: [Paranoia](https://rubygems.org/gems/paranoia) | [GitHub](https://rubygems.org/gems/paranoia)
   - **Current version**: 2.6.0 | **Latest stable**: 2.6.0 | **Upgrade path**: Stable, no major updates expected
 
 ### Additional Database & Caching

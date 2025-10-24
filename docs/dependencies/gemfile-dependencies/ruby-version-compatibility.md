@@ -44,7 +44,7 @@ This document analyzes Ruby version compatibility dependencies that provide comp
     - [`dashboard/app/models/level.rb:1`](../../apps/src/levelbuilder/AllVocabulariesEditor.jsx#L1) - Level model sorting
   - **Necessity**: **LOW** - Data structure utility, removing would require rewriting sorting logic
   - **Compensation if removed**: Would need to implement alternative sorting or migrate to different data structures
-  - **Documentation**: Sorted Set | GitHub
+  - **Documentation**: [Sorted Set](https://rubygems.org/gems/sorted_set) | [GitHub](https://rubygems.org/gems/sorted_set)
   - **Current version**: 0.1.0 | **Latest stable**: 0.1.0 | **Upgrade path**: Stable, no major updates expected
 
 ### Mutex & Synchronization

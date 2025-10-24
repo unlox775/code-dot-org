@@ -40,12 +40,17 @@ check-format:
 # Check links in documentation
 check-links:
 	@echo "🔍 Checking links in documentation..."
-	@python3 link_validator.py
+	@python3 validators/enhanced_link_validator.py
 
 # Fix broken links
 fix-links:
 	@echo "🔧 Fixing broken links..."
-	@python3 fix_remaining_links.py
+	@python3 validators/fix_all_links.py
+
+# Make links clickable
+make-clickable:
+	@echo "🔗 Making links clickable..."
+	@python3 validators/make_links_clickable.py
 
 # Run all checks
 check-all: check-dependencies check-format check-links

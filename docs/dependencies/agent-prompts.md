@@ -1,154 +1,128 @@
-# AI Agent Prompts for Dependency Documentation
+# Agent Prompts for Dependency Documentation
 
-> **⚠️ AI Generated Report**  
-> This file contains prompts and instructions for AI agents to maintain the dependency documentation.
+> **⚠️ AI Generated Prompts**  
+> This file contains prompts for AI agents to assist with dependency documentation maintenance.
 
-## Overview
+## Link Validation and Fixing
 
-This file contains standardized prompts and instructions for AI agents to help maintain and update the dependency documentation. Use these prompts to ensure consistent and thorough analysis.
+### Primary Task: Fix Broken Links
+When the link validator reports broken links, use the following process:
 
-## Maintenance Tasks
+1. **Run the enhanced link validator**:
+   ```bash
+   cd docs/dependencies
+   python3 validators/enhanced_link_validator.py
+   ```
 
-### 1. Dependency Validation Check
+2. **Review the agentic prompt** in `results/agentic-prompt-YYYY-MM-DD.txt`
 
-**Prompt:**
-```
-Run the dependency checker tool and analyze the results:
+3. **For each broken link**:
+   - If it's a local file issue, use the suggested file paths or search the codebase
+   - If it's an external URL issue, use the Google search results to find the correct URL
+   - If it's a missing documentation link, add appropriate documentation and GitHub links
 
-1. Execute: `make check-dependencies` or `python dependency_checker.py`
-2. Review the output for:
-   - Missing dependencies not documented
-   - Dependencies without full detail (missing necessity line)
-3. For any missing or incomplete dependencies, update the appropriate markdown files
-4. Ensure all dependencies have the required format:
-   - [x] checkbox for completed analysis
-   - **Necessity**: [LOW|MEDIUM|HIGH|CRITICAL]
-   - **Compensation if removed**: Description
-   - **Documentation**: Links to docs and GitHub
-   - **Current version**: Version in use
-   - **Latest stable**: Latest available version
-   - **Upgrade path**: Notes on upgrades
+4. **Edit the files** to fix the broken links
 
-Focus on completing the analysis for any unchecked boxes ([ ]) in the documentation.
-```
+5. **Re-run the validator** until all links are valid
 
-### 2. Documentation Standards Compliance
+### Link Validation Standards
 
-**Prompt:**
-```
-Review all dependency documentation files and ensure they follow the standards:
+#### Required Links for Each Dependency
+Every dependency entry must have:
+- **Documentation link**: Link to official documentation
+- **GitHub link**: Link to source code repository (if available)
 
-1. Check that every dependency entry has:
-   - [x] or [ ] checkbox
-   - **Necessity**: [LOW|MEDIUM|HIGH|CRITICAL] assessment
-   - **Compensation if removed**: Clear description
-   - **Documentation**: Working links to official docs and GitHub
-   - **Current version**: Actual version in use
-   - **Latest stable**: Latest available version
-   - **Upgrade path**: Notes on upgrade requirements
+#### Link Format Standards
+- Local files: `[filename.ext:line](../../path/to/file.ext#L123)`
+- External URLs: `[Description](https://example.com)`
+- Documentation: `[Docs](https://docs.example.com) | [GitHub](https://github.com/user/repo)`
 
-2. Verify that all dependencies from source files are documented
-3. Ensure consistent formatting across all files
-4. Update any incomplete entries
+#### Error Handling
+- **404 errors**: Find correct URL or remove link
+- **Directory references**: Find actual file in directory
+- **Missing files**: Search codebase for similar files
+- **Missing documentation**: Add documentation and GitHub links
 
-Use the dependency checker tool to validate completeness.
-```
+### Automated Tasks
 
-### 3. New Dependency Analysis
-
-**Prompt:**
-```
-When a new dependency is added to the project:
-
-1. Run the dependency checker to identify the new dependency
-2. Determine which category file it belongs in
-3. Add a complete entry following the standard format:
-   - [ ] **dependency-name** (version) - Brief description
-   - **Usage**: How it's used in the project
-   - **Files**: Count of files using it
-   - **Key locations**: Specific file paths (if <5 files)
-   - **Necessity**: [LOW|MEDIUM|HIGH|CRITICAL] with justification
-   - **Compensation if removed**: What would be needed to replace it
-   - **Documentation**: [Official Docs](link) | [GitHub](link)
-   - **Current version**: X.x.x | **Latest stable**: Y.y.y | **Upgrade path**: Notes
-
-4. Update the category README.md if needed
-5. Run the dependency checker to verify the new entry
-```
-
-### 4. Version Update Analysis
-
-**Prompt:**
-```
-When dependencies are updated:
-
-1. Identify which dependencies have version changes
-2. Update the "Current version" field in the documentation
-3. Research and update the "Latest stable" version
-4. Review and update the "Upgrade path" notes
-5. Check for any breaking changes that might affect the project
-6. Update the necessity assessment if the dependency's role has changed
-7. Run the dependency checker to ensure all changes are properly documented
-```
-
-### 5. Dependency Cleanup
-
-**Prompt:**
-```
-When dependencies are removed from the project:
-
-1. Run the dependency checker to identify removed dependencies
-2. Remove the dependency entries from the appropriate markdown files
-3. Update the category README.md if needed
-4. Clean up any orphaned references
-5. Run the dependency checker to verify the cleanup
-6. Update the main README.md statistics if needed
-```
-
-## Quality Assurance
-
-### Before Making Changes
-1. Always run `make check-dependencies` first
-2. Review the current state of documentation
-3. Identify what needs to be updated
-
-### After Making Changes
-1. Run `make check-dependencies` to verify changes
-2. Ensure all new entries follow the standard format
-3. Check that all links are working
-4. Verify that necessity assessments are accurate
-
-### Documentation Standards
-- Use [x] for completed analysis, [ ] for pending
-- Necessity must be one of: LOW, MEDIUM, HIGH, CRITICAL
-- Always provide compensation description
-- Include working documentation links
-- Keep version information current
-- Use consistent formatting across all files
-
-## Troubleshooting
-
-### Common Issues
-1. **Missing dependencies**: Add to appropriate category file
-2. **Incomplete entries**: Add missing necessity line and other required fields
-3. **Broken links**: Update documentation and GitHub links
-4. **Inconsistent formatting**: Follow the standard format exactly
-
-### Validation Commands
+#### Daily Link Validation
 ```bash
-# Check all dependencies are documented
-make check-dependencies
-
-# Check markdown formatting
-make check-format
-
-# Run all checks
-make check-all
+cd docs/dependencies
+make check-links
 ```
 
-## Notes
+#### Fix Broken Links
+```bash
+cd docs/dependencies
+python3 validators/fix_all_links.py
+```
 
-- Always maintain the "AI Generated Report" disclaimer at the top of files
-- Keep the documentation up-to-date with actual project usage
-- Focus on accuracy and completeness over speed
-- When in doubt, err on the side of caution and mark as incomplete ([ ])
+#### Make Links Clickable
+```bash
+cd docs/dependencies
+python3 validators/make_links_clickable.py
+```
+
+### Search Strategies
+
+#### For External URLs
+1. Extract package name from URL
+2. Search Google for "{package_name} documentation"
+3. Use top 5 results to find correct URL
+
+#### For Local Files
+1. Extract filename from broken path
+2. Search codebase for files with similar names
+3. Use Levenshtein distance to find closest matches
+
+#### For Missing Documentation
+1. Search Google for "{dependency_name} documentation"
+2. Search Google for "{dependency_name} github"
+3. Add both documentation and GitHub links
+
+### Quality Standards
+
+#### Link Validation Must Pass
+- All local file links must exist and have valid line numbers
+- All external URLs must return 200 status
+- All dependencies must have documentation and GitHub links
+- No broken links, warnings, or errors
+
+#### Documentation Quality
+- Each dependency entry must be complete
+- All links must be clickable and functional
+- Documentation must be accurate and up-to-date
+
+### Troubleshooting
+
+#### If Google Search is Blocked
+- Check `results/AA_I_AM_BLOCKED.txt` for details
+- Use alternative search methods
+- Manually research correct URLs
+
+#### If Files Can't Be Found
+- Search codebase more broadly
+- Check for renamed or moved files
+- Update file paths to current structure
+
+#### If Documentation is Missing
+- Research the package online
+- Find official documentation
+- Locate GitHub repository
+- Add appropriate links
+
+### Success Criteria
+
+The link validation is successful when:
+- ✅ All links are valid (no broken links)
+- ✅ All dependencies have documentation links
+- ✅ All dependencies have GitHub links
+- ✅ No warnings or errors
+- ✅ All local file references work correctly
+
+### Maintenance Schedule
+
+- **Daily**: Run link validation
+- **Weekly**: Fix any broken links found
+- **Monthly**: Review and update documentation links
+- **Before commits**: Ensure all links are valid

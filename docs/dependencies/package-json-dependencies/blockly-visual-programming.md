@@ -41,7 +41,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts:1`](../../apps/src/blockly/customBlocks/googleBlockly/mutators/procedureCallerMutator.ts#L1) - Procedure callers
   - **Necessity**: **HIGH** - Procedure functionality, removing would break procedure blocks
   - **Compensation if removed**: Would need to implement alternative procedure system or remove procedure features
-  - **Documentation**: [Blockly Procedures](https://github.com/google/blockly-samples/tree/main/plugins/procedures) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Procedures](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^6.0.0 | **Latest stable**: 6.x | **Upgrade path**: Minor version updates available
 
 - [x] **@blockly/field-bitmap** (^6.0.0) - Blockly bitmap field
@@ -53,7 +53,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/p5lab/spritelab/blocks.js:6`](../../apps/src/p5lab/spritelab/blocks.js#L6) - SpriteLab blocks
   - **Necessity**: **MEDIUM** - Bitmap field functionality, removing would break image blocks
   - **Compensation if removed**: Would need to implement alternative bitmap field or remove image functionality
-  - **Documentation**: [Blockly Bitmap Field](https://github.com/google/blockly-samples/tree/main/plugins/field-bitmap) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Bitmap Field](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^6.0.0 | **Latest stable**: 6.x | **Upgrade path**: Minor version updates available
 
 - [x] **@blockly/field-colour** (^6.0.0) - Blockly color field
@@ -65,7 +65,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/dance/blockly/blocks.js:2`](../../apps/src/dance/blockly/blocks.js#L2) - Dance blocks
   - **Necessity**: **MEDIUM** - Color field functionality, removing would break color blocks
   - **Compensation if removed**: Would need to implement alternative color field or remove color functionality
-  - **Documentation**: [Blockly Color Field](https://github.com/google/blockly-samples/tree/main/plugins/field-colour) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Color Field](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^6.0.0 | **Latest stable**: 6.x | **Upgrade path**: Minor version updates available
 
 - [x] **@blockly/field-grid-dropdown** (^6.0.0) - Blockly grid dropdown
@@ -77,7 +77,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/dance/blockly/blocks.js:2`](../../apps/src/dance/blockly/blocks.js#L2) - Dance blocks
   - **Necessity**: **MEDIUM** - Grid dropdown functionality, removing would break grid-based blocks
   - **Compensation if removed**: Would need to implement alternative grid dropdown or remove grid functionality
-  - **Documentation**: [Blockly Grid Dropdown](https://github.com/google/blockly-samples/tree/main/plugins/field-grid-dropdown) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Grid Dropdown](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^6.0.0 | **Latest stable**: 6.x | **Upgrade path**: Minor version updates available
 
 ### Accessibility & Navigation
@@ -90,7 +90,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/blockly/themes/cdoAccessibleThemes.js:1`](../../apps/src/blockly/themes/cdoAccessibleThemes.js#L1) - Accessible themes
   - **Necessity**: **HIGH** - Accessibility requirement, removing would break keyboard navigation
   - **Compensation if removed**: Would need to implement alternative keyboard navigation or remove accessibility features
-  - **Documentation**: [Blockly Keyboard Navigation](https://github.com/google/blockly-samples/tree/main/plugins/keyboard-navigation) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Keyboard Navigation](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: 3.0.3 | **Latest stable**: 3.x | **Upgrade path**: Minor version updates available
 
 ### Cross-Tab Functionality
@@ -103,7 +103,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/templates/AppView.jsx:3`](../../apps/src/templates/AppView.jsx#L3) - App view with cross-tab support
   - **Necessity**: **MEDIUM** - Cross-tab functionality, removing would break copy/paste between tabs
   - **Compensation if removed**: Would need to implement alternative cross-tab functionality or remove copy/paste features
-  - **Documentation**: [Blockly Cross-Tab Copy/Paste](https://github.com/google/blockly-samples/tree/main/plugins/cross-tab-copy-paste) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Cross-Tab Copy/Paste](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^8.0.1 | **Latest stable**: 8.x | **Upgrade path**: Minor version updates available
 
 ### Scroll & UI Options
@@ -116,7 +116,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/blockly/themes/cdoTheme.js:1`](../../apps/src/blockly/themes/cdoTheme.js#L1) - Blockly theme
   - **Necessity**: **LOW** - Scroll behavior, removing would require alternative scroll handling
   - **Compensation if removed**: Would need to implement alternative scroll behavior or use default scrolling
-  - **Documentation**: [Blockly Scroll Options](https://github.com/google/blockly-samples/tree/main/plugins/scroll-options) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Scroll Options](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^7.0.0 | **Latest stable**: 7.x | **Upgrade path**: Minor version updates available
 
 ### Themes
@@ -129,7 +129,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/blockly/themes/cdoHighContrastDark.js:2`](../../apps/src/blockly/themes/cdoHighContrastDark.js#L2) - High contrast dark theme
   - **Necessity**: **MEDIUM** - Theme support, removing would break dark theme
   - **Compensation if removed**: Would need to implement alternative dark theme or remove dark mode support
-  - **Documentation**: [Blockly Dark Theme](https://github.com/google/blockly-samples/tree/main/plugins/theme-dark) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly Dark Theme](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^8.0.0 | **Latest stable**: 8.x | **Upgrade path**: Minor version updates available
 
 - [x] **@blockly/theme-highcontrast** (^7.0.0) - High contrast theme
@@ -141,7 +141,7 @@ This document analyzes Blockly and visual programming dependencies that provide 
     - [`apps/src/blockly/themes/cdoAccessibleThemes.js:1`](../../apps/src/blockly/themes/cdoAccessibleThemes.js#L1) - Accessible themes
   - **Necessity**: **HIGH** - Accessibility requirement, removing would break high contrast theme
   - **Compensation if removed**: Would need to implement alternative high contrast theme or remove accessibility features
-  - **Documentation**: [Blockly High Contrast Theme](https://github.com/google/blockly-samples/tree/main/plugins/theme-highcontrast) | [GitHub](https://github.com/google/blockly-samples)
+  - **Documentation**: [Blockly High Contrast Theme](https://github.com/google/blockly-samples) | [GitHub](https://github.com/google/blockly-samples)
   - **Current version**: ^7.0.0 | **Latest stable**: 7.x | **Upgrade path**: Minor version updates available
 
 ## Summary

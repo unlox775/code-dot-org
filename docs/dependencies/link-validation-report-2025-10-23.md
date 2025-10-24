@@ -20,47 +20,47 @@
 - **🚫 Errors:** 0
 
 **Issues:**
-- ❌ **Line 44:** `Blockly Procedures` → `https://github.com/google/blockly-samples/tree/main/plugins/procedures`
+- ❌ **Line 44:** `Blockly Procedures` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 56:** `Blockly Bitmap Field` → `https://github.com/google/blockly-samples/tree/main/plugins/field-bitmap`
+- ❌ **Line 56:** `Blockly Bitmap Field` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 68:** `Blockly Color Field` → `https://github.com/google/blockly-samples/tree/main/plugins/field-colour`
+- ❌ **Line 68:** `Blockly Color Field` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 80:** `Blockly Grid Dropdown` → `https://github.com/google/blockly-samples/tree/main/plugins/field-grid-dropdown`
+- ❌ **Line 80:** `Blockly Grid Dropdown` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 93:** `Blockly Keyboard Navigation` → `https://github.com/google/blockly-samples/tree/main/plugins/keyboard-navigation`
+- ❌ **Line 93:** `Blockly Keyboard Navigation` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 106:** `Blockly Cross-Tab Copy/Paste` → `https://github.com/google/blockly-samples/tree/main/plugins/cross-tab-copy-paste`
+- ❌ **Line 106:** `Blockly Cross-Tab Copy/Paste` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 119:** `Blockly Scroll Options` → `https://github.com/google/blockly-samples/tree/main/plugins/scroll-options`
+- ❌ **Line 119:** `Blockly Scroll Options` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 132:** `Blockly Dark Theme` → `https://github.com/google/blockly-samples/tree/main/plugins/theme-dark`
+- ❌ **Line 132:** `Blockly Dark Theme` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404
 
-- ❌ **Line 144:** `Blockly High Contrast Theme` → `https://github.com/google/blockly-samples/tree/main/plugins/theme-highcontrast`
+- ❌ **Line 144:** `Blockly High Contrast Theme` → `https://github.com/google/blockly-samples`
   - **Error:** HTTP 404
   - **Suggestion:** Check if URL is correct and accessible
   - **HTTP Status:** 404

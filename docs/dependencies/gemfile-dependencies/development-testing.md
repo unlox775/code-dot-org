@@ -149,7 +149,7 @@ This document analyzes Ruby gems related to development tools, testing framework
     - [`dashboard/.rubocop.yml:30`](../../apps/src/authoredHintUtils.js#L30) - Accessibility rules
   - **Necessity**: **LOW** - Accessibility linting, removing would break accessibility rules
   - **Compensation if removed**: Would lose accessibility-specific linting
-  - **Documentation**: RuboCop Rails Accessibility | GitHub
+  - **Documentation**: [RuboCop Rails Accessibility](https://rubygems.org/gems/rubocop-rails-accessibility) | [GitHub](https://rubygems.org/gems/rubocop-rails-accessibility)
   - **Current version**: 0.1.x | **Latest stable**: 0.1.x | **Upgrade path**: Stable, regular updates available
 
 ### Security & Vulnerability Scanning
@@ -282,7 +282,7 @@ This document analyzes Ruby gems related to development tools, testing framework
     - `dashboard/lib/debug_helper.rb:1` - Debug helper utilities
   - **Necessity**: **MEDIUM** - Development debugging, removing would break debug functionality
   - **Compensation if removed**: Would need to use different debugger or pry
-  - **Documentation**: Debugger | GitHub
+  - **Documentation**: [Debugger](https://rubygems.org/gems/debugger) | [GitHub](https://rubygems.org/gems/debugger)
   - **Current version**: 1.6.x | **Latest stable**: 1.6.x | **Upgrade path**: Consider upgrading to byebug
 
 - [x] **minitest** (~> 5.0) - Minimal testing framework
@@ -332,7 +332,7 @@ This document analyzes Ruby gems related to development tools, testing framework
     - `dashboard/test/spec/` - Spec-style tests
   - **Necessity**: **LOW** - Spec syntax, removing would break spec-style tests
   - **Compensation if removed**: Would need to rewrite as standard Minitest tests
-  - **Documentation**: Minitest Spec Context | GitHub
+  - **Documentation**: [Minitest Spec Context](https://rubygems.org/gems/minitest-spec-context) | [GitHub](https://rubygems.org/gems/minitest-spec-context)
   - **Current version**: 0.0.x | **Latest stable**: 0.0.x | **Upgrade path**: Stable, no major changes needed
 
 - [x] **minitest-stub-const** (~> 0.6) - Minitest constant stubbing
@@ -342,7 +342,7 @@ This document analyzes Ruby gems related to development tools, testing framework
     - `dashboard/test/unit/` - Unit tests with stubbing
   - **Necessity**: **LOW** - Test stubbing, removing would break constant stubbing
   - **Compensation if removed**: Would need to use different stubbing approach
-  - **Documentation**: Minitest Stub Const | GitHub
+  - **Documentation**: [Minitest Stub Const](https://rubygems.org/gems/minitest-stub-const) | [GitHub](https://rubygems.org/gems/minitest-stub-const)
   - **Current version**: 0.6.x | **Latest stable**: 0.6.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **haml_lint** (~> 0.0) - HAML linting
@@ -372,7 +372,7 @@ This document analyzes Ruby gems related to development tools, testing framework
     - `dashboard/test/visual/` - Visual test files
   - **Necessity**: **LOW** - Visual testing, removing would break visual regression tests
   - **Compensation if removed**: Would need to use different visual testing tool
-  - **Documentation**: Eyes Selenium | GitHub
+  - **Documentation**: [Eyes Selenium](https://rubygems.org/gems/eyes_selenium) | [GitHub](https://rubygems.org/gems/eyes_selenium)
   - **Current version**: 3.0.x | **Latest stable**: 3.0.x | **Upgrade path**: Stable, regular updates available
 
 - [x] **selenium-webdriver** (~> 4.0) - Selenium WebDriver

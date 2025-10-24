@@ -1,0 +1,36 @@
+# Agentic Link Fixing Prompt - 2025-10-24 02:30:03
+
+## Instructions
+Fix the following broken links and missing documentation. Use the provided suggestions or search for alternatives.
+
+## Top 5 Issues to Fix:
+
+### 1. Missing Documentation
+- **Dependency**: omniauth-microsoft_v2_auth
+- **File**: /workspace/docs/dependencies/gemfile-dependencies/authentication-authorization.md
+- **Issue**: Missing documentation link
+- **Suggestions**: None found
+
+### 2. Missing Documentation
+- **Dependency**: active_record_union
+- **File**: /workspace/docs/dependencies/gemfile-dependencies/database-caching.md
+- **Issue**: Missing documentation link
+- **Suggestions**: None found
+
+### 3. Missing Github
+- **Dependency**: sd_notify
+- **File**: /workspace/docs/dependencies/gemfile-dependencies/monitoring-logging.md
+- **Issue**: Missing GitHub link
+- **Suggestions**: None found
+
+### 4. Missing Github
+- **Dependency**: crowdin-api
+- **File**: /workspace/docs/dependencies/gemfile-dependencies/monitoring-logging.md
+- **Issue**: Missing GitHub link
+- **Suggestions**: None found
+
+### 5. Missing Github
+- **Dependency**: mailjet
+- **File**: /workspace/docs/dependencies/gemfile-dependencies/monitoring-logging.md
+- **Issue**: Missing GitHub link
+- **Suggestions**: None found
