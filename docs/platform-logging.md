@@ -20,6 +20,9 @@ This document inventories logging across the Code.org platform. It explains, in 
 - Database
   - **Aurora MySQL logs**: The cluster exports general, audit, error, and slow query logs to CloudWatch Logs for centralized visibility via the [log exports](../aws/cloudformation/components/database.yml.erb#L334-L339). We also create metric filters for RDS Enhanced Monitoring so OS metrics become first‑class CloudWatch metrics through the [enhanced monitoring filters](../aws/cloudformation/data.yml.erb#L235-L275). For local test coverage, the MySQL cookbooks demonstrate file‑based logging in these [example paths](../cookbooks/cdo-mysql/test/cookbooks/test-mysql/templates/default/mysqld.erb#L3-L8).
 
+- Event pipelines (Firehose)
+  - **Kinesis Data Firehose streams**: Some application events bypass traditional logs and are sent directly to managed delivery streams for analytics. The app uses a small wrapper to put records and batches to named streams ([Firehose client](../lib/cdo/firehose.rb#L71-L91), [PutRecordBatch limits](../lib/cdo/firehose.rb#L48-L67)). Current streams include `analysis-events` and `i18n-string-tracking-events` ([stream names and policy](../aws/cloudformation/cloud_formation_stack.yml.erb#L195-L197)). Downstream, Firehose delivers these JSON payloads to our analytics sinks (S3 and/or Redshift), optionally invoking transforms (Lambda) configured on the delivery stream. These events are intended for analytics and monitoring rather than request debugging; like most high‑volume pipelines they are best‑effort during peaks.
+
 - Lambdas and supporting infra
   - **Infrastructure Lambdas**: Supporting Lambdas (e.g., CloudFront log partitioner, Slack notifiers, Honeybadger hooks) write runtime output to CloudWatch Logs like standard AWS Lambdas, for example the [Slack notifier](../aws/cloudformation/slackCloudWatchEvent.js), [CloudFront partitioner](../aws/cloudformation/s3PartitionCloudFrontLog.js), and [Honeybadger notify](../aws/cloudformation/honeybadgerNotify.js). The marketing router Lambda uses JSON logging and has explicit CloudWatch permissions defined by the [function](../aws/cloudformation/cloud_formation_stack.yml.erb#L438-L447) and its [policy](../aws/cloudformation/cloud_formation_stack.yml.erb#L459-L476).
 
@@ -29,9 +32,9 @@ This document inventories logging across the Code.org platform. It explains, in 
 ## Destinations (and durability expectations)
 
 - **S3 `cdo-logs` bucket**
-  - App instance logs are synced hourly under `hosts/<hostname>/<app>` by the [upload process](./logging.md#L25-L31). Until the next sync runs, logs only exist on the instance. If an instance is terminated or fails before sync and rotation complete, some lines may be lost.
-  - ALB access logs land under the standard AWS pathing and are queryable in Athena using the [ALB/ELB schema](../aws/cloudformation/data.yml.erb#L350-L420). These are batch‑delivered by AWS and are generally durable once written to S3.
-  - CloudFront access logs arrive under `<env>-<app>-cdn/`, then the partition Lambda rewrites them into date/hour partitions that match the [partitioned table](../aws/cloudformation/data.yml.erb#L504-L563). During extreme traffic (e.g., DDoS), the end‑to‑end pipeline is best‑effort and short‑term gaps can occur due to S3 event throttling, Lambda concurrency limits, or retry exhaustion; operationally, these logs are not guaranteed to be 100% complete in peak scenarios.
+  - App instance logs are synced hourly under `s3://cdo-logs/hosts/<hostname>/<app>` by the [upload process](./logging.md#L25-L31). Until the next sync runs, logs only exist on the instance. If an instance is terminated or fails before sync and rotation complete, some lines may be lost.
+  - ALB access logs land under `s3://cdo-logs/production-codeorg/AWSLogs/<account>/elasticloadbalancing/<region>/...` and are queryable in Athena using the [ALB/ELB schema](../aws/cloudformation/data.yml.erb#L350-L420). These are batch‑delivered by AWS and are generally durable once written to S3.
+  - CloudFront access logs arrive under `s3://cdo-logs/cloudfront/<env>-<app>-cdn/` and the partition Lambda rewrites them into `.../year=YYYY/month=MM/day=DD/hour=HH/` partitions that match the [partitioned table](../aws/cloudformation/data.yml.erb#L504-L563). During extreme traffic (e.g., DDoS), the end‑to‑end pipeline is best‑effort and short‑term gaps can occur due to S3 event throttling, Lambda concurrency limits, or retry exhaustion; operationally, these logs are not guaranteed to be 100% complete in peak scenarios.
 
 - **CloudWatch Logs**
   - Browser events are grouped by environment in `<env>-browser-events` using the provisioned [log group and stream](../aws/cloudformation/components/logging.yml.erb#L1-L13). CloudWatch Logs ingestion is durable, but under sustained high volume AWS may throttle puts, which can lead to delayed delivery and rare dropped events at peak.
@@ -50,7 +53,7 @@ This document inventories logging across the Code.org platform. It explains, in 
 - **CloudFront access logs**: Tab‑separated values with the canonical fields defined in the [Athena schema](../aws/cloudformation/data.yml.erb#L524-L553).
 - **ALB access logs**: CSV with request/target/latency fields, see the [Athena schema](../aws/cloudformation/data.yml.erb#L372-L396).
 - **Browser events**: JSON lines published by the server to CloudWatch Logs via the [publisher](../dashboard/app/controllers/browser_events_controller.rb#L21-L27) and [decorator](../dashboard/app/controllers/browser_events_controller.rb#L72-L81).
-- **Rails**: Lograge CEE in production and staging, standard logs in adhoc (see environment configs above).
+- **Rails**: In production and staging, we use Lograge with the CEE formatter, which emits Common Event Expression JSON (a structured logging convention often prefixed with `@cee:`) for easier parsing; in adhoc, Rails logs use the standard format (see [production](../dashboard/config/environments/production.rb#L71-L72), [staging](../dashboard/config/environments/staging.rb#L69-L70), [adhoc](../dashboard/config/environments/adhoc.rb#L34)).
 - **Syslog/NGINX**: Traditional syslog and nginx formats unless overridden.
 
 ## Environments and paths
@@ -65,10 +68,10 @@ This document inventories logging across the Code.org platform. It explains, in 
 
 ## How to view logs
 
-- **CloudFront access logs**: Browse S3 `cloudfront/<env>-<app>-cdn/` (partitioned), or query via Athena using the `cloudfront_logs` table defined by the [table](../aws/cloudformation/data.yml.erb#L504-L563).
-- **ALB access logs**: Browse S3 `AWSLogs/<account>/elasticloadbalancing/<region>/...`, or query via Athena using `elb_logs_us_east_1` in the `elb_logs` DB defined by the [schema](../aws/cloudformation/data.yml.erb#L350-L420).
+- **CloudFront access logs**: Browse S3 `s3://cdo-logs/cloudfront/<env>-<app>-cdn/` (partitioned), or query via Athena using the `cloudfront_logs` table defined by the [table](../aws/cloudformation/data.yml.erb#L504-L563).
+- **ALB access logs**: Browse S3 `s3://cdo-logs/production-codeorg/AWSLogs/<account>/elasticloadbalancing/<region>/...`, or query via Athena using `elb_logs_us_east_1` in the `elb_logs` DB defined by the [schema](../aws/cloudformation/data.yml.erb#L350-L420).
 - **Browser events**: Open the `<env>-browser-events` log group in CloudWatch Logs using the environment’s [log group](../aws/cloudformation/components/logging.yml.erb#L1-L13); entries are JSON.
-- **NGINX/Rails app logs**: Check instance files for immediate debugging; for historical view, inspect S3 under `hosts/<hostname>/<app>` using the [uploader](../bin/upload-logs-to-s3#L4-L12).
+- **NGINX/Rails app logs**: Check instance files for immediate debugging; for historical view, inspect S3 under `s3://cdo-logs/hosts/<hostname>/<app>` using the [uploader](../bin/upload-logs-to-s3#L4-L12).
 - **Database logs**: View Aurora export log groups in CloudWatch; RDSOSMetrics‑derived metrics appear in CloudWatch Metrics based on the [filters](../aws/cloudformation/data.yml.erb#L235-L275).
 - **CloudTrail/WAF**: Query via Athena tables for audit and security analysis using the [CloudTrail table](../aws/cloudformation/data.yml.erb#L452-L503) and the [WAF logs table](../aws/cloudformation/data.yml.erb#L662-L715).
 
