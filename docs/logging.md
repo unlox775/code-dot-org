@@ -5,13 +5,13 @@ This document inventories logging across the Code.org platform. It explains, in 
 ## Sources that emit logs
 
 - Web/CDN
-  - **CloudFront access logs and WAF decisions**: Every request hits CloudFront first. CloudFront records request/response metadata to S3 using per‑app prefixes, enabled via [distribution logging](../aws/cloudformation/cloud_formation_stack.yml.erb#L414-L419) with per‑environment prefixes set in [S3 prefix configuration](../lib/cdo/aws/cloudfront.rb#L41-L53). Requests blocked or allowed by the CloudFront WebACL are also captured in WAF logs written to a dedicated bucket and modeled for Athena via the [WAF logs table](../aws/cloudformation/data.yml.erb#L662-L715). To optimize analytics, an S3 event triggers a small [partition lambda](../aws/cloudformation/s3PartitionCloudFrontLog.js) that moves each raw CloudFront log object from the initial drop path into `year=/month=/day=/hour=` partitions and deletes the original, matching the [Glue/Athena table](../aws/cloudformation/data.yml.erb#L504-L563) so queries scan only the needed partitions.
+  - **CloudFront access logs and WAF decisions**: Every request hits CloudFront first. CloudFront records request/response metadata to S3 using per‑app prefixes, enabled via [distribution logging](../aws/cloudformation/cloud_formation_stack.yml.erb#L414-L419) with per‑environment prefixes set in [S3 prefix configuration](../lib/cdo/aws/cloudfront.rb#L41-L53). Requests blocked or allowed by the CloudFront WebACL are also captured in WAF logs written to a dedicated bucket and modeled for Athena via the [WAF logs table](../aws/cloudformation/data.yml.erb#L662-L715). To optimize analytics, an S3 event triggers a small [partition lambda](../aws/cloudformation/s3PartitionCloudFrontLog.js) that moves each raw CloudFront log object from the initial drop path into `year=/month=/day=/hour=` partitions and deletes the original, matching the [Glue/Athena table](../aws/cloudformation/data.yml.erb#L504-L563) so queries scan only the needed partitions. CloudFront standard access logs are TSV and not JSON; real-time logs can stream structured fields but this stack lands them in S3 and partitions for Athena.
 
 - Load Balancers
   - **ALB access logs**: After CloudFront, requests that reach the Application Load Balancer are logged with full request/target/latency details. Logging is enabled directly on the ALB via [access log attributes](../aws/cloudformation/cloud_formation_stack.yml.erb#L300-L305), and those CSV logs are written to S3 under the standard `AWSLogs/<account>/<region>/elasticloadbalancing/` prefixes. We define an Athena schema so you can query ALB traffic efficiently using the [ELB/ALB schema](../aws/cloudformation/data.yml.erb#L350-L420).
 
 - Application servers (EC2)
-  - **NGINX reverse proxy**: On each frontend EC2 instance, NGINX terminates connections from the ALB and proxies to Puma. It writes request and error lines to `/var/log/nginx/access.log` and `/var/log/nginx/error.log` as configured in the [nginx config](../cookbooks/cdo-nginx/templates/default/nginx.conf.erb#L19-L20).
+  - **NGINX reverse proxy**: On each frontend EC2 instance, NGINX terminates connections from the ALB and proxies to Puma. It writes request and error lines to `/var/log/nginx/access.log` and `/var/log/nginx/error.log` as configured in the [nginx config](../cookbooks/cdo-nginx/templates/default/nginx.conf.erb#L19-L20). Note: once Pegasus is fully retired and Dashboard is the only web app, we can run a single Puma service directly behind the ALB and eliminate NGINX; Puma has access logging and structured logging support, which would also reduce logging duplication.
   - **Puma app servers (Dashboard and Pegasus)**: We run two separate Puma applications behind NGINX. Rails logs are condensed via Lograge in [production](../dashboard/config/environments/production.rb#L71-L72) and [staging](../dashboard/config/environments/staging.rb#L69-L70), and standard in [adhoc](../dashboard/config/environments/adhoc.rb#L34). Those Rails logs are written under each app’s `log/` directory and then synced to S3 hourly by our uploader.
   - **Browser events**: Client‑side code can POST structured events that the server batches and writes to a per‑environment CloudWatch Logs [log group](../aws/cloudformation/components/logging.yml.erb#L1-L13). The server endpoint that receives and publishes these is the [controller entrypoint](../dashboard/app/controllers/browser_events_controller.rb#L4-L13) and [publisher](../dashboard/app/controllers/browser_events_controller.rb#L21-L27).
   - **Cron jobs and background tasks**: Many scheduled tasks load the main Rails stack and therefore log exactly like the web app (same formatter and destinations). In addition, an hourly job syncs local app logs to S3 so operational history is preserved by the [hourly uploader](../bin/upload-logs-to-s3#L4-L12); see the [log upload doc](./app-log-upload.md).
@@ -28,6 +28,11 @@ This document inventories logging across the Code.org platform. It explains, in 
 
 - Security/administration
   - **CloudTrail** records AWS API activity and delivers JSON logs to S3; we expose them in Athena via a [CloudTrail table](../aws/cloudformation/data.yml.erb#L452-L503). Administrative audit trails also live in a dedicated [admin audit log group](../aws/cloudformation/data.yml.erb#L620-L661).
+
+- Observability services (third‑party)
+  - **Honeybadger**: Error reporting/alerting from Rails, Lambda handlers, and jobs (e.g., `Honeybadger.notify` uses across the codebase); use it for triage and visualization of exceptions.
+  - **New Relic**: APM and browser monitoring via the Ruby agent ([agent config](../cookbooks/cdo-apps/templates/default/newrelic.yml.erb)); use for performance traces and browser RUM, not as the durable store of logs.
+  - **Statsig**: Feature flagging/analytics. Where possible, prefer Statsig (or equivalent) for client analytics events over direct Firehose writes.
 
 ## Destinations (and durability expectations)
 
@@ -92,18 +97,18 @@ Read across the sections above to locate each artifact and the linked infrastruc
 
 - Consolidate and standardize structured logging
   - Adopt a single JSON shape across Rails (Lograge), Lambdas, and browser events (include timestamp, level, requestId, userId where applicable, route, status, latency). Add a correlation id propagated from CloudFront through ALB → NGINX → Puma and into background jobs.
-  - Prefer JSON everywhere and avoid text formats that are hard to parse (e.g., default nginx format); consider JSON nginx access logs if feasible.
 - Reduce duplication between layers
-  - Today CloudFront, ALB, NGINX, and Rails all log requests. Keep CloudFront and ALB for edge diagnostics and LB health; keep Rails for application context. Consider down‑sampling NGINX access logs (or turning them on only for error/slow path analysis) to reduce volume and storage cost.
-- Improve durability of instance‑local logs
-  - NGINX logs are not replicated by default; extend the hourly uploader (or add a lightweight shipper) to push nginx access/error logs to S3 or CloudWatch Logs more frequently, especially during incidents.
-  - Ensure termination runbooks force a final rotate+sync step (already documented) and consider a pre‑stop hook to flush logs on scale‑in.
+  - Today CloudFront, ALB, NGINX, and Rails all log requests. Keep CloudFront and ALB for edge diagnostics and LB health; keep Rails for application context. Down‑sample or retire NGINX access logging as we move to a single Puma service behind ALB.
+- Ensure graceful autoscaling termination flushes
+  - Add an Auto Scaling terminating lifecycle hook and a pre‑stop script that rotates and uploads Rails and NGINX logs before instance termination. Today we have a [launching lifecycle hook](../aws/cloudformation/components/ami.yml.erb#L241-L251); add the terminating counterpart and invoke the uploader.
 - Clarify and bound best‑effort pipelines
   - Document SLOs for CloudFront real‑time/partition path and CloudWatch browser events (expected latency, acceptable loss during peaks). Add monitoring on S3 event backlog and Lambda DLQ to surface gaps.
-- Firehose governance and schema
-  - Define a schema contract and retention policy for `analysis-events` and `i18n-string-tracking-events`; add PII linting and sampling if high volume. Prefer IAM‑based producers; avoid embedding long‑lived credentials in public contexts.
-- Centralized search and dashboards
-  - Add Athena saved queries for common investigations (per‑route latency, WAF blocks by rule, ALB 5xx by target, CloudFront 4xx/5xx). Create CloudWatch dashboards for browser events error rates. Consider a log lake pattern (S3 + Glue catalog) as the primary search surface; optionally layer OpenSearch if needed.
+- Deprecate Firehose for client analytics
+  - Migrate front‑end analytics to Statsig (or equivalent), and remove ad‑hoc Firehose writes (`analysis-events`, `i18n-string-tracking-events`) where feasible.
+- Environment/account segregation and retention
+  - Move each environment’s logs to environment‑specific buckets and accounts, feeding a Control Tower–style Log Archive. Keep short retention in source accounts and long‑term retention/compliance in the central log archive. Publish retention SLOs per destination (CloudFront/ALB S3, CloudWatch groups, app logs in S3).
+- Error tooling scope and retention
+  - Use Honeybadger for error triage/visualization with a shorter retention window; rely on S3/CloudWatch as the durable store. Use New Relic for APM and RUM, not as a general log sink.
 - Cron and background job visibility
   - Tag cron/ActiveJob entries with job class, schedule, and correlation id from triggering request where possible. Ensure their logs are clearly distinguishable from web requests in both CloudWatch and S3 outputs.
 - Cost controls
