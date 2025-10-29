@@ -88,7 +88,23 @@ When a signed‑in user views a level at `studio.code.org`:
 
 Read across the sections above to locate each artifact and the linked infrastructure/app code that configures it.
 
-## Notes and gaps
+## Observations and recommendations
 
-- External repos (e.g., Java Builder, AI Proxy) are not included here due to access limits. If added, they will follow the same CloudFront/ALB/CloudWatch/S3 patterns and typically log to CloudWatch Logs and/or S3 with service‑specific prefixes.
-- Historical doc on hourly S3 upload/rotation: see the [log upload doc](./logging.md).
+- Consolidate and standardize structured logging
+  - Adopt a single JSON shape across Rails (Lograge), Lambdas, and browser events (include timestamp, level, requestId, userId where applicable, route, status, latency). Add a correlation id propagated from CloudFront through ALB → NGINX → Puma and into background jobs.
+  - Prefer JSON everywhere and avoid text formats that are hard to parse (e.g., default nginx format); consider JSON nginx access logs if feasible.
+- Reduce duplication between layers
+  - Today CloudFront, ALB, NGINX, and Rails all log requests. Keep CloudFront and ALB for edge diagnostics and LB health; keep Rails for application context. Consider down‑sampling NGINX access logs (or turning them on only for error/slow path analysis) to reduce volume and storage cost.
+- Improve durability of instance‑local logs
+  - NGINX logs are not replicated by default; extend the hourly uploader (or add a lightweight shipper) to push nginx access/error logs to S3 or CloudWatch Logs more frequently, especially during incidents.
+  - Ensure termination runbooks force a final rotate+sync step (already documented) and consider a pre‑stop hook to flush logs on scale‑in.
+- Clarify and bound best‑effort pipelines
+  - Document SLOs for CloudFront real‑time/partition path and CloudWatch browser events (expected latency, acceptable loss during peaks). Add monitoring on S3 event backlog and Lambda DLQ to surface gaps.
+- Firehose governance and schema
+  - Define a schema contract and retention policy for `analysis-events` and `i18n-string-tracking-events`; add PII linting and sampling if high volume. Prefer IAM‑based producers; avoid embedding long‑lived credentials in public contexts.
+- Centralized search and dashboards
+  - Add Athena saved queries for common investigations (per‑route latency, WAF blocks by rule, ALB 5xx by target, CloudFront 4xx/5xx). Create CloudWatch dashboards for browser events error rates. Consider a log lake pattern (S3 + Glue catalog) as the primary search surface; optionally layer OpenSearch if needed.
+- Cron and background job visibility
+  - Tag cron/ActiveJob entries with job class, schedule, and correlation id from triggering request where possible. Ensure their logs are clearly distinguishable from web requests in both CloudWatch and S3 outputs.
+- Cost controls
+  - Set S3 lifecycle rules on `cdo-logs` prefixes (e.g., transition to Glacier after N days). Consider CloudWatch Logs retention policies per group and enable compression/partitioning discipline.
