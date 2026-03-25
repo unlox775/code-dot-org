@@ -11,6 +11,7 @@
 #  index_lessons_vocabularies_on_vocabulary_id_and_lesson_id  (vocabulary_id,lesson_id)
 #
 class LessonsVocabulary < ApplicationRecord
+  include GuidSupport
   belongs_to :lesson, optional: true
   belongs_to :vocabulary, optional: true
 

@@ -1,0 +1,151 @@
+# Enhanced Link Validation Report - 2025-10-24 02:30:05
+**Base Directory:** /workspace
+
+## 📊 Summary
+- **Files processed:** 22
+- **Total links:** 760
+- **✅ Valid links:** 757
+- **❌ Broken links:** 0
+- **⚠️ Warning links:** 2
+- **🚫 Error links:** 1
+- **📄 Documentation issues:** 23
+
+## docs/dependencies/gemfile-dependencies/monitoring-logging.md
+- **Total links:** 67
+- **✅ Valid:** 67
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 4
+
+**Documentation Issues:**
+- **missing_github:** sd_notify
+  - **Suggestion:** Add GitHub link for sd_notify
+
+- **missing_github:** crowdin-api
+  - **Suggestion:** Add GitHub link for crowdin-api
+
+- **missing_github:** mailjet
+  - **Suggestion:** Add GitHub link for mailjet
+
+- **missing_github:** localhost
+  - **Suggestion:** Add GitHub link for localhost
+
+## docs/dependencies/gemfile-dependencies/development-testing.md
+- **Total links:** 82
+- **✅ Valid:** 82
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 5
+
+**Documentation Issues:**
+- **missing_github:** rubocop-rails-accessibility
+  - **Suggestion:** Add GitHub link for rubocop-rails-accessibility
+
+- **missing_github:** debugger
+  - **Suggestion:** Add GitHub link for debugger
+
+- **missing_github:** minitest-spec-context
+  - **Suggestion:** Add GitHub link for minitest-spec-context
+
+- **missing_github:** minitest-stub-const
+  - **Suggestion:** Add GitHub link for minitest-stub-const
+
+- **missing_github:** eyes_selenium
+  - **Suggestion:** Add GitHub link for eyes_selenium
+
+## docs/dependencies/gemfile-dependencies/other-utilities.md
+- **Total links:** 96
+- **✅ Valid:** 96
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 6
+
+**Documentation Issues:**
+- **missing_github:** full-name-splitter
+  - **Suggestion:** Add GitHub link for full-name-splitter
+
+- **missing_github:** sort_alphabetical
+  - **Suggestion:** Add GitHub link for sort_alphabetical
+
+- **missing_github:** validate_url
+  - **Suggestion:** Add GitHub link for validate_url
+
+- **missing_github:** retryable
+  - **Suggestion:** Add GitHub link for retryable
+
+- **missing_github:** jumphash
+  - **Suggestion:** Add GitHub link for jumphash
+
+- **missing_github:** xxhash
+  - **Suggestion:** Add GitHub link for xxhash
+
+## docs/dependencies/gemfile-dependencies/ruby-version-compatibility.md
+- **Total links:** 22
+- **✅ Valid:** 22
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 1
+
+**Documentation Issues:**
+- **missing_github:** sorted_set
+  - **Suggestion:** Add GitHub link for sorted_set
+
+## docs/dependencies/gemfile-dependencies/authentication-authorization.md
+- **Total links:** 43
+- **✅ Valid:** 43
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 2
+
+**Documentation Issues:**
+- **missing_documentation:** omniauth-microsoft_v2_auth
+  - **Suggestion:** Add documentation link for omniauth-microsoft_v2_auth
+
+- **missing_github:** omniauth-microsoft_v2_auth
+  - **Suggestion:** Add GitHub link for omniauth-microsoft_v2_auth
+
+## docs/dependencies/gemfile-dependencies/database-caching.md
+- **Total links:** 47
+- **✅ Valid:** 47
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 4
+
+**Documentation Issues:**
+- **missing_github:** redis-slave-read
+  - **Suggestion:** Add GitHub link for redis-slave-read
+
+- **missing_documentation:** active_record_union
+  - **Suggestion:** Add documentation link for active_record_union
+
+- **missing_github:** active_record_union
+  - **Suggestion:** Add GitHub link for active_record_union
+
+- **missing_github:** paranoia
+  - **Suggestion:** Add GitHub link for paranoia
+
+## docs/dependencies/gemfile-dependencies/web-server-middleware.md
+- **Total links:** 31
+- **✅ Valid:** 31
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 0
+- **📄 Doc issues:** 1
+
+**Documentation Issues:**
+- **missing_github:** sd_notify
+  - **Suggestion:** Add GitHub link for sd_notify
+
+## docs/dependencies/gemfile-dependencies/cloud-services-aws.md
+- **Total links:** 26
+- **✅ Valid:** 25
+- **❌ Broken:** 0
+- **⚠️ Warnings:** 0
+- **🚫 Errors:** 1
+- **📄 Doc issues:** 0
