@@ -23,6 +23,7 @@
 # @attr [Integer] duration - The length of this activity in minutes.
 class LessonActivity < ApplicationRecord
   include SerializedProperties
+  include GuidSupport
 
   belongs_to :lesson, optional: true
   has_one :script, through: :lesson

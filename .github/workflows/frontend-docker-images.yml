@@ -4,7 +4,15 @@ on:
   schedule:
     - cron: '0 3 * * 0' # Every Sunday at 3am UTC
   workflow_dispatch:
-    # Allow manual trigger
+    inputs:
+      image_owner:
+        description: "GHCR namespace/owner to push images to (defaults to repository owner)"
+        required: false
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_OWNER: ${{ github.event.inputs.image_owner || github.repository_owner }}
 
 jobs:
   # Job: build-frontend-base
@@ -36,4 +44,4 @@ jobs:
           file: ./docker/frontend/base/Dockerfile
           push: true
           tags: |
-            ghcr.io/code-dot-org/frontend-base:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/frontend-base:latest

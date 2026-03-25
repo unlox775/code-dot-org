@@ -13,6 +13,7 @@
 #  index_stages_standards_on_standard_id  (standard_id)
 #
 class LessonsStandard < ApplicationRecord
+  include GuidSupport
   self.table_name = 'stages_standards'
 
   belongs_to :lesson, foreign_key: 'stage_id', optional: true
