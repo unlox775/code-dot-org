@@ -38,6 +38,7 @@ class ScriptLevel < ApplicationRecord
   include LevelsHelper
   include SharedConstants
   include Rails.application.routes.url_helpers
+  include GuidSupport
 
   belongs_to :script, class_name: 'Unit', optional: true
   belongs_to :lesson, foreign_key: 'stage_id', optional: true
@@ -646,6 +647,11 @@ class ScriptLevel < ApplicationRecord
     my_key = {
       'script_level.level_keys': get_level_keys(seed_context, use_existing_level_keys)
     }
+
+    # Include GUID if available for better identification
+    if guid_column_exists? && guid.present?
+      my_key['script_level.guid'] = guid
+    end
 
     my_lesson = seed_context.lessons.select {|l| l.id == stage_id}.first
     raise "No Lesson found for #{self.class}: #{my_key}, Lesson ID: #{stage_id}" unless my_lesson

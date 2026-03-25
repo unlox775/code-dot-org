@@ -15,6 +15,7 @@
 #
 
 class UnitGroupUnit < ApplicationRecord
+  include GuidSupport
   self.table_name = 'course_scripts'
 
   belongs_to :unit_group, foreign_key: 'course_id', optional: true

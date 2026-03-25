@@ -11,6 +11,7 @@
 #  index_lessons_resources_on_resource_id_and_lesson_id  (resource_id,lesson_id)
 #
 class LessonsResource < ApplicationRecord
+  include GuidSupport
   belongs_to :lesson, optional: true
   belongs_to :resource, optional: true
 
