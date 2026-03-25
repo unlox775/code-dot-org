@@ -15,6 +15,7 @@
 # Join table.
 # Don't add anything to this model, beyond what's needed for serialization and seeding; used for convenience for ActiveRecord Import.
 class LevelsScriptLevel < ApplicationRecord
+  include GuidSupport
   belongs_to :script_level, optional: true
   belongs_to :level, optional: true
 
