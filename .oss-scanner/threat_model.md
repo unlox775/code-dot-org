@@ -1,10 +1,7 @@
 # Threat model: code-dot-org
 
 This file tells the OSS Scanner what this repository is, which boundaries
-matter, and how we rate what crosses them. It is derived from Code.org's
-internal threat models (a company-wide model plus one model for each product
-and shared-plumbing area). Details of open internal findings are deliberately
-left out of this public file.
+matter, and how we rate what crosses them.
 
 ## What this is
 
@@ -22,36 +19,11 @@ SSO, LTI and rostering services.
 | `aws/`, `cookbooks/`, `k8s/`, `docker/`, `.github/`, `.drone.yml`, `bin/`, `tools/` | Infrastructure as code, Chef cookbooks, CI and deployment. |
 | `pegasus/` | The retired marketing site; only migrations, cache and rake tasks remain. |
 
-### Product areas
-
-Internally the code is divided into 25 product areas and 9 shared-plumbing
-areas, each with its own threat model. The ones in this repository, with their
-main paths:
-
-- **Learning labs:** App Lab (`apps/src/applab`), Game Lab and Sprite Lab
-  (`apps/src/p5lab`), Web Lab 1 (`apps/src/weblab`), Web Lab 2
-  (`apps/src/weblab2`), Java Lab (`apps/src/javalab`; code runs on the
-  separate Javabuilder service), Python Lab (`apps/src/pythonlab`,
-  `python/pythonlab`), Music Lab (`apps/src/music`), Dance Party
-  (`apps/src/dance`), AI for Oceans (`apps/src/fish`,
-  `frontend/packages/labs/oceans`), classic puzzle labs and Hour of Code
-  (`maze`, `studio`, `turtle`, `flappy`, `bounce`, `craft`, ...), and other
-  small labs.
-- **Cross-cutting products:** Backpack; AI (`aichat`, `ailab`, `aiTutor`,
-  `aiGateway` and the matching controllers, jobs and helpers); Level Builder
-  (`apps/src/levelbuilder`, `dashboard/app/controllers` for levels, scripts and
-  courses, `dashboard/config/scripts*`); content management; Sections and
-  Teacher Tools; Accounts, Identity and LTI; Professional Learning; Census,
-  Regional Partners and AFE.
-- **Infrastructure and operations:** Cloud and Deploy; Observability.
-- **Shared plumbing:** lab2 runtime (`apps/src/lab2`), Blockly engine
-  (`apps/src/blockly`), shared frontend infrastructure, the Code Studio
-  platform shell (`apps/src/code-studio`), the design system
-  (`frontend/packages/component-library*`), the i18n framework, DCDO and
-  shared Ruby libraries, trust-and-safety utilities, shared assets.
-
-A finding in plumbing usually affects every product that uses it; say which
-products are reachable.
+Many labs share code: the lab2 runtime (`apps/src/lab2`), the Blockly
+integration (`apps/src/blockly`), the Code Studio shell
+(`apps/src/code-studio`) and the design system
+(`frontend/packages/component-library*`). A finding there usually affects
+every lab that uses it; say which ones are reachable.
 
 ## Starting positions
 
