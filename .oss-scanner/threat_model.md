@@ -1,87 +1,164 @@
-# Threat model: code-dot-org (Code.org / CodeAI learning platform)
+# Threat model: code-dot-org
 
-> Draft for the OSS Scanner. Items marked **TODO(Dave)** are judgment calls that
-> the Code.org security owner still has to make. Until they are resolved, the
-> defaults written next to them apply.
+This file tells the OSS Scanner what this repository is, which boundaries
+matter, and how we rate what crosses them. It is derived from Code.org's
+internal threat models (a company-wide model plus one model for each product
+and shared-plumbing area). Details of open internal findings are deliberately
+left out of this public file.
 
 ## What this is
 
-This is the monorepo behind https://studio.code.org ("dashboard") and code.org,
-a free K-12 computer science and AI education platform. Most users are
-**students, many of them under 13**, and their teachers. Some districts provision
-accounts through SSO and rostering.
+The monorepo behind Code.org's learning platform, Studio (studio.code.org,
+called "dashboard" internally), and code.org. Most users are K-12 students,
+many under 13, and their teachers. School districts provision accounts through
+SSO, LTI and rostering services.
 
-| Path | What it is | Weight for this scan |
-|---|---|---|
-| `dashboard/` | The Rails app: accounts, sections, curriculum, project storage, APIs, admin and levelbuilder tools. Includes the legacy Sinatra project-storage APIs mounted inside Rails (`dashboard/legacy/middleware/`) and the engines under `dashboard/engines/`. | **Primary** |
-| `lib/`, `shared/` | Ruby libraries used by dashboard: config (`CDO`), DB, S3, secrets, project storage helpers, middleware. | **Primary** |
-| `apps/src/`, `frontend/packages/`, `frontend/apps/` | Client JS/TS: student "labs" (App Lab, Game Lab, Web Lab, Python Lab, Music Lab, AI Lab, ...) and teacher dashboards. | **Primary** for DOM XSS, postMessage and sandbox escapes |
-| `python/` | `pycdo` (called from Rails via pycall), and Python Lab's in-browser (Pyodide) support packages. | Secondary |
-| `pegasus/` | Mostly retired marketing site. Only migrations, cache and rake tasks remain. | Low |
-| `bin/`, `tools/`, `aws/`, `cookbooks/`, `k8s/`, `docker/` | Ops, deploy and infra tooling. Not reachable by users. | Low (see Out of scope) |
+| Path | Contents |
+|---|---|
+| `dashboard/` | The Rails application: accounts, sections, curriculum, project storage, JSON APIs, staff and Level Builder tools. `dashboard/legacy/middleware/` holds the Sinatra project-storage APIs mounted in Rails; `dashboard/engines/` holds Rails engines. |
+| `lib/`, `shared/` | Ruby libraries used by dashboard: configuration (`CDO`), dynamic config (DCDO), database, S3, secrets, project storage, middleware. |
+| `apps/src/`, `frontend/` | Client JavaScript and TypeScript: the student labs, the lab2 runtime, Blockly integration, teacher dashboards, the design system. |
+| `python/` | `pycdo` (called from Rails through PyCall) and Python Lab support code that runs in the browser under Pyodide. |
+| `aws/`, `cookbooks/`, `k8s/`, `docker/`, `.github/`, `.drone.yml`, `bin/`, `tools/` | Infrastructure as code, Chef cookbooks, CI and deployment. |
+| `pegasus/` | The retired marketing site; only migrations, cache and rake tasks remain. |
 
-## Trust boundaries and where untrusted input enters
+### Product areas
 
-Treat all of the following as attacker-controlled:
+Internally the code is divided into 25 product areas and 9 shared-plumbing
+areas, each with its own threat model. The ones in this repository, with their
+main paths:
 
-1. **Any HTTP request to dashboard.** This covers anonymous visitors, signed-in students and signed-in teachers. Controllers live in `dashboard/app/controllers/` (including `api/v1/**`), and routes in `dashboard/config/routes.rb`.
-2. **Student project content.** Source code, assets, files, animations and libraries are stored through `/v3/{sources,assets,files,animations,libraries}` and `/v3/channels` (`dashboard/legacy/middleware/files_api.rb`, `channels_api.rb`, helpers in `dashboard/legacy/middleware/helpers/`). That content is rendered back to:
-   - the author
-   - teachers, who view student work
-   - anyone with a share link: `/projects/<type>/<channel>` share pages, `/c/:id`, the public gallery (`api/v1/projects/public_gallery_controller.rb`)
-   - student-built HTML hosted on the codeprojects domains (Web Lab, and the Web Lab 2 / Python Lab preview via `codeprojects_preview_controller.rb` and `pyodide_sandbox_controller.rb`)
-3. **Data blocks** (`datablock_storage_controller.rb`): App Lab / Game Lab key-value and table storage. Some endpoints are callable without sign-in and are rate-limited.
-4. **Identity providers and rostering.** OmniAuth (Google, Microsoft, Facebook, Clever, ClassLink) via `omniauth_callbacks_controller.rb` and `dashboard/config/initializers/devise.rb`. Clever and ClassLink set `provider_ignores_state: true` because they start the flow. LTI 1.3 lives in `lti_v1_controller.rb` and `dashboard/app/controllers/lti/v1/*` (Canvas, Schoology, dynamic registration, deep linking, section sync). Clever / ClassLink / LTI roster sync creates and updates student accounts.
-5. **Outbound-fetch endpoints (SSRF surface):**
-   - `xhr_proxy_controller.rb`, with allowlists
-   - `media_proxy_controller.rb`, `curriculum_proxy_controller.rb`, `redirect_proxy_controller.rb`
-   - `/v3/images/moderate_url`
-   - Python Lab's patched `requests`, which goes through the XHR proxy
-6. **AI features.** `aichat_*`, `ai_*`, `openai_*` and `aidiff_*` controllers, plus jobs such as `aichat_request_chat_completion_job.rb` and `evaluate_rubric_job.rb`. These send student input to third-party LLMs and render model output back to students and teachers. In scope:
-   - prompt injection that crosses a user boundary (one student's content steering what another user or a teacher sees or does)
-   - leaking PII to a model provider beyond the intended design
-   - model output rendered unsafely
-7. **Teacher-supplied content.** Section names, rosters, student names, feedback and rubric comments, which are rendered to students.
-8. **Levelbuilder / curriculum content** (`dashboard/config/scripts*`, `courses`, levels). This is authored by trusted Code.org staff. **TODO(Dave):** treat it as trusted (default: trusted; XSS that needs levelbuilder access is low severity).
+- **Learning labs:** App Lab (`apps/src/applab`), Game Lab and Sprite Lab
+  (`apps/src/p5lab`), Web Lab 1 (`apps/src/weblab`), Web Lab 2
+  (`apps/src/weblab2`), Java Lab (`apps/src/javalab`; code runs on the
+  separate Javabuilder service), Python Lab (`apps/src/pythonlab`,
+  `python/pythonlab`), Music Lab (`apps/src/music`), Dance Party
+  (`apps/src/dance`), AI for Oceans (`apps/src/fish`,
+  `frontend/packages/labs/oceans`), classic puzzle labs and Hour of Code
+  (`maze`, `studio`, `turtle`, `flappy`, `bounce`, `craft`, ...), and other
+  small labs.
+- **Cross-cutting products:** Backpack; AI (`aichat`, `ailab`, `aiTutor`,
+  `aiGateway` and the matching controllers, jobs and helpers); Level Builder
+  (`apps/src/levelbuilder`, `dashboard/app/controllers` for levels, scripts and
+  courses, `dashboard/config/scripts*`); content management; Sections and
+  Teacher Tools; Accounts, Identity and LTI; Professional Learning; Census,
+  Regional Partners and AFE.
+- **Infrastructure and operations:** Cloud and Deploy; Observability.
+- **Shared plumbing:** lab2 runtime (`apps/src/lab2`), Blockly engine
+  (`apps/src/blockly`), shared frontend infrastructure, the Code Studio
+  platform shell (`apps/src/code-studio`), the design system
+  (`frontend/packages/component-library*`), the i18n framework, DCDO and
+  shared Ruby libraries, trust-and-safety utilities, shared assets.
 
-## Highest-value assets and security properties
+A finding in plumbing usually affects every product that uses it; say which
+products are reachable.
 
-1. **Student PII and child privacy.** Data includes:
-   - `users` columns: email / hashed_email, parent_email, birthday/age, name, username, gender, school, sign-in IPs, `properties`
-   - `user_geos` (IP-derived location)
-   - parental permission requests, authentication options (OAuth tokens)
-   - AI chat logs, data-block storage, project content
-   
-   COPPA, FERPA and state student-privacy laws apply. Exposing a minor's PII to another user is the worst class of bug here.
-2. **Account and role boundaries:**
-   - Students vs. teachers vs. staff roles: `users.admin`, plus `UserPermission` (levelbuilder, project_validator, workshop_admin, facilitator, program_manager, universal_instructor, student_work_access, ...).
-   - Authorization lives in `dashboard/app/models/ability.rb` (CanCanCan) and `dashboard/lib/policies/*`.
-   - The key invariant: **a teacher may see and manage only students in their own sections; a student may see only their own work, or work that was explicitly shared.**
-   - Section join codes, picture/word passwords for young students (`sections_controller`, `bypass_sign_in`), co-teacher invitations, account transfer, and student "takeover" / account linking all need care.
-3. **Sessions and authentication.** The session cookie is `_learn_session` in a Redis session store. Also in scope: Devise password reset and confirmation, OAuth / LTI account linking, and CSRF. `ApplicationController` uses `protect_from_forgery with: :exception`, but about 30 actions are exempt (e.g. parts of `api/v1/users`, `sections_students`, `sections#update`, `transfers`, `user_levels#update`). Check that each exemption is safe.
-4. **Admin impersonation:** `admin_users_controller#assume_identity`.
-5. **Tokens we sign.** Javabuilder JWTs (`javabuilder_sessions_controller.rb`), AI-gateway tokens (`ai_gateway_auth_controller.rb`), LTI tokens (`dashboard/lib/lti_access_token.rb`), the JWKS at `/oauth/jwks` (`docs/jwks.md`).
-6. **Isolation of student-hosted content.** Student HTML/JS must not run on a domain that holds studio.code.org cookies. See `docs/weblab-preview-domain-migration.md` and the CSP notes in `codeprojects_preview_controller.rb`.
-7. **Secrets.** Production secrets come from AWS Secrets Manager (`!Secret` in `config.yml.erb`, `lib/cdo/secrets.rb`). A real secret committed to this public repo is in scope. The committed test stubs in `config/test.yml.erb`, `shared/test/fixtures/aws_credentials`, `docker/rails/adhoc.env` and `docker/developers/.env` are fake by design and should not be reported.
+## Starting positions
 
-## In scope / out of scope
+An attacker starts from one of these. They are not equivalent; state which one
+a finding assumes.
 
-In scope: everything under `dashboard/`, `lib/`, `shared/`, `apps/src/`, `frontend/`, and `python/pycdo`.
+1. **Anonymous visitor.** Any public route, share page, or anonymous API.
+2. **Signed-in student.** Includes students under 13 whose accounts a teacher
+   manages and who sign in with a picture or word password.
+3. **Signed-in teacher.** Owns sections and can see and manage their students.
+4. **Author of shared content.** Any user whose project, data block, chat
+   message or other content is later rendered or run for another user.
+5. **Identity provider or LMS input.** OAuth callbacks (Google, Microsoft,
+   Facebook, Clever, ClassLink), LTI 1.3 launches and roster sync.
+6. **Scoped staff author.** A Level Builder or content author. Authors are
+   trusted to write curriculum, not to run code on the server or to publish
+   outside their content.
+7. **Pull-request contributor.** Code that CI runs before review.
 
-**Out of scope** (default; **TODO(Dave)** confirm):
+## Untrusted input and where it enters
 
-- **Vendored third-party code.** Report a vendored-library vulnerability only if our code makes it reachable, and report it against our usage. Vendored code includes:
-  - `apps/lib/**` (Blockly, Ace, Droplet, jQuery UI, Phaser, Pyodide, ...)
-  - minified bundles in `apps/static/` and `dashboard/public/`
-  - the generated Clever client in `dashboard/lib/clever`
-  - anything in `node_modules/` or the gem bundle
-- **Infra and ops tooling.** `aws/`, `cookbooks/`, `k8s/`, `docker/`, `bin/`, `tools/` (CI, deploy, lint hooks). **TODO(Dave):** decide whether CI / GitHub workflow injection (`.github/`, `.drone.yml`) is wanted. Default: report only clear secret-exfiltration paths.
-- **Test and dev-only code.** `*/test/**`, fixtures, VCR cassettes, `frontend/packages/e2e-tests`, `frontend/packages/playwright-support`, storybook, `experimental/`. `dev_controller.rb` and `test_ai_proxy_controller.rb` are in scope **only** if they are reachable in production; check the environment gating.
-- `pegasus/`: low priority.
-- **Student code running in the student's own browser.** App Lab, Game Lab, Python Lab (Pyodide) and Web Lab run student code in the browser by design. A student running arbitrary JS against their *own* session is not a finding. It **is** a finding when that code runs with another user's privileges, for example:
-  - a shared project page executing on studio.code.org's origin with the viewer's cookies
-  - escaping the codeprojects / preview sandbox
-  - a postMessage handler trusting a project iframe
+- Every HTTP request to dashboard: `dashboard/config/routes.rb`,
+  `dashboard/app/controllers/` (including `api/v1/**`), and the legacy
+  middleware under `dashboard/legacy/middleware/`.
+- Student projects: sources, assets, files, animations and libraries through
+  `/v3/*` (`files_api.rb`, `channels_api.rb`). They are rendered back to the
+  author, to teachers reviewing work, to anyone with a share link, and in the
+  public gallery.
+- Student code that runs. App Lab, Game Lab, Sprite Lab and the puzzle labs
+  run it in interpreters in the browser. Python Lab runs it in a Pyodide
+  worker. Web Lab serves student HTML from the codeprojects domains. Java Lab
+  sends it to the Javabuilder service.
+- Data blocks (`datablock_storage_controller.rb`), some of them reachable
+  without signing in.
+- Identity and rostering: `omniauth_callbacks_controller.rb`,
+  `dashboard/config/initializers/devise.rb`, `lti_v1_controller.rb` and
+  `dashboard/app/controllers/lti/v1/`, and Clever, ClassLink and LTI roster
+  sync.
+- Outbound fetches on a user's behalf: `xhr_proxy_controller.rb`,
+  `media_proxy_controller.rb`, `curriculum_proxy_controller.rb`,
+  `redirect_proxy_controller.rb`, `/v3/images/moderate_url`, and Python Lab's
+  `requests` shim, which goes through the XHR proxy.
+- AI features: student text goes to model providers, and model output is
+  rendered to students and teachers.
+- Teacher content rendered to students: section names, rosters, feedback,
+  rubric comments.
+- Level Builder input: level, script and course definitions, authored DSL
+  files, and anything that becomes a generated file or a commit.
+- CI inputs: pull-request code run by GitHub Actions (`.github/workflows/`)
+  and Drone (`.drone.yml`).
+
+## What we are protecting
+
+In priority order:
+
+1. **Student and teacher data.** Personal data (`users`: names, emails,
+   parent email, birthday, sign-in IPs; `user_geos`; parental permission
+   requests; OAuth tokens), project contents, AI chat logs and data-block
+   storage. COPPA, FERPA and state student-privacy laws apply.
+2. **The boundaries between users.** A student sees only their own work and
+   work shared with them. A teacher sees and manages only students in their own
+   sections. Staff roles (`users.admin`, `UserPermission`) are granted only on
+   the server. Authorization is in `dashboard/app/models/ability.rb` (CanCanCan)
+   and `dashboard/lib/policies/`.
+3. **Sessions and accounts.** The `_learn_session` cookie and Redis session
+   store; Devise sign-in, password reset and confirmation; OAuth and LTI
+   account linking; account transfer and takeover flows; admin impersonation
+   (`admin_users_controller#assume_identity`).
+4. **Isolation of learner code.** Learner code must not act with another
+   user's session, or with a server or executor's authority. Code that runs on
+   the Studio origin, Python Lab's worker among it, is the most sensitive case.
+   Web Lab and the preview domains exist to keep student pages off that origin.
+5. **The server and its cloud authority.** Code execution on an application
+   host, server-side file read, or SSRF reaches credentials and cloud
+   permissions. The impact goes well beyond that one request.
+6. **The integrity of what we ship.** The source, curriculum, cookbooks,
+   build artifacts and deployment state that become production.
+7. **Tokens we sign.** Javabuilder and AI-gateway JWTs, LTI tokens, and the
+   JWKS at `/oauth/jwks`.
+
+## In scope
+
+- Everything under `dashboard/`, `lib/`, `shared/`, `apps/src/`, `frontend/`
+  and `python/`.
+- CI definitions (`.github/workflows/`, `.drone.yml`) and infrastructure code
+  (`aws/`, `cookbooks/`, `k8s/`, `docker/`), but only for a concrete path from
+  one of the starting positions above to credentials, production artifacts or
+  deployment. Breadth of cloud IAM, deployment-pipeline design and backup are
+  already tracked internally. Do not report them as standalone configuration
+  findings.
+
+## Out of scope
+
+- Vendored third-party code: `apps/lib/**` (Blockly, Ace, Droplet, Phaser,
+  Pyodide, jQuery UI, ...), minified bundles in `apps/static/` and
+  `dashboard/public/`, the generated Clever client in `dashboard/lib/clever`,
+  `node_modules/` and gems. Report one only if our code makes it reachable,
+  and report it against our use.
+- Dependency versions in lockfiles without a demonstrated path through our
+  code.
+- Tests, fixtures, VCR cassettes, storybook, `frontend/packages/e2e-tests`,
+  `frontend/packages/playwright-support`, `experimental/`.
+- `dev_controller.rb` and `test_ai_proxy_controller.rb`, unless they are
+  reachable in production. Check how they are gated.
+- `pegasus/`.
+- The separate repositories: Javabuilder, the AI gateway, and the
+  infrastructure repository.
 
 ## How to exercise it (inside this image, offline)
 
@@ -149,56 +226,91 @@ cd /src && uv run --no-sync pytest -q python/pycdo
 
 ## How we rate severity
 
-**TODO(Dave): confirm or adjust.** Suggested defaults:
+Rate by what the attacker ends up controlling. "XSS" or "SQLi" alone does not
+set a severity. A finding that hands an attacker a different principal is
+worth more than one that stays inside the attacker's own account.
 
 - **Critical**
-  - Unauthenticated access to, or modification of, other users' PII or accounts at scale (e.g. IDOR on a `users`/`sections` API, SQLi reachable without authentication, auth bypass, session forgery)
-  - RCE on the server
-  - Exposure of production secrets
+  - Code execution on an application server. This reaches host credentials
+    and the host's cloud permissions, not just the request.
+  - Server-side read of arbitrary files. Readable credentials are assumed
+    exposed.
+  - SSRF that reaches cloud metadata or internal services.
+  - SQL injection, or authentication or authorization bypass, that exposes
+    or changes many users' data without a victim action.
+  - Session or account forgery.
+  - A path from a pull request, a Level Builder author or a student into
+    production artifacts, deployment, or CI credentials.
 - **High**
-  - Authenticated cross-user access that crosses the student/teacher/section boundary (one teacher reads another teacher's students, a student reads another student's private project or PII)
-  - Account takeover that needs a single victim click
-  - Stored XSS that executes on a studio.code.org origin for other users (e.g. via a shared project, section name or feedback)
-  - Post-auth SQLi
-  - SSRF that reaches internal or cloud-metadata endpoints
-  - Privilege escalation to teacher, levelbuilder or admin
+  - Crossing the student/teacher/section boundary for one victim or class.
+    For example, a teacher reads another teacher's students, or a student
+    reads another student's private project or personal data.
+  - Account takeover that needs one victim action.
+  - Stored XSS, or a learner-code escape, that runs on the Studio origin as
+    another user. One that spreads through normal sharing, teacher review or
+    the gallery may be Critical; say why.
+  - Post-authentication SQL injection.
+  - Privilege escalation to teacher, staff, Level Builder or admin.
+  - A Level Builder author executing code on the host or writing files
+    outside their content.
+  - Forging a token we sign.
 - **Medium**
-  - Reflected XSS
-  - CSRF on a state-changing action with real impact
-  - Stored XSS that needs an unusual victim action or is limited to the attacker's own section
-  - SSRF limited to external hosts
-  - Bypass of child-account / parental-consent policy (`dashboard/lib/policies/child_account*`) without PII exposure
-  - Information leaks of non-PII internal data
+  - Reflected XSS.
+  - CSRF on a state-changing action with real effect. About 30 actions skip
+    Rails CSRF protection; check whether each exemption is safe.
+  - SSRF limited to external hosts.
+  - A bypass of the child-account or parental-consent policy
+    (`dashboard/lib/policies/child_account*`) that exposes no data.
+  - Leaks of internal, non-personal data.
 - **Low**
-  - Issues that need staff privileges (levelbuilder / admin) to exploit
-  - Missing hardening headers
-  - Open redirects without a chained impact
-  - Rate-limit gaps
-  - Self-XSS
-- **DoS:** usually low. Medium if a single unauthenticated request can take down a shared resource (e.g. pathological regex, unbounded query).
+  - Issues that need staff privileges to exploit.
+  - Missing hardening headers.
+  - Open redirects with nothing chained.
+  - Self-XSS.
+  - Gaps in rate limiting.
+- **Denial of service** is Low. It is Medium when one unauthenticated request
+  degrades a shared service, such as through a pathological regular
+  expression, an unbounded query, or spending a shared AI-provider budget.
 
-Bugs affecting accounts of under-13 students should be rated one level higher when they expose PII. **TODO(Dave)**
+Raise the severity one level when a finding exposes the personal data of
+students under 13.
+
+When you rate:
+
+- Name the principal reached: the viewer's browser session, a teacher, the
+  application host, the Javabuilder executor, or CI. A browser escape on the
+  Studio origin and a backend executor escape reach different principals; do
+  not count one as both.
+- Separate what the source shows from what you executed. Say which steps of a
+  chain you demonstrated in this image and which you inferred.
+- State the starting position and any preconditions, such as a victim click,
+  a shared project, or a teacher reviewing work.
 
 ## Report and patch preferences
 
-**TODO(Dave): confirm.** Defaults:
+- **One report per root cause.** When the same missing check appears in
+  several actions of one controller, file one report and list the affected
+  actions.
+- **Reproducer.** Prefer a failing test under `dashboard/test/` (minitest,
+  using the factories), or a short sequence of requests or `rails runner`
+  commands that runs in this image. Never use real student data.
+- **Patch.** A minimal patch with a regression test where practical. It need
+  not be merge-ready.
 
-- **Report contents.** One report per root cause. Group instances of the same pattern (e.g. the same missing authorization check in several actions of one controller) into one report and list the affected actions.
-- **Reproducer.** Prefer a failing Rails test (minitest, `dashboard/test/...`) or a short request sequence (curl or `rails runner`) that runs inside this image. Do not use real student data.
-- **Patch.** Provide a minimal patch that shows the fix, with a regression test where it is practical. It does not need to be merge-ready.
+## Do not report
 
-## Leave alone
-
-**TODO(Dave):** add known-accepted risks and already-tracked issues. Defaults:
-
-- **By design:**
-  - Student code execution in the student's own browser (see Out of scope)
-  - Public share links being publicly viewable
-  - Clever/ClassLink `provider_ignores_state`, a documented IdP-initiated flow (report only a concrete exploit)
-- **Test-environment stub secrets** (`config/test.yml.erb` and the files listed under Secrets above).
-- **Dependency CVEs.** Do not report a vulnerable gem or npm version from the lockfiles unless you show it is reachable and exploitable through our code.
-- **Not available offline in this image:**
-  - production-only infrastructure (AWS, Secrets Manager, S3, CloudFront/WAF)
-  - external services (Javabuilder, AI providers)
-  
-  Do not report "cannot connect" behaviour as a vulnerability.
+- Student code running in the student's own browser. That is the purpose of
+  the labs. Report it only when it runs with another user's session, escapes
+  the codeprojects or preview isolation, or is trusted by a `postMessage`
+  handler on the Studio origin.
+- Public share links being public.
+- Clever and ClassLink setting `provider_ignores_state`. That is how flows
+  started by those identity providers work. Report only a concrete exploit.
+- The stub secrets in `config/test.yml.erb`, `config/secrets.yml.template`,
+  `shared/test/fixtures/`, `docker/rails/adhoc.env` and
+  `docker/developers/.env`. They are fake by design.
+- Anything that fails only because this image has no network: AWS, S3,
+  Secrets Manager, Javabuilder, AI providers, OAuth providers.
+- Facts that need deployed state this image cannot show: AWS policies, WAF
+  rules, network groups, Chef server state. Cite the code and say what would
+  need to be checked in production.
