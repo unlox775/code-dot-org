@@ -189,7 +189,7 @@ cd /src/frontend/packages/component-library && yarn test              # Vitest (
 cd /src && uv run --no-sync pytest -q python/pycdo
 ```
 
-**Writing a reproducer.** A dashboard test is the best form: a controller or integration test under `dashboard/test/` using the factories in `dashboard/test/factories/`. There is no curriculum seed data, so tests that need units, lessons or levels must create them with factories, as the existing tests do. `rails server` also works: `cd dashboard && bundle exec rails s -p 3000 -b 127.0.0.1` after `start-services.sh`, about 60s to boot. Verified: `/users/sign_in` 200, `/api/v1/users/current` 200, `/` 302. Pages load their JS bundles, so client-side behavior can be checked in headless Chrome against that server. Pages that need curriculum content, S3 or external services will error.
+**Writing a reproducer.** A dashboard test is the best form: a controller or integration test under `dashboard/test/` using the factories in `dashboard/test/factories/`. There is no curriculum seed data, so tests that need units, lessons or levels must create them with factories, as the existing tests do. `rails server` also works: `cd dashboard && bundle exec rails s -p 3000 -b 127.0.0.1` after `start-services.sh`, about 15s to boot. Verified: `/users/sign_in` 200 in under a second, `/` 302. In headless Chrome (Playwright from `frontend/`, launched with `--no-sandbox --disable-dev-shm-usage`), `/users/sign_in`, `/users/sign_up`, `/home` and `/projects/public` load in about 4s with their webpack bundles running and no page errors; only requests to external hosts (fonts, analytics, OneTrust) fail. Pages that need curriculum content, S3 or external services will error.
 
 **What does not work offline in this image:**
 
