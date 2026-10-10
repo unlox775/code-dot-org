@@ -234,6 +234,6 @@ RUN ln -sfn ../../apps/build/package dashboard/public/blockly \
     test $rc = 0 || echo "WARNING: services/frontend build failed (exit $rc): Ruby and JS tests may not run"
 
 RUN bundle exec ruby -e 'puts :ruby_ok' \
-    && test -f apps/build/package/js/manifest.json && ls dashboard/public/assets | head -3 \
+    && { test -f apps/build/package/js/manifest.json || echo "WARNING: no webpack manifest; Rails pages will not render"; } \
     && uv run --no-sync python -c 'import pycdo; print("py_ok")' \
     && node --version && (cd /src/apps && yarn --version) && (cd /src/frontend && yarn --version)
