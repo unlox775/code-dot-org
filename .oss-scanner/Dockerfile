@@ -29,6 +29,8 @@ ARG UV_SHA256_AARCH64=a511f609236b9bfc9dedfcb9867ef1d0f1dc23cc2012f9e4e38e0c1846
 
 # COREPACK_NPM_REGISTRY: corepack fetches yarn from the npm registry (where
 # the JS deps come from anyway) instead of repo.yarnpkg.com.
+# APPS_BUILD_MAX_MEMORY: the Node heap CI gives `yarn build:dist`
+# (docker/ci/scripts/prepare_ci_env.sh).
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -54,7 +56,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright \
     CYPRESS_INSTALL_BINARY=0 \
-    APPS_BUILD_MAX_MEMORY=12288
+    APPS_BUILD_MAX_MEMORY=16384
 
 # System packages:
 # - runtime libraries of the copied Ruby (ssl, yaml, ffi, gmp, readline)
