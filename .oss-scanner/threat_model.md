@@ -144,6 +144,9 @@ The image is built by `.oss-scanner/Dockerfile`. Everything below was verified w
 - MySQL 8.0 and Redis, with:
   - `dashboard_test` prepared the way CI prepares it (schema + test fixtures + `seed:test`, no curriculum content)
   - `pegasus_test` migrated
+- The frontend, built as for CI's UI tests: the minified `apps/` webpack bundles (`apps/build/package`, served through `dashboard/public/blockly`), the Studio app (`frontend/apps/studio/dist`), and the Rails assets precompiled into `dashboard/public/assets`.
+- All Git LFS content (locales, lab JSON and media under `apps/static`, images, test fixtures).
+- Headless Chrome: Chrome for Testing at `/usr/local/bin/chrome` (`CHROME_BIN`), the build the pinned Playwright expects, so Playwright finds it without `playwright install`. In this container run it with `--no-sandbox --disable-dev-shm-usage`.
 
 **Start the services first.** This takes about 1s, because the data is already in the image. Rails needs MySQL even to boot.
 
@@ -186,15 +189,14 @@ cd /src/frontend/packages/component-library && yarn test              # Vitest (
 cd /src && uv run --no-sync pytest -q python/pycdo
 ```
 
-**Writing a reproducer.** A dashboard test is the best form: a controller or integration test under `dashboard/test/` using the factories in `dashboard/test/factories/`. There is no curriculum seed data, so tests that need units, lessons or levels must create them with factories, as the existing tests do. `rails server` also works: `cd dashboard && bundle exec rails s -p 3000 -b 127.0.0.1` after `start-services.sh`, about 60s to boot. Verified: `/users/sign_in` 200, `/api/v1/users/current` 200, `/` 302. Pages render with the compiled CSS but without the webpack JS bundles, so client-side behavior has to be checked in Jest or by reading the code. Pages that need curriculum content, S3 or external services will error.
+**Writing a reproducer.** A dashboard test is the best form: a controller or integration test under `dashboard/test/` using the factories in `dashboard/test/factories/`. There is no curriculum seed data, so tests that need units, lessons or levels must create them with factories, as the existing tests do. `rails server` also works: `cd dashboard && bundle exec rails s -p 3000 -b 127.0.0.1` after `start-services.sh`, about 60s to boot. Verified: `/users/sign_in` 200, `/api/v1/users/current` 200, `/` 302. Pages load their JS bundles, so client-side behavior can be checked in headless Chrome against that server. Pages that need curriculum content, S3 or external services will error.
 
 **What does not work offline in this image:**
 
 - **No `yarn install`, `bundle install` or `uv sync` that needs new packages.** The yarn download caches were removed to save space; installed `node_modules` work.
-- **No full `apps/` webpack build** (`yarn build`): too slow and memory-hungry for the value it adds here. The Jest prerequisites and the apps CSS (`apps/build/package/css`, served through `dashboard/public/blockly`) were generated with `.oss-scanner/Gruntfile.prebuild.js` (only `en_us` messages compiled). The webpack JS bundles are absent.
-- **Git LFS image assets** (`*.png`, `*.jpg`, ... under `apps/static`, `dashboard/app/assets`, `dashboard/public`, ...) are LFS pointer files. Non-English locales, `apps/i18n` and test fixtures were fetched.
+- **No rebuilding the served frontend.** An edit under `apps/src` does not change what Rails serves; `yarn build:dist` needs more memory than this machine has. Jest reads the source, so test client code there.
 - **AWS (S3, Secrets Manager), Javabuilder, AI/LLM providers, Clever/Google/Microsoft OAuth and other external services are unreachable.** Code paths that call them fail or use test doubles.
-- **UI/browser tests** (Cucumber/Selenium, Playwright, Karma) are not set up: no browsers are installed.
+- **Cucumber/Selenium UI tests** are not set up: there is no chromedriver.
 
 ## How we rate severity
 

@@ -107,12 +107,15 @@ RUN corepack install --global "yarn@${YARN_VERSION}" && yarn --version
 COPY . /src
 WORKDIR /src
 
-# Local config. The three overrides are what config/test.yml.erb applies to
-# CI's unit-test job (CI_JOB=unit_tests); we don't set CI itself because that
-# also points the DB/Redis at CI-only hostnames.
+# Local config. Assets are built as for CI's UI tests and production
+# (optimize_*_assets default to true): minified webpack bundles, and Rails
+# assets precompiled below. With them off, as in CI's unit-test job, Rails
+# compiles each dev bundle through Sprockets on first request, which takes
+# minutes per page on the audit machine. The queue adapter is the unit-test
+# job's, so rake tasks start no job workers.
 RUN cp locals.yml.default locals.yml \
-    && printf '%s\n' '' '# oss-scanner: unit-test settings from config/test.yml.erb (CI_JOB=unit_tests)' \
-         'optimize_rails_assets: false' 'optimize_webpack_assets: false' 'active_job_queue_adapter: :test' \
+    && printf '%s\n' '' '# oss-scanner: built assets, as in CI UI tests; queue adapter from CI_JOB=unit_tests' \
+         'optimize_rails_assets: true' 'optimize_webpack_assets: true' 'active_job_queue_adapter: :test' \
          >> locals.yml
 
 # Git LFS. The scanner's clone has LFS *pointer files*, not content: about
@@ -201,30 +204,34 @@ ENV UV_OFFLINE=1 \
 # (schema + fixtures + `seed:test`) and pegasus_test migrated, baked into the
 # image so the audit starts fast. Rails needs the DB even to boot, and so do
 # parts of the apps/ build (generated routes and region configs), so the
-# frontend is built here too:
-# - apps/: `yarn build`, the development webpack build that `rake build:apps`
-#   runs when optimize_webpack_assets is off (as in locals.yml above).
-#   Rails serves it through the dashboard/public/blockly symlink.
+# frontend is built here too, as `rake build` does for CI's UI tests:
+# - apps/: `yarn build:dist`, the minified production webpack build, with
+#   one worker per CPU. Rails serves it through the dashboard/public/blockly
+#   symlink and finds each bundle by apps/build/package/js/manifest.json.
 # - frontend/: the Studio app (`rake build:studio`), served through
 #   dashboard/public/frontend-studio.
-# If the full apps/ build fails, .oss-scanner/Gruntfile.prebuild.js still
-# generates what the Jest tests and Rails' CSS need, and the image is usable
-# without the JS bundles. Services are stopped at the end; start-services.sh
-# restarts them during the audit. The symlinks are those `rake
-# package:apps:symlink` and `package:studio:symlink` create for local builds.
+# - dashboard/: `rake assets:precompile` into dashboard/public/assets.
+# If the apps/ build fails, .oss-scanner/Gruntfile.prebuild.js still
+# generates what the Jest tests need, but Rails pages will not render.
+# Services are stopped at the end; start-services.sh restarts them during
+# the audit. The symlinks are those `rake package:apps:symlink` and
+# `package:studio:symlink` create for local builds.
 RUN ln -sfn ../../apps/build/package dashboard/public/blockly \
     && ln -sfn ../../frontend/apps/studio/dist/frontend-studio dashboard/public/frontend-studio \
     && .oss-scanner/start-services.sh \
-    && { (cd apps && yarn build) \
-         || { echo "WARNING: apps yarn build failed; falling back to the Jest/CSS prebuild only"; \
+    && { (cd apps && APPS_BUILD_WORKERS=$(nproc) yarn build:dist) \
+         || { echo "WARNING: apps yarn build:dist failed; falling back to the Jest/CSS prebuild only"; \
               (cd apps && node -e "require('grunt').tasks(['oss-scanner-prebuild'], \
                  {gruntfile: '../.oss-scanner/Gruntfile.prebuild.js', base: '.'})"); }; } \
     && { (cd frontend && yarn build --filter @code-dot-org/studio) \
          || echo "WARNING: Studio frontend build failed; /frontend-studio pages will not load"; } \
+    && { (cd dashboard && bundle exec rake assets:precompile) \
+         || echo "WARNING: rails assets:precompile failed; Rails pages will not render"; } \
     ; rc=$?; mysqladmin -uroot shutdown || true; redis-cli -h 127.0.0.1 shutdown nosave || true; \
+    rm -rf /tmp/* /root/.cache/*; \
     test $rc = 0 || echo "WARNING: services/frontend build failed (exit $rc): Ruby and JS tests may not run"
 
 RUN bundle exec ruby -e 'puts :ruby_ok' \
-    && test -d apps/build/package/js && ls apps/build/package/js | head -3 \
+    && test -f apps/build/package/js/manifest.json && ls dashboard/public/assets | head -3 \
     && uv run --no-sync python -c 'import pycdo; print("py_ok")' \
     && node --version && (cd /src/apps && yarn --version) && (cd /src/frontend && yarn --version)
