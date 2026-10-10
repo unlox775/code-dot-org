@@ -52,7 +52,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     STORYBOOK_DISABLE_TELEMETRY=1 \
     PUPPETEER_SKIP_DOWNLOAD=1 \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    CYPRESS_INSTALL_BINARY=0
+    PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright \
+    CYPRESS_INSTALL_BINARY=0 \
+    APPS_BUILD_MAX_MEMORY=12288
 
 # System packages:
 # - runtime libraries of the copied Ruby (ssl, yaml, ffi, gmp, readline)
@@ -113,21 +115,21 @@ RUN cp locals.yml.default locals.yml \
          'optimize_rails_assets: false' 'optimize_webpack_assets: false' 'active_job_queue_adapter: :test' \
          >> locals.yml
 
-# Git LFS. The scanner's clone has LFS *pointer files*, not content (about
-# 1.5 GB of LFS objects, mostly images). Fetch only the text-like LFS paths
-# that code and tests read (~525 MB): non-English locales, apps i18n and test
-# fixtures, from GitHub's public LFS media endpoint at this commit, each
-# verified against its pointer's sha256 (.oss-scanner/fetch-lfs.py). Images
-# stay as pointers. Then `git lfs install --local` and re-read those paths'
-# index entries from HEAD (which drops their recorded pointer-file sizes) and
-# refresh: git then runs the LFS clean filter, which turns each file back into
-# its identical pointer, so `git status` stays clean. No objects are written.
-# (Not `git add`: it would touch the 3 GB pack file's mtime and so copy it into
-# a new image layer. The clean filter copies every file into .git/lfs/objects;
-# that duplicate is deleted.)
+# Git LFS. The scanner's clone has LFS *pointer files*, not content: about
+# 1.5 GB across locales, test fixtures, images, and the JSON and media that the
+# labs load (apps/static). The webpack build and a realistic frontend need all
+# of it, so fetch every LFS file from GitHub's public LFS media endpoint at this
+# commit, each verified against its pointer's sha256 (.oss-scanner/fetch-lfs.py).
+# Then `git lfs install --local`, re-read those index entries from HEAD (which
+# drops their recorded pointer-file sizes) and refresh: git runs the LFS clean
+# filter, which turns each file back into its identical pointer, so
+# `git status` stays clean. No objects are written. (Not `git add`: it would
+# touch the 3 GB pack file's mtime and so copy it into a new image layer. The
+# clean filter copies every file into .git/lfs/objects; that duplicate is
+# deleted.)
 # Non-fatal (WARNING) because the step after it keeps Rails bootable without
-# them; without the fixtures, though, most Ruby tests would fail.
-ARG LFS_PATHS="dashboard/config/locales apps/i18n pegasus/cache/i18n dashboard/test/fixtures lib/test/fixtures"
+# them; without them, though, most Ruby tests and the apps/ build fail.
+ARG LFS_PATHS="."
 RUN python3 .oss-scanner/fetch-lfs.py ${LFS_PATHS} \
     || echo "WARNING: fetch-lfs failed for some files; they stay LFS pointer files"; \
     git lfs install --local \
@@ -164,27 +166,65 @@ RUN cd /src/apps && yarn install --immutable && yarn cache clean --all \
     && (cd /src/frontend && yarn cache clean --all) \
     && rm -rf /root/.yarn/berry/cache /root/.cache/node-gyp /tmp/*
 
+# Headless Chrome, so the audit can load Studio pages and run lab code the way
+# a student's browser does. The version is the Chrome for Testing build that
+# the repo's pinned Playwright expects (frontend/node_modules/playwright-core/
+# browsers.json), laid out where Playwright looks for its own browser. It is
+# fetched from Google's Chrome for Testing bucket rather than by
+# `playwright install`, whose CDN is one more host to depend on.
+# CHROME_BIN is what apps/ Karma tests use.
+RUN set -eux; \
+    cd /src/frontend; \
+    info=$(node -e "const b=JSON.parse(require('fs').readFileSync('node_modules/playwright-core/browsers.json')).browsers; \
+      const c=b.find(x=>x.name==='chromium'), h=b.find(x=>x.name==='chromium-headless-shell'); \
+      console.log(c.browserVersion, c.revision, h.revision)"); \
+    set -- $info; v=$1; rev=$2; hrev=$3; \
+    base="https://storage.googleapis.com/chrome-for-testing-public/$v/linux64"; \
+    mkdir -p "$PLAYWRIGHT_BROWSERS_PATH/chromium-$rev" "$PLAYWRIGHT_BROWSERS_PATH/chromium_headless_shell-$hrev"; \
+    curl -fsSLo /tmp/chrome.zip "$base/chrome-linux64.zip"; \
+    unzip -q /tmp/chrome.zip -d "$PLAYWRIGHT_BROWSERS_PATH/chromium-$rev"; \
+    curl -fsSLo /tmp/shell.zip "$base/chrome-headless-shell-linux64.zip"; \
+    unzip -q /tmp/shell.zip -d "$PLAYWRIGHT_BROWSERS_PATH/chromium_headless_shell-$hrev"; \
+    rm -f /tmp/chrome.zip /tmp/shell.zip; \
+    for d in "$PLAYWRIGHT_BROWSERS_PATH/chromium-$rev" "$PLAYWRIGHT_BROWSERS_PATH/chromium_headless_shell-$hrev"; do \
+      touch "$d/INSTALLATION_COMPLETE" "$d/DEPENDENCIES_VALIDATED"; done; \
+    node node_modules/playwright-core/cli.js install-deps chromium; rm -rf /var/lib/apt/lists/*; \
+    ln -sf "$PLAYWRIGHT_BROWSERS_PATH/chromium-$rev/chrome-linux64/chrome" /usr/local/bin/chrome; \
+    chrome --headless=new --no-sandbox --disable-gpu --dump-dom 'data:text/html,<p id=ok>chrome ok</p>' | grep -q 'chrome ok'
+ENV CHROME_BIN=/usr/local/bin/chrome
+
 # From here on the image is used offline.
 ENV UV_OFFLINE=1 \
     UV_FROZEN=1
 
 # Local MySQL 8 + Redis, with dashboard_test prepared the way CI does it
-# (schema + fixtures + `seed:test`) and pegasus_test migrated, baked into
-# the image so the audit starts fast. Rails needs the DB even to boot, and the
-# apps/ "prebuild" outputs that Jest imports (build/locales, generated
-# constants, region configs, studio routes) come from scripts that boot Rails,
-# so that is generated here too, along with the compiled CSS that Rails views
-# reference (.oss-scanner/Gruntfile.prebuild.js).
-# Services are stopped at the end; .oss-scanner/start-services.sh restarts
-# them during the audit.
-# The symlink is what `rake package:apps:symlink` creates for local builds.
+# (schema + fixtures + `seed:test`) and pegasus_test migrated, baked into the
+# image so the audit starts fast. Rails needs the DB even to boot, and so do
+# parts of the apps/ build (generated routes and region configs), so the
+# frontend is built here too:
+# - apps/: `yarn build`, the development webpack build that `rake build:apps`
+#   runs when optimize_webpack_assets is off (as in locals.yml above).
+#   Rails serves it through the dashboard/public/blockly symlink.
+# - frontend/: the Studio app (`rake build:studio`), served through
+#   dashboard/public/frontend-studio.
+# If the full apps/ build fails, .oss-scanner/Gruntfile.prebuild.js still
+# generates what the Jest tests and Rails' CSS need, and the image is usable
+# without the JS bundles. Services are stopped at the end; start-services.sh
+# restarts them during the audit. The symlinks are those `rake
+# package:apps:symlink` and `package:studio:symlink` create for local builds.
 RUN ln -sfn ../../apps/build/package dashboard/public/blockly \
+    && ln -sfn ../../frontend/apps/studio/dist/frontend-studio dashboard/public/frontend-studio \
     && .oss-scanner/start-services.sh \
-    && (cd apps && node -e "require('grunt').tasks(['oss-scanner-prebuild'], \
-          {gruntfile: '../.oss-scanner/Gruntfile.prebuild.js', base: '.'})") \
+    && { (cd apps && yarn build) \
+         || { echo "WARNING: apps yarn build failed; falling back to the Jest/CSS prebuild only"; \
+              (cd apps && node -e "require('grunt').tasks(['oss-scanner-prebuild'], \
+                 {gruntfile: '../.oss-scanner/Gruntfile.prebuild.js', base: '.'})"); }; } \
+    && { (cd frontend && yarn build --filter @code-dot-org/studio) \
+         || echo "WARNING: Studio frontend build failed; /frontend-studio pages will not load"; } \
     ; rc=$?; mysqladmin -uroot shutdown || true; redis-cli -h 127.0.0.1 shutdown nosave || true; \
-    test $rc = 0 || echo "WARNING: services/prebuild failed (exit $rc): Ruby and apps Jest tests will not run"
+    test $rc = 0 || echo "WARNING: services/frontend build failed (exit $rc): Ruby and JS tests may not run"
 
 RUN bundle exec ruby -e 'puts :ruby_ok' \
+    && test -d apps/build/package/js && ls apps/build/package/js | head -3 \
     && uv run --no-sync python -c 'import pycdo; print("py_ok")' \
     && node --version && (cd /src/apps && yarn --version) && (cd /src/frontend && yarn --version)
