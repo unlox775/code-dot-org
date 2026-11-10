@@ -1,6 +1,7 @@
 import {Typography as MuiTypography} from '@mui/material';
 import React, {useMemo} from 'react';
 
+import {checkpointIcon} from './checkpointIcon';
 import {DrawnEdge} from './layout/busRoutes';
 import {layoutCheckpoints} from './layout/tree';
 import {NODE_RADIUS} from './layout/types';
@@ -20,6 +21,7 @@ const TreeMap: React.FunctionComponent<MapProps> = ({
   pathway,
   statusMap,
   focusId,
+  fit,
   onSelect,
   tourFocusIds,
 }) => {
@@ -31,15 +33,21 @@ const TreeMap: React.FunctionComponent<MapProps> = ({
     if (!tourFocusIds?.length) return undefined;
     const positions = tourFocusIds.map(id => layout.nodes[id]).filter(Boolean);
     if (!positions.length) return undefined;
+    // Visual extent of each node: label sits above the circle center.
+    const xs = positions.map(p => p.x);
+    const ys = positions.map(p => p.y);
+    const minX = Math.min(...xs) - NODE_WIDTH / 2;
+    const maxX = Math.max(...xs) + NODE_WIDTH / 2;
+    const minY = Math.min(...ys) - NODE_RADIUS - LABEL_HEIGHT;
+    const maxY = Math.max(...ys) + NODE_RADIUS;
     return {
-      x: positions.reduce((s, p) => s + p.x, 0) / positions.length,
-      // Shift up by half the label height so the title above each circle
-      // is included in the zoomed view, not cropped at the top.
-      y:
-        positions.reduce((s, p) => s + p.y, 0) / positions.length -
-        LABEL_HEIGHT / 2,
+      x: (minX + maxX) / 2,
+      y: (minY + maxY) / 2,
+      width: maxX - minX,
+      height: maxY - minY,
     };
   }, [tourFocusIds, layout.nodes]);
+  const firstCheckpointId = pathway.checkpoints[0]?.id;
   const firstSkippedId = useMemo(
     () => pathway.checkpoints.find(c => statusMap[c.id] === 'skipped')?.id,
     [pathway.checkpoints, statusMap]
@@ -66,6 +74,7 @@ const TreeMap: React.FunctionComponent<MapProps> = ({
       lines={lines}
       statusMap={statusMap}
       focus={focusId ? layout.nodes[focusId] : undefined}
+      fit={fit}
       tourFocus={tourFocus}
     >
       {pathway.checkpoints.map(checkpoint => (
@@ -74,6 +83,7 @@ const TreeMap: React.FunctionComponent<MapProps> = ({
           checkpoint={checkpoint}
           position={layout.nodes[checkpoint.id]}
           status={statusMap[checkpoint.id]}
+          icon={checkpointIcon(pathway, checkpoint)}
           focusId={focusId}
           circleTop={NODE_RADIUS + LABEL_HEIGHT}
           width={NODE_WIDTH}
@@ -86,6 +96,8 @@ const TreeMap: React.FunctionComponent<MapProps> = ({
           tourId={
             checkpoint.id === firstSkippedId
               ? 'adaptive-tour-first-available'
+              : checkpoint.id === firstCheckpointId
+              ? 'adaptive-tour-first-checkpoint'
               : undefined
           }
         />

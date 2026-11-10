@@ -5,6 +5,8 @@ import {questionsStepSchema} from '../question';
 import {levelStepSchema, levelStepSourceSchema} from './level';
 import {markdownStepSchema} from './markdown';
 import {panelsStepSchema} from './panels';
+import {reviewStepSchema} from './review';
+import {statsStepSchema} from './stats';
 import {videoStepSchema, videoStepSourceSchema} from './video';
 
 /** A single step in a checkpoint, as authored. One of the following types. */
@@ -13,6 +15,8 @@ export const stepSourceSchema = z.discriminatedUnion('kind', [
   questionsStepSchema,
   levelStepSourceSchema,
   markdownStepSchema,
+  reviewStepSchema,
+  statsStepSchema,
   videoStepSourceSchema,
 ]);
 
@@ -22,10 +26,14 @@ export const stepSchema = z.discriminatedUnion('kind', [
   questionsStepSchema,
   levelStepSchema,
   markdownStepSchema,
+  reviewStepSchema,
+  statsStepSchema,
   videoStepSchema,
 ]);
 
 export * from './level';
 export * from './markdown';
+export * from './stats';
 export * from './panels';
+export * from './review';
 export * from './video';

@@ -62,7 +62,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # - runtime libraries of the copied Ruby (ssl, yaml, ffi, gmp, readline)
 # - mysql2 / rmagick build deps; git for git-sourced gems; compilers for
 #   native gems and node-gyp
-# - python3.12 + libpython3.12 for the uv venv and pycall (Rails boot)
+# - python3.12 for fetch-lfs.py and the uv venv (Python Lab package tests)
 # - mysql-server-8.0 and redis-server for the optional local services
 #   (.oss-scanner/start-services.sh)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -114,10 +114,19 @@ WORKDIR /src
 # assets precompiled below. With them off, as in CI's unit-test job, Rails
 # compiles each dev bundle through Sprockets on first request, which takes
 # minutes per page on the audit machine. The queue adapter is the unit-test
-# job's, so rake tasks start no job workers.
+# job's, so rake tasks start no job workers. The session cookie is otherwise
+# Secure, which a browser never returns over the image's plain HTTP, so every
+# sign-in would fail its CSRF check. Studio links otherwise point at
+# https://test-studio.code.org, the managed test server. S3 goes to the
+# emulator start-services.sh runs; project code, files and assets live there.
 RUN cp locals.yml.default locals.yml \
     && printf '%s\n' '' '# oss-scanner: built assets, as in CI UI tests; queue adapter from CI_JOB=unit_tests' \
          'optimize_rails_assets: true' 'optimize_webpack_assets: true' 'active_job_queue_adapter: :test' \
+         '# oss-scanner: plain HTTP on localhost:3000' 'no_https_store: true' \
+         "override_dashboard: 'localhost:3000'" "default_scheme: 'http:'" \
+         '# oss-scanner: local S3 emulator (moto), as docker/developers does with MinIO' \
+         'aws_s3_emulated: true' 'aws_s3_endpoint: http://127.0.0.1:9000' \
+         'aws_s3_access_key_id: local-development' 'aws_s3_secret_access_key: allstudents' \
          >> locals.yml
 
 # Git LFS. The scanner's clone has LFS *pointer files*, not content: about
@@ -158,7 +167,14 @@ RUN grep -rlZ --include='*.yml' --include='*.yaml' --include='*.json' \
 RUN bundle install && bundle check
 
 # Python venv with the dev group (pytest etc.), as `rake install` does for test.
-RUN uv sync --frozen --dev && uv run --no-sync python -c 'import pycdo; print("pycdo ok")'
+RUN uv sync --frozen --dev && uv run --no-sync python -c 'import neighborhood; print("venv ok")'
+
+# S3 emulator, in its own venv so it cannot disturb the repository's. The
+# MinIO image docker/developers uses is no longer on Docker Hub; moto speaks
+# the same API, versioning included, and keeps its data in memory.
+RUN uv venv /opt/s3-emulator \
+    && uv pip install --python /opt/s3-emulator/bin/python 'moto[server]==5.2.5' \
+    && /opt/s3-emulator/bin/python -c 'import moto, boto3; print("moto", moto.__version__)'
 
 # JS dependencies. apps/ links frontend/packages/* via portal: and its jest
 # tests import their built dist/ output, which the repo's own script builds
@@ -213,6 +229,11 @@ ENV UV_OFFLINE=1 \
 # - frontend/: the Studio app (`rake build:studio`), served through
 #   dashboard/public/frontend-studio.
 # - dashboard/: `rake assets:precompile` into dashboard/public/assets.
+# Then curriculum, about 4 minutes, into dashboard_test_app (TEST_ENV_NUMBER=_app;
+# the tests keep a clean dashboard_test): `seed:ui_test` (the UI-test units CI
+# seeds, and the shared data units need: games, blocks, standards), the AI
+# Foundations course, whose units include Python Lab, and the demo teacher,
+# student and section from seed-demo.rb. All of production would take hours.
 # If the apps/ build fails, .oss-scanner/Gruntfile.prebuild.js still
 # generates what the Jest tests need, but Rails pages will not render.
 # Services are stopped at the end; start-services.sh restarts them during
@@ -229,11 +250,17 @@ RUN ln -sfn ../../apps/build/package dashboard/public/blockly \
          || echo "WARNING: Studio frontend build failed; /frontend-studio pages will not load"; } \
     && { (cd dashboard && bundle exec rake assets:precompile) \
          || echo "WARNING: rails assets:precompile failed; Rails pages will not render"; } \
+    && { (cd dashboard && export TEST_ENV_NUMBER=_app SKIP_SCRIPT_PRELOAD=1 \
+          && bundle exec rake seed:ui_test \
+          && bin/rails runner ../.oss-scanner/seed-units.rb ai-foundations-exploring-ai-and-cs-2026 \
+          && bin/rails runner ../.oss-scanner/seed-demo.rb ai-foundations-exploring-ai-and-cs-2026 foundations-of-ai-programming-2026) \
+         || echo "WARNING: curriculum seed failed; course pages and the demo accounts may be missing"; } \
     ; rc=$?; mysqladmin -uroot shutdown || true; redis-cli -h 127.0.0.1 shutdown nosave || true; \
+    pkill -f moto_server || true; \
     rm -rf /tmp/* /root/.cache/*; \
     test $rc = 0 || echo "WARNING: services/frontend build failed (exit $rc): Ruby and JS tests may not run"
 
 RUN bundle exec ruby -e 'puts :ruby_ok' \
     && { test -f apps/build/package/js/manifest.json || echo "WARNING: no webpack manifest; Rails pages will not render"; } \
-    && uv run --no-sync python -c 'import pycdo; print("py_ok")' \
+    && uv run --no-sync python -c 'import neighborhood; print("py_ok")' \
     && node --version && (cd /src/apps && yarn --version) && (cd /src/frontend && yarn --version)

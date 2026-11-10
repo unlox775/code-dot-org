@@ -1,6 +1,7 @@
 import * as BlocklyCore from 'blockly/core';
 
 import BlocklyModeErrorHandler from '@cdo/apps/BlocklyModeErrorHandler';
+import {PERMISSIONS} from '@cdo/apps/lab2/constants';
 import {injectErrorHandler} from '@cdo/apps/lib/util/javascriptMode';
 import {APP_HEIGHT, APP_WIDTH} from '@cdo/apps/p5lab/constants';
 import {
@@ -12,6 +13,13 @@ import HttpClient from '@cdo/apps/util/HttpClient';
 
 import SpriteLab from '../SpriteLab';
 
+import {
+  askAiChoice,
+  askAiErrorMessage,
+  askAiText,
+  AskAiError,
+  isAskAiEnabled,
+} from './ai/text/askAi';
 import {SPRITELAB2_HELPER_CODE} from './blockly/blockDefinitions';
 import {burstBoxes} from './bursts';
 import {
@@ -51,7 +59,14 @@ import {
   wallBox,
 } from './platformPhysics';
 import {createPlayerActionTracker, isPlayerAction} from './playerActions';
-import {clearPrompt, showPrompt} from './redux/spriteLab2Redux';
+import {
+  askAiAnswered,
+  askAiFailed,
+  askAiPending,
+  clearAskAi,
+  clearPrompt,
+  showPrompt,
+} from './redux/spriteLab2Redux';
 import {
   asSoundEffect,
   playPreset,
@@ -67,6 +82,13 @@ import {cellSize, DEFAULT_SCENE_GRID_SIZE} from './world';
 // recent, or a jump the tracker saw without one would serve a stale spot.
 const JUMP_EVENT_FRAMES = 4;
 const JUMP_IMPULSE_FRAMES = 8;
+
+// What a say bubble lasts (actionCommands spriteSay), so a title and a say
+// started together go together.
+const TITLE_SECONDS = 4;
+const TITLE_TEXT_PX = 48;
+const TITLE_STROKE_PX = 6;
+const TITLE_MARGIN_PX = 16;
 
 const NOOP = () => {};
 
@@ -200,6 +222,9 @@ export default class SpriteLab2Engine extends SpriteLab {
     // behind must not start a program in it.
     this.destroyed_ = false;
     this.rerunAfterExecute_ = false;
+    this.runId_ = 0;
+    this.aiSetters_ = new Map();
+    this.aiPending_ = new Set();
     // True from a jump trigger until the target runs; repeat triggers are
     // ignored meanwhile.
     this.sceneJumpInFlight_ = false;
@@ -226,6 +251,37 @@ export default class SpriteLab2Engine extends SpriteLab {
     this.jumpStarts_ = null;
     this.jumpImpulseFrame_ = -Infinity;
     this.jumpEventFrame_ = -Infinity;
+    // The show-title block's text and when it goes, in unpaused seconds.
+    this.title_ = null;
+  }
+
+  /** The title across the middle of the view, over everything, until its
+      time is up; not on the preview frame, as speech bubbles are not. */
+  drawTitle_(library) {
+    const title = this.title_;
+    if (!title || library.isPreviewFrame()) {
+      return;
+    }
+    if (library.getUnpausedWorldTime() >= title.until) {
+      this.title_ = null;
+      return;
+    }
+    const p5 = library.p5;
+    p5.push();
+    p5.textAlign(p5.CENTER, p5.CENTER);
+    p5.textStyle(p5.BOLD);
+    p5.textSize(TITLE_TEXT_PX);
+    p5.stroke('white');
+    p5.strokeWeight(TITLE_STROKE_PX);
+    p5.fill('black');
+    p5.text(
+      title.text,
+      TITLE_MARGIN_PX,
+      0,
+      APP_WIDTH - 2 * TITLE_MARGIN_PX,
+      APP_HEIGHT
+    );
+    p5.pop();
   }
 
   /** The burst block: particles from each sprite the argument names. Just
@@ -433,6 +489,13 @@ export default class SpriteLab2Engine extends SpriteLab {
     library.commands.setWeather = kind => this.particles_.setWeather(kind);
     library.commands.burstParticles = (count, look, spriteArg) =>
       this.burstParticles(count, look, spriteArg);
+    this.title_ = null;
+    library.commands.showTitle = text => {
+      this.title_ = {
+        text: String(text),
+        until: library.getUnpausedWorldTime() + TITLE_SECONDS,
+      };
+    };
     // A new run starts the player's history over, so the spawn is not heard
     // as a move.
     this.forgetPlayer_();
@@ -459,6 +522,7 @@ export default class SpriteLab2Engine extends SpriteLab {
     const drawLoop = library.commands.executeDrawLoopAndCallbacks;
     library.commands.executeDrawLoopAndCallbacks = function () {
       drawLoop.apply(this, arguments);
+      engine.drawTitle_(this);
       if (engine.frameCaptureArmed_) {
         engine.frameCaptureArmed_ = false;
         engine.settleFrameCaptures_(this.p5.canvas);
@@ -660,6 +724,11 @@ export default class SpriteLab2Engine extends SpriteLab {
       this.triggerSceneJump_(this.onGoToExternalScene, String(sceneKey));
     };
     getStore().dispatch(clearPrompt());
+    const toChoices = (...values) =>
+      values
+        .filter(choice => choice !== undefined && choice !== null)
+        .map(String)
+        .filter(choice => choice !== '');
     const promptUser = (promptText, variableName, setterCallback, choices) => {
       library.registerPrompt(promptText, variableName, setterCallback);
       // Last prompt always wins, so we only ever have 1 active prompt unlike legacy.
@@ -682,10 +751,7 @@ export default class SpriteLab2Engine extends SpriteLab {
       choice3,
       setterCallback
     ) => {
-      const choices = [choice1, choice2, choice3]
-        .filter(choice => choice !== undefined && choice !== null)
-        .map(String)
-        .filter(choice => choice !== '');
+      const choices = toChoices(choice1, choice2, choice3);
       promptUser(
         promptText,
         variableName,
@@ -693,7 +759,106 @@ export default class SpriteLab2Engine extends SpriteLab {
         choices.length ? choices : undefined
       );
     };
+    const runId = ++this.runId_;
+    this.aiSetters_ = new Map();
+    // One request per variable at a time, to avoid a flood of requests at once.
+    const pending = (this.aiPending_ = new Set());
+    getStore().dispatch(clearAskAi());
+    const isCurrentRun = () => !this.destroyed_ && runId === this.runId_;
+    let systemPrompt = '';
+    library.commands.setSystemPrompt = promptText => {
+      if (this.canAskAi_()) {
+        systemPrompt = String(promptText ?? '');
+      }
+    };
+    const askAi = (variableName, setterCallback, request) => {
+      if (!this.canAskAi_() || pending.has(variableName)) {
+        return;
+      }
+      pending.add(variableName);
+      this.registerAiAnswer_(library, variableName, setterCallback);
+      getStore().dispatch(askAiPending());
+      request()
+        .then(
+          text => {
+            if (!isCurrentRun()) {
+              return;
+            }
+            this.deliverAiAnswer_(library, variableName, text);
+          },
+          error => {
+            if (!isCurrentRun()) {
+              return;
+            }
+            getStore().dispatch(askAiFailed(askAiErrorMessage(error)));
+            console.warn(
+              error instanceof AskAiError
+                ? `SpriteLab2: ${error.message}.`
+                : `SpriteLab2: the ask AI block got no answer (${error.message}).`
+            );
+          }
+        )
+        .finally(() => {
+          pending.delete(variableName);
+          if (!pending.size && isCurrentRun()) {
+            getStore().dispatch(askAiAnswered());
+          }
+        });
+    };
+    library.commands.askAI = (promptText, variableName, setterCallback) =>
+      askAi(variableName, setterCallback, () =>
+        askAiText(String(promptText ?? ''), systemPrompt)
+      );
+    library.commands.askAIWithChoices = (
+      promptText,
+      variableName,
+      choice1,
+      choice2,
+      choice3,
+      setterCallback
+    ) => {
+      const question = String(promptText ?? '');
+      const choices = toChoices(choice1, choice2, choice3);
+      askAi(variableName, setterCallback, () =>
+        choices.length
+          ? askAiChoice(question, choices, systemPrompt)
+          : askAiText(question, systemPrompt)
+      );
+    };
     return library;
+  }
+
+  registerAiAnswer_(library, variableName, setterCallback) {
+    if (!variableName) {
+      return;
+    }
+    if (library.promptVars[variableName] === undefined) {
+      library.promptVars[variableName] = null;
+    }
+    this.aiSetters_.set(variableName, setterCallback);
+  }
+
+  deliverAiAnswer_(library, variableName, text) {
+    library.promptVars[variableName] = text;
+    this.aiSetters_.get(variableName)?.(text);
+    library.userInputEventCallbacks[variableName]?.userCallbacks.forEach(
+      callback => callback()
+    );
+  }
+
+  // Mirrors the gateway's own check (User::AiAccessible), so a request it
+  // would refuse never leaves the browser.
+  canAskAi_() {
+    if (!isAskAiEnabled()) {
+      console.warn('SpriteLab2: the ask AI block is turned off.');
+      return false;
+    }
+    const permissions = getStore().getState().lab?.permissions;
+    if (!permissions?.includes(PERMISSIONS.LEVELBUILDER)) {
+      console.warn('SpriteLab2: the ask AI block needs levelbuilder access.');
+      return false;
+    }
+    return true;
   }
 
   onPromptAnswer(variableName, value) {
@@ -982,6 +1147,7 @@ export default class SpriteLab2Engine extends SpriteLab {
     stopSoundEffects();
     this.reset();
     getStore().dispatch(clearPrompt());
+    getStore().dispatch(clearAskAi());
     this.stopTickTimer();
     this.imageWaitCancel_?.();
     this.clearLateImagesWatch_();
@@ -1102,6 +1268,7 @@ export default class SpriteLab2Engine extends SpriteLab {
         await trimAnimationListImages(scoped, {
           keepNames: animationNames(animationList),
           thumbnails: !external,
+          upscalePixelArt: true,
         })
       ),
       {multiFrame: true}
@@ -1150,6 +1317,7 @@ export default class SpriteLab2Engine extends SpriteLab {
         await trimAnimationListImages(single, {
           keepNames: animationNames(list),
           thumbnails: !this.isExternalList_(list),
+          upscalePixelArt: true,
         })
       ),
       {multiFrame: true}

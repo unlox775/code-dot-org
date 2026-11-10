@@ -1,9 +1,8 @@
-import * as Observability from '@code-dot-org/core/plugins/observability';
-
 import {
   generate,
   isAdaptiveAiEnabled,
   moderateInput,
+  moderateOutput,
 } from '@cdo/apps/adaptive/ai/generate';
 import {generateProject} from '@cdo/apps/adaptive/ai/generateProject';
 import {PROJECT_PROMPT_VERSION} from '@cdo/apps/adaptive/ai/projectPrompt';
@@ -17,9 +16,7 @@ jest.mock('@cdo/apps/adaptive/ai/generate', () => ({
   generate: jest.fn(),
   isAdaptiveAiEnabled: jest.fn(() => true),
   moderateInput: jest.fn(async () => 'ok'),
-}));
-jest.mock('@code-dot-org/core/plugins/observability', () => ({
-  metrics: {count: jest.fn()},
+  moderateOutput: jest.fn(async () => 'ok'),
 }));
 const mockLogWarning = jest.fn();
 jest.mock('@cdo/apps/lab2/Lab2Registry', () => ({
@@ -33,7 +30,7 @@ jest.mock('@cdo/apps/lab2/Lab2Registry', () => ({
 const mockGenerate = generate as jest.Mock;
 const mockEnabled = isAdaptiveAiEnabled as jest.Mock;
 const mockModerate = moderateInput as jest.Mock;
-const mockCount = Observability.metrics.count as jest.Mock;
+const mockModerateOutput = moderateOutput as jest.Mock;
 
 const step: LevelStep = {
   id: 'generated',
@@ -52,7 +49,25 @@ const checkpoint: Checkpoint = {
       id: 'plan',
       title: 'Plan',
       kind: 'questions',
-      questions: [{id: 1, type: 'freeResponse', text: 'What will you make?'}],
+      questions: [
+        {
+          id: 1,
+          type: 'freeResponse',
+          text: 'What will you make?',
+          plan: 'what',
+        },
+        {
+          id: 2,
+          type: 'MultipleChoiceQuestion',
+          questionName: 'feel',
+          questionTitle: 'How should it feel?',
+          choices: [
+            {id: 'a', text: 'Calm'},
+            {id: 'b', text: 'Bold'},
+          ],
+          plan: 'feel',
+        },
+      ],
     },
     step,
   ],
@@ -102,7 +117,6 @@ const resolve = (
     checkpoint,
     step,
     progress,
-    projectInfo: {},
     sources,
     aichatContext: context,
     ...overrides,
@@ -113,6 +127,7 @@ beforeEach(() => {
   mockGenerate.mockReset();
   mockEnabled.mockReturnValue(true);
   mockModerate.mockResolvedValue('ok');
+  mockModerateOutput.mockResolvedValue('ok');
 });
 
 describe('generateProject', () => {
@@ -154,17 +169,6 @@ describe('generateProject', () => {
     expect(mockGenerate.mock.calls[0][0].prompt).toContain('A: Rex');
   });
 
-  it('keeps a name and description the student already gave', async () => {
-    mockGenerate.mockResolvedValue({output, traceId: 't1'});
-    const generated = await resolve({
-      projectInfo: {name: 'Mine', description: 'My own words.'},
-    });
-    expect(generated).toMatchObject({
-      name: 'Mine',
-      description: 'My own words.',
-    });
-  });
-
   it('is nothing without a generated prompt, answers or text files', async () => {
     expect(
       await resolve({step: {...step, projectPrompt: undefined}})
@@ -188,15 +192,32 @@ describe('generateProject', () => {
     expect(mockGenerate).not.toHaveBeenCalled();
   });
 
-  it('moderates the answers before the call and counts the result', async () => {
+  it('moderates what the student typed, not what they picked, before the call', async () => {
     mockGenerate.mockResolvedValue({output, traceId: 't1'});
-    await resolve();
-    expect(mockModerate).toHaveBeenCalledWith('Rex', context);
-    expect(mockCount).toHaveBeenCalledWith('adaptive.text_moderation', 1, {
-      phase: 'input_filter',
-      result: 'ok',
+    await resolve({
+      progress: {
+        steps: {
+          plan: {
+            timeSpent: 0,
+            answers: {1: [{answerId: 'x', text: 'Rex'}], 2: [{answerId: 'b'}]},
+          },
+        },
+      },
     });
+    expect(mockModerate).toHaveBeenCalledWith('Rex', context);
+    expect(mockGenerate.mock.calls[0][0].prompt).toContain('A: Bold');
     expect(mockLogWarning).not.toHaveBeenCalled();
+  });
+
+  it('asks for the project without moderation when every answer was picked', async () => {
+    mockGenerate.mockResolvedValue({output, traceId: 't1'});
+    await resolve({
+      progress: {
+        steps: {plan: {timeSpent: 0, answers: {2: [{answerId: 'a'}]}}},
+      },
+    });
+    expect(mockModerate).not.toHaveBeenCalled();
+    expect(mockGenerate).toHaveBeenCalled();
   });
 
   it.each(['flagged', 'error'])(
@@ -205,15 +226,36 @@ describe('generateProject', () => {
       mockModerate.mockResolvedValue(moderation);
       expect(await resolve()).toBeUndefined();
       expect(mockGenerate).not.toHaveBeenCalled();
-      expect(mockCount).toHaveBeenCalledWith('adaptive.text_moderation', 1, {
-        phase: 'input_filter',
-        result: moderation,
-      });
       expect(mockLogWarning).toHaveBeenCalledWith(
         expect.objectContaining({
           moderation,
           pathwayId: 'p',
           stepId: 'generated',
+        })
+      );
+    }
+  );
+
+  it('moderates the generated name, description and files as the student will see them', async () => {
+    mockGenerate.mockResolvedValue({output, traceId: 't1'});
+    await resolve();
+    expect(mockModerateOutput).toHaveBeenCalledWith(
+      'Rex Rules\n\nA site about Rex.\n\n<h1>Rex</h1>',
+      context
+    );
+  });
+
+  it.each(['flagged', 'error'])(
+    'keeps the template, and logs it, when the generated site is %s by moderation',
+    async moderation => {
+      mockGenerate.mockResolvedValue({output, traceId: 't1'});
+      mockModerateOutput.mockResolvedValue(moderation);
+      expect(await resolve()).toBeUndefined();
+      expect(mockLogWarning).toHaveBeenCalledWith(
+        expect.objectContaining({
+          moderation,
+          stepId: 'generated',
+          traceId: 't1',
         })
       );
     }

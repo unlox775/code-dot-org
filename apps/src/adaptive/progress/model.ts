@@ -14,10 +14,22 @@ export type CheckpointStatus =
   /** Demonstrated by the student's evidence and skippable, so passed without being played. */
   | 'skipped';
 
+export const STATUS_LABELS: {[status in CheckpointStatus]: string} = {
+  locked: 'Locked',
+  available: 'Ready to start',
+  inProgress: 'In progress',
+  complete: 'Complete',
+  skipped: 'Skipped',
+};
+
 /** Each checkpoint's status, by checkpoint id. */
 export type CheckpointStatusMap = {[checkpointId: string]: CheckpointStatus};
 
-/** One submitted answer. isCorrect is absent for a survey question; text is set for free-response questions. */
+/**
+ * One submitted answer. isCorrect is absent for a survey question; text is
+ * set for a free response question and for a typed answer to a multiple
+ * choice question, whose answerId is then OTHER_CHOICE_ID.
+ */
 export interface Answer {
   answerId: string;
   isCorrect?: boolean;
@@ -63,6 +75,18 @@ export function latestValidation(
 ): ValidationAttempt | undefined {
   const history = entry?.validationHistory;
   return history?.[history.length - 1];
+}
+
+/** Failed checks after which Continue opens anyway, since the judge can be wrong. */
+export const FAILED_VALIDATIONS_TO_CONTINUE = 3;
+
+/** Whether a checked step's work lets the student continue past it. */
+export function validationAllowsContinue(
+  entry: StepProgress | undefined
+): boolean {
+  const history = entry?.validationHistory ?? [];
+  if (history.some(attempt => attempt.pass)) return true;
+  return history.length >= FAILED_VALIDATIONS_TO_CONTINUE;
 }
 
 /** Id of the project screen's step, which records no progress. */
@@ -112,6 +136,14 @@ export function stepIdToResume(
   return visibleSteps(checkpoint, progress).find(
     step => progress.steps[step.id]?.status !== 'complete'
   )?.id;
+}
+
+/** Seconds the student has spent on steps, over every step with progress. */
+export function totalTimeSpent(progress: Progress): number {
+  return Object.values(progress.steps).reduce(
+    (sum, step) => sum + (step.timeSpent ?? 0),
+    0
+  );
 }
 
 /** Whether the student finished the checkpoint: its last visible step is complete. */

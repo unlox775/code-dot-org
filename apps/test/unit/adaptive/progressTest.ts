@@ -6,10 +6,13 @@ import {
   isComplete,
   latestValidation,
   stepIdToResume,
+  totalTimeSpent,
   useProgress,
+  validationAllowsContinue,
   visibleSteps,
 } from '@cdo/apps/adaptive/progress';
 import {ProgressStore} from '@cdo/apps/adaptive/progress/progressStore';
+import {usePathwayStatus} from '@cdo/apps/adaptive/progress/usePathwayStatus';
 import {computeEvidence} from '@cdo/apps/adaptive/routing/evidence';
 import {routeStatusMap} from '@cdo/apps/adaptive/routing/route';
 import {Checkpoint, Pathway, Step} from '@cdo/apps/adaptive/types';
@@ -105,6 +108,20 @@ describe('routeStatusMap without evidence', () => {
   });
 });
 
+describe('totalTimeSpent', () => {
+  it('sums the time on every step', () => {
+    expect(totalTimeSpent(EMPTY_PROGRESS)).toBe(0);
+    expect(
+      totalTimeSpent({
+        steps: {
+          a: {timeSpent: 90, status: 'complete'},
+          b: {timeSpent: 30, status: 'started'},
+        },
+      })
+    ).toBe(120);
+  });
+});
+
 describe('stepIdToResume', () => {
   const level: Step = {id: 'try', title: 'Try', kind: 'level', level: 'x'};
   const multi = checkpoint('multi', undefined, [
@@ -150,6 +167,37 @@ describe('stepIdToResume', () => {
   });
 });
 
+describe('validationAllowsContinue', () => {
+  const attempt = (pass: boolean) => ({
+    at: '2026-01-01T00:00:00Z',
+    pass,
+    evidenceLevel: 0,
+    reason: '',
+  });
+  const entry = (...passes: boolean[]) => ({
+    timeSpent: 0,
+    validationHistory: passes.map(attempt),
+  });
+
+  it('holds before any check', () => {
+    expect(validationAllowsContinue(undefined)).toBe(false);
+    expect(validationAllowsContinue({timeSpent: 0})).toBe(false);
+  });
+
+  it('opens once any check passes, even if a later one fails', () => {
+    expect(validationAllowsContinue(entry(false, true))).toBe(true);
+    expect(validationAllowsContinue(entry(true, false))).toBe(true);
+  });
+
+  it('holds after fewer than three failed checks', () => {
+    expect(validationAllowsContinue(entry(false, false))).toBe(false);
+  });
+
+  it('opens after three failed checks', () => {
+    expect(validationAllowsContinue(entry(false, false, false))).toBe(true);
+  });
+});
+
 describe('visibleSteps', () => {
   const ask: Step = {
     id: 'ask',
@@ -165,6 +213,7 @@ describe('visibleSteps', () => {
           {id: 'a', text: 'A'},
           {id: 'b', text: 'B'},
         ],
+        allowOther: {},
       },
     ],
   };
@@ -176,9 +225,10 @@ describe('visibleSteps', () => {
     ask,
     branch('if-a', 'a'),
     branch('if-b', 'b'),
+    branch('if-other', 'other'),
     panels('after'),
   ]);
-  const answered = (...answers: {answerId: string}[]) => ({
+  const answered = (...answers: {answerId: string; text?: string}[]) => ({
     steps: {ask: {timeSpent: 0, answers: {1: answers}}},
   });
   const ids = (progress: Progress) => visibleSteps(cp, progress).map(s => s.id);
@@ -187,11 +237,16 @@ describe('visibleSteps', () => {
     expect(ids(EMPTY_PROGRESS)).toEqual(['ask', 'after']);
   });
 
-  it('shows the branch of the latest answer', () => {
+  it('shows the branch of the latest answer, typed answers included', () => {
     expect(ids(answered({answerId: 'a'}))).toEqual(['ask', 'if-a', 'after']);
     expect(ids(answered({answerId: 'a'}, {answerId: 'b'}))).toEqual([
       'ask',
       'if-b',
+      'after',
+    ]);
+    expect(ids(answered({answerId: 'other', text: 'C'}))).toEqual([
+      'ask',
+      'if-other',
       'after',
     ]);
   });
@@ -407,15 +462,13 @@ describe('useProgress', () => {
     expect(reportLevelStep).not.toHaveBeenCalled();
   });
 
-  it("reports level steps on their level and never the project screen's", async () => {
+  it('reports level steps on their level', async () => {
     const store = fakeStore();
     const {result, reportLevelStep} = await renderProgress(store);
 
     act(() => result.current.startStep(sandbox));
     act(() => result.current.leaveStep(sandbox, 2000));
     act(() => result.current.completeStep(sandbox, 500));
-    act(() => result.current.startStep(project));
-    act(() => result.current.completeStep(project, 500));
 
     expect(reportLevelStep.mock.calls).toEqual([
       [42, 'weblab2', TestResults.LEVEL_STARTED, 0],
@@ -425,7 +478,25 @@ describe('useProgress', () => {
     expect(store.saveStep).not.toHaveBeenCalled();
     expect(result.current.statusMap.intro).toBe('complete');
     expect(result.current.progress?.steps.try.timeSpent).toBe(3);
-    expect(result.current.progress?.steps.project).toBeUndefined();
+  });
+
+  it("keeps the project screen's time on its level, never a start or a pass", async () => {
+    const store = fakeStore();
+    const {result, reportLevelStep} = await renderProgress(store);
+
+    act(() => result.current.startStep(project));
+    act(() => result.current.leaveStep(project, 2000));
+    act(() => result.current.completeStep(project, 500));
+
+    expect(reportLevelStep.mock.calls).toEqual([
+      [42, 'weblab2', TestResults.LEVEL_STARTED, 2000],
+      [42, 'weblab2', TestResults.LEVEL_STARTED, 500],
+    ]);
+    expect(store.saveStep).not.toHaveBeenCalled();
+    expect(result.current.progress?.steps.project).toEqual({
+      status: 'started',
+      timeSpent: 3,
+    });
   });
 
   it('logs a failed level report', async () => {
@@ -516,5 +587,22 @@ describe('useProgress', () => {
     expect(
       result.current.progress?.steps.project.generatedInstructions
     ).toEqual(generatedInstructions);
+  });
+});
+
+describe('usePathwayStatus', () => {
+  it('reads undefined progress as empty', () => {
+    const {result} = renderHook(() => usePathwayStatus(pathway, undefined));
+
+    expect(result.current.statusMap).toEqual(
+      statusMapOf(pathway, EMPTY_PROGRESS)
+    );
+  });
+
+  it('routes the progress it is given', () => {
+    const progress = progressOf(['intro'], ['a']);
+    const {result} = renderHook(() => usePathwayStatus(pathway, progress));
+
+    expect(result.current.statusMap).toEqual(statusMapOf(pathway, progress));
   });
 });
